@@ -21,7 +21,7 @@
 				Optimization="0"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(ZEDPATH)/Include/Xbox;./Headers"
-				PreprocessorDefinitions="_DEBUG;_XBOX;ZED_BUILD_DEBUG;ZED_PLATFORM_XBOX"
+				PreprocessorDefinitions="_DEBUG;_XBOX;"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZEDArithmeticD.lib ZEDRendererD.lib ZEDSystemD.lib xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xactengd.lib xsndtrkd.lib xvoiced.lib xonlined.lib xboxkrnl.lib xbdm.lib"
+				AdditionalDependencies="xapilibd.lib d3d8d.lib d3dx8d.lib xgraphicsd.lib dsoundd.lib dmusicd.lib xactengd.lib xsndtrkd.lib xvoiced.lib xonlined.lib xboxkrnl.lib xbdm.lib"
 				OutputFile="$(OutDir)/$(ProjectName)D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(ZEDPATH)/Lib/Xbox"
@@ -74,7 +74,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(ZEDPATH)/Include/Xbox;./Headers"
-				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;ZED_BUILD_PROFILE;ZED_PLATFORM_XBOX"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -88,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZEDArithmeticP.lib ZEDRendererP.lib ZEDSystemP.lib xapilib.lib d3d8i.lib d3dx8.lib xgraphics.lib dsound.lib dmusici.lib xactengi.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib xbdm.lib xperf.lib"
+				AdditionalDependencies="xapilib.lib d3d8i.lib d3dx8.lib xgraphics.lib dsound.lib dmusici.lib xactengi.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib xbdm.lib xperf.lib"
 				OutputFile="$(OutDir)/$(ProjectName)P.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(ZEDPATH)/Lib/Xbox"
@@ -131,7 +131,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(ZEDPATH)/Include/Xbox;./Headers"
-				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;FASTCAP;ZED_BUILD_PROFILE;ZED_PLATFORM_XBOX"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;FASTCAP;"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -146,7 +146,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZEDArithmeticP.lib ZEDRendererP.lib ZEDSystemP.lib xapilib.lib d3d8i.lib d3dx8.lib xgraphics.lib dsound.lib dmusici.lib xactengi.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib xbdm.lib xperf.lib"
+				AdditionalDependencies="xapilib.lib d3d8i.lib d3dx8.lib xgraphics.lib dsound.lib dmusici.lib xactengi.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib xbdm.lib xperf.lib"
 				OutputFile="$(OutDir)/$(ProjectName)PFC.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(ZEDPATH)/Lib/Xbox"
@@ -189,7 +189,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(ZEDPATH)/Include/Xbox;./Headers"
-				PreprocessorDefinitions="NDEBUG;_XBOX;ZED_BUILD_RELEASE;ZED_PLATFORM_XBOX"
+				PreprocessorDefinitions="NDEBUG;_XBOX;"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -203,7 +203,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZEDArithmetic.lib ZEDRenderer.lib ZEDSystem.lib xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xacteng.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib"
+				AdditionalDependencies="xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xacteng.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(ZEDPATH)/Lib/Xbox"
@@ -246,7 +246,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(ZEDPATH)/Include/Xbox;./Headers"
-				PreprocessorDefinitions="NDEBUG;_XBOX;LTCG;ZED_BUILD_RELEASE;ZED_PLATFORM_XBOX"
+				PreprocessorDefinitions="NDEBUG;_XBOX;LTCG;"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -260,7 +260,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZEDArithmetic.lib ZEDRenderer.lib ZEDSystem.lib xapilib.lib d3d8ltcg.lib d3dx8.lib xgraphicsltcg.lib dsound.lib dmusicltcg.lib xactengltcg.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib"
+				AdditionalDependencies="xapilib.lib d3d8ltcg.lib d3dx8.lib xgraphicsltcg.lib dsound.lib dmusicltcg.lib xactengltcg.lib xsndtrk.lib xvoice.lib xonlines.lib xboxkrnl.lib"
 				OutputFile="$(OutDir)/$(ProjectName)LTCG.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(ZEDPATH)/Lib/Xbox"
