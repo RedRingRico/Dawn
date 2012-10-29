@@ -29,26 +29,20 @@ endif
 
 ##### Debug #######
 debug:		BUILD = Debug
-debug:		ZED_BUILD = DEBUG
 debug:		TARGET := $(TARGET)D
 debug:		CFLAGS = -c -g -ggdb -Wall -D_DEBUG $(CFLAGS_EXT)
-debug:		ZED_LIBS = -lZEDRendererD -lZEDArithmeticD -lZEDSystemD
 debug:		$(TARGET)
 
 ##### Release #####
 release:	BUILD = Release
-release:	ZED_BUILD = RELEASE
 release:	TARGET := $(TARGET)
 release:	CFLAGS = -c -O3 $(CFLAGS_EXT)
-release:	ZED_LIBS = -lZEDRenderer -lZEDArithmetic -lZEDSystem
 release:	$(TARGET)
 
 ##### Profile #####
 profile:	BUILD = Profile
-profile:	ZED_BUILD = PROFILE
 profile:	TARGET := $(TARGET)P
 profile:	CFLAGS = -c -O3 -g -ggdb -Wall -D_DEBUG $(CFLAGS_EXT)
-profile:	ZED_LIBS = -lZEDRendererP -lZEDArithmeticP -lZEDSystemP
 profile:	$(TARGET)
 
 ##### Build the object files while not in the Obj directory ###################
@@ -69,11 +63,11 @@ HEADERS	= $(wildcard *.hpp)
 
 $(TARGET): $(OBJS) $(TARGETDIR)
 	-mkdir -p $(OBJSDIR)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) -L$(ZEDPATH)/lib/$(PLATFORM) -Wl,-rpath,$(SYSLPATH) $(ZED_LIBS) $(SYSLIBS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
 
 %.o: $(SOURCEDIR)/%.cpp
 	-mkdir -p $(OBJSDIR)
-	$(CC) $(CFLAGS) -DSUPPORT_X11 -DZED_BUILD_$(ZED_BUILD) -DZED_PLATFORM_$(BUILD_PLATFORM) -IHeaders -I$(ZEDPATH)/include/$(PLATFORM) $(SYSIPATH) $< -o $(OBJSDIR)/$@
+	$(CC) $(CFLAGS) -DSUPPORT_X11 -IHeaders $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 endif
 
