@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <DataTypes.hpp>
 
 int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	LPSTR p_CmdLine, int p_CmdShow )
