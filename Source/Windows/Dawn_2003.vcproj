@@ -71,8 +71,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="TRUE"
-				AdditionalIncludeDirectories="./Headers"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE"
+				AdditionalIncludeDirectories="./Headers;../Common/Headers"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;PLATFORM_WINDOWS_X86_32;BUILD_RELEASE"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="FALSE"
@@ -123,8 +123,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="TRUE"
-				AdditionalIncludeDirectories="./Headers"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;LTCG"
+				AdditionalIncludeDirectories="./Headers;../Common/Headers"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;LTCG;PLATFORM_WINDOWS_X86_32;BUILD_RELEASE"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -175,8 +175,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="TRUE"
-				AdditionalIncludeDirectories="./Headers"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE"
+				AdditionalIncludeDirectories="./Headers;../Common/Headers"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;PLATFORM_WINDOWS_X86_32;BUILD_PROFILE"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="FALSE"
