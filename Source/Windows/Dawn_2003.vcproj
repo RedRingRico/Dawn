@@ -33,9 +33,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib"
 				ShowProgress="1"
 				OutputFile="$(OutDir)/Dawn_2003D.exe"
 				LinkIncremental="2"
+				IgnoreDefaultLibraryNames="winmm.lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Dawn_2003.pdb"
 				SubSystem="2"
@@ -84,9 +86,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib"
 				ShowProgress="1"
 				OutputFile="$(OutDir)/Dawn_2003.exe"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames="winmm.lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -136,9 +140,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib"
 				ShowProgress="1"
 				OutputFile="$(OutDir)/Dawn_2003LTCG.exe"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames="winmm.lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -188,9 +194,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib"
 				ShowProgress="1"
 				OutputFile="$(OutDir)/Dawn_2003P.exe"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames="winmm.lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -228,11 +236,17 @@
 			<File
 				RelativePath=".\Source\Main.cpp">
 			</File>
+			<File
+				RelativePath=".\Source\WindowsRendererOGL1.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\Common\Headers\CanvasDescription.hpp">
+			</File>
 			<File
 				RelativePath="..\Common\Headers\Compiler.hpp">
 			</File>
@@ -244,6 +258,15 @@
 			</File>
 			<File
 				RelativePath=".\Headers\DataTypes_Windows_x86_32.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Renderer.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\RenderTypes.hpp">
+			</File>
+			<File
+				RelativePath=".\Headers\WindowsRendererOGL1.hpp">
 			</File>
 		</Filter>
 		<Filter
