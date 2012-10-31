@@ -25,6 +25,9 @@ namespace Dawn
 
 		virtual void SetClearColour( const D_FLOAT32 p_Red,
 			const D_FLOAT32 p_Green, const D_FLOAT32 p_Blue );
+		
+		virtual D_UINT32 ResizeCanvas( const D_UINT32 p_Width,
+			const D_UINT32 p_Height );
 
 	private:
 		PIXELFORMATDESCRIPTOR	m_PixelFormatDesc;

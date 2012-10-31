@@ -86,6 +86,8 @@ namespace Dawn
 			return D_ERROR;
 		}
 
+		glViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
+
 		return D_OK;
 	}
 
@@ -146,5 +148,30 @@ namespace Dawn
 		const D_FLOAT32 p_Green, const D_FLOAT32 p_Blue )
 	{
 		glClearColor( p_Red, p_Green, p_Blue, 1.0f );
+	}
+
+	D_UINT32 WindowsRendererOGL1::ResizeCanvas( const D_UINT32 p_Width,
+		const D_UINT32 p_Height )
+	{
+		if( p_Width == 0 )
+		{
+			return D_ERROR;
+		}
+		if( p_Height == 0 )
+		{
+			return D_ERROR;
+		}
+
+		if( p_Width == m_Canvas.Width( ) && p_Height == m_Canvas.Height( ) )
+		{
+			return D_OK;
+		}
+
+		m_Canvas.Width( p_Width );
+		m_Canvas.Height( p_Height );
+
+		glViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
+
+		return D_OK;
 	}
 }

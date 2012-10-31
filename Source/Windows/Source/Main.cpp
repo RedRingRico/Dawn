@@ -78,14 +78,14 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	Canvas.Colour( FORMAT_ARGB8 );
 	Canvas.DepthStencil( FORMAT_D24S8 );
 
-	Dawn::WindowsRendererOGL1 OGLRenderer;
 	HDC WinDC = GetDC( g_Window );
-	if( OGLRenderer.Create( Canvas, WinDC ) != D_OK )
+	g_pRenderer = new Dawn::WindowsRendererOGL1( );
+	if( g_pRenderer->Create( Canvas, WinDC ) != D_OK )
 	{
 		return D_ERROR;
 	}
 
-	OGLRenderer.SetClearColour( 0.15f, 0.0f, 0.15f );
+	g_pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
 
 	MSG Message;
 	g_Quit = D_FALSE;
@@ -111,9 +111,11 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 				}
 			}
 		}
-		OGLRenderer.BeginScene( D_TRUE, D_TRUE, D_TRUE );
-		OGLRenderer.EndScene( );
+		g_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
+		g_pRenderer->EndScene( );
 	}
+
+	delete g_pRenderer;
 
 	return 0;
 }
@@ -159,7 +161,9 @@ LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
 		{
 			RECT NewCanvas;
 			GetWindowRect( g_Window, &NewCanvas );
-			// Implement the renderer's resize here
+
+			g_pRenderer->ResizeCanvas( NewCanvas.right - NewCanvas.left,
+				NewCanvas.bottom - NewCanvas.top );
 			break;
 		}
 	default:
