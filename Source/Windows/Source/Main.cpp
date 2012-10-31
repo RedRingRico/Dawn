@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <Main.hpp>
 #include <WindowsRendererOGL1.hpp>
 
 LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
@@ -58,12 +59,12 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 
 	AdjustWindowRectEx( &WindowRect, Style, FALSE, ExStyle );
 
-	HWND Window = CreateWindowEx( ExStyle, g_pAppName, g_pAppName, Style, X, Y,
+	g_Window = CreateWindowEx( ExStyle, g_pAppName, g_pAppName, Style, X, Y,
 		WindowRect.right - WindowRect.left,
 		WindowRect.bottom - WindowRect.top,
 		NULL, NULL, p_ThisInst, NULL );
 
-	if( Window == NULL )
+	if( g_Window == NULL )
 	{
 		return D_ERROR;
 	}
@@ -78,7 +79,7 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	Canvas.DepthStencil( FORMAT_D24S8 );
 
 	Dawn::WindowsRendererOGL1 OGLRenderer;
-	HDC WinDC = GetDC( Window );
+	HDC WinDC = GetDC( g_Window );
 	if( OGLRenderer.Create( Canvas, WinDC ) != D_OK )
 	{
 		return D_ERROR;
@@ -89,9 +90,9 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	MSG Message;
 	g_Quit = D_FALSE;
 
-	ShowWindow( Window, SW_SHOW );
-	SetForegroundWindow( Window );
-	SetFocus( Window );
+	ShowWindow( g_Window, SW_SHOW );
+	SetForegroundWindow( g_Window );
+	SetFocus( g_Window );
 
 	while( g_Quit == D_FALSE )
 	{
@@ -134,9 +135,10 @@ LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
 			case SC_CLOSE:
 				{
 					g_Quit = D_TRUE;
+					return 0L;
 				}
 			}
-			break;
+			return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
 		}
 	case WM_KEYDOWN:
 		{
@@ -150,6 +152,14 @@ LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
 		{
 			PostQuitMessage( 0 );
 			g_Quit = D_TRUE;
+			break;
+		}
+	case WM_MOVE:
+	case WM_SIZE:
+		{
+			RECT NewCanvas;
+			GetWindowRect( g_Window, &NewCanvas );
+			// Implement the renderer's resize here
 			break;
 		}
 	default:
