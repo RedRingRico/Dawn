@@ -301,6 +301,9 @@
 			<File
 				RelativePath=".\Source\Main.cpp">
 			</File>
+			<File
+				RelativePath=".\Source\XboxRenderer.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -319,10 +322,16 @@
 				RelativePath="..\Common\Headers\DataTypes.hpp">
 			</File>
 			<File
+				RelativePath=".\Headers\DataTypes_Xbox.hpp">
+			</File>
+			<File
 				RelativePath="..\Common\Headers\Renderer.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\RenderTypes.hpp">
+			</File>
+			<File
+				RelativePath=".\Headers\XboxRenderer.hpp">
 			</File>
 		</Filter>
 	</Files>
