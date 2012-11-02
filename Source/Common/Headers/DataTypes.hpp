@@ -35,9 +35,9 @@ const D_UINT32 D_OK		= 0x00000000;
 const D_UINT32 D_ERROR	= 0xFFFFFFFF;
 const D_UINT32 D_FAIL	= D_ERROR;
 
-#if D_32BIT == 1
+#if ( D_32BIT == 1 )
 const D_MEMSIZE D_ENUM_PAD = 0x7FFFFFFF;
-#elif D_64BIT == 1
+#elif ( D_64BIT == 1 )
 const D_MEMSIZE D_ENUM_PAD = 0x7FFFFFFFFFFFFFFF;
 #endif
 
