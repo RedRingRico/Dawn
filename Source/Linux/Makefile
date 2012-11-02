@@ -31,18 +31,21 @@ endif
 
 ##### Debug #######
 debug:		BUILD = Debug
+debug:		BUILD_DEF = DEBUG
 debug:		TARGET := $(TARGET)D
 debug:		CFLAGS = -c -g -ggdb -Wall -D_DEBUG $(CFLAGS_EXT)
 debug:		$(TARGET)
 
 ##### Release #####
 release:	BUILD = Release
+release:	BUILD_DEF = RELEASE
 release:	TARGET := $(TARGET)
 release:	CFLAGS = -c -O3 $(CFLAGS_EXT)
 release:	$(TARGET)
 
 ##### Profile #####
 profile:	BUILD = Profile
+profile:	BUILD_DEF = PROFILE
 profile:	TARGET := $(TARGET)P
 profile:	CFLAGS = -c -O3 -g -ggdb -Wall -D_DEBUG $(CFLAGS_EXT)
 profile:	$(TARGET)
@@ -66,7 +69,7 @@ $(TARGET): $(OBJS) $(TARGETDIR)
 
 %.o: $(SOURCEDIR)/%.cpp
 	-mkdir -p $(OBJSDIR)
-	$(CC) $(CFLAGS) -IHeaders -I$(GLINCPATH) $(SYSIPATH) $< -o $(OBJSDIR)/$@
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(PLATFORM) -IHeaders -I$(GLINCPATH) $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 endif
 
