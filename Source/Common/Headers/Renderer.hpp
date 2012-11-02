@@ -10,6 +10,12 @@
 #include <GL/glext.h>
 #elif PLATFORM_XBOX
 #include <xtl.h>
+#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+#include <X11/Xlib.h>
+#include <GL/gl.h>
+#include <GL/glx.h>
+#include <GL/glxext.h>
+#include <GL/glext.h>
 #endif
 
 #include <CanvasDescription.hpp>
