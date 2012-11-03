@@ -1,5 +1,6 @@
 #include <LinuxRendererOGL1.hpp>
 #include <X11/Xatom.h>
+#include <iostream>
 
 const char *g_pWindowTitle =
 #ifdef BUILD_DEBUG
@@ -65,13 +66,13 @@ int main( int p_Argc, char **p_ppArgv )
 	WinAttr.border_pixel = 0;
 	WinAttr.event_mask = StructureNotifyMask | ExposureMask |
 		KeyPressMask | KeyReleaseMask | ButtonPressMask |
-		ButtonReleaseMask | ResizeRedirectMask | PointerMotionMask;
+		ButtonReleaseMask | PointerMotionMask;
 
 	Window XWin = XCreateWindow( pDisplay,
 		RootWindow( pDisplay, pVI->screen ),
 		X, Y, Width, Height,
 		0, pVI->depth, InputOutput, pVI->visual,
-		CWEventMask|CWColormap|CWBorderPixel, &WinAttr );
+		CWEventMask | CWColormap | CWBorderPixel, &WinAttr );
 
 	XMapWindow( pDisplay, XWin );
 	XMapRaised( pDisplay, XWin );
@@ -100,10 +101,21 @@ int main( int p_Argc, char **p_ppArgv )
 				case KeyPress:
 				{
 					Key = XLookupKeysym( &Events.xkey, 0 );
-					if( Key == 'q' )
+					switch( Key )
 					{
-						g_Quit = true;
+						case XK_Escape:
+						{
+							g_Quit = true;
+							break;
+						}
 					}
+					break;
+				}
+
+				case ConfigureNotify:
+				{
+					pRenderer->ResizeCanvas( Events.xconfigure.width,
+						Events.xconfigure.height );
 					break;
 				}
 			}

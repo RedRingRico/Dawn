@@ -1,5 +1,6 @@
 #include <LinuxRendererOGL1.hpp>
 #include <stdio.h>
+#include <iostream>
 namespace Dawn
 {
 	LinuxRendererOGL1::LinuxRendererOGL1( )
@@ -175,6 +176,8 @@ namespace Dawn
 	D_UINT32 LinuxRendererOGL1::ResizeCanvas( const D_UINT32 p_Width,
 		const D_UINT32 p_Height )
 	{
+		glViewport( 0, 0, p_Width, p_Height );
+
 		return D_OK;
 	}
 }
