@@ -1,6 +1,6 @@
 #include <LinuxRendererOGL1.hpp>
-#include <iostream>
 #include <X11/Xatom.h>
+
 const char *g_pWindowTitle =
 #ifdef BUILD_DEBUG
 "Dawn [DEBUG]";
@@ -14,6 +14,7 @@ D_BOOL g_Quit;
 
 int main( int p_Argc, char **p_ppArgv )
 {
+	Dawn::LinuxRendererOGL1 *pRenderer = new Dawn::LinuxRendererOGL1( );
 	Screen *pScreen = NULL;
 	Display *pDisplay = XOpenDisplay( 0 );
 	pScreen = DefaultScreenOfDisplay( pDisplay );
@@ -39,31 +40,51 @@ int main( int p_Argc, char **p_ppArgv )
 		Y = ( D_INT32 )( YF );
 		Width = ( D_INT32 )( WidthF );
 		Height = ( D_INT32 )( HeightF );
-
-#ifdef BUILD_DEBUG
-		std::cout << "X: " << X << std::endl;
-		std::cout << "Y: " << Y << std::endl;
-		std::cout << "Width: " << Width << std::endl;
-		std::cout << "Height: " << Height << std::endl;
-#endif
 	}
 
+	XVisualInfo *pVI;
+
+	Dawn::CanvasDescription Canvas;
+
+	Canvas.Width( Width );
+	Canvas.Height( Height );
+	Canvas.BackBufferCount( 1 );
+	Canvas.DepthStencil( FORMAT_D24S8 );
+	Canvas.Colour( FORMAT_ARGB8 );
+
+	pRenderer->GetXVisualInfo( Canvas, pDisplay, &pVI );
+
+	Colormap CMap = XCreateColormap( pDisplay,
+		RootWindow( pDisplay, pVI->screen ), pVI->visual,
+		AllocNone );
+	
 	XSetWindowAttributes WinAttr;
 
+	WinAttr.colormap = CMap;
+	WinAttr.background_pixmap = None;
+	WinAttr.border_pixel = 0;
 	WinAttr.event_mask = StructureNotifyMask | ExposureMask |
 		KeyPressMask | KeyReleaseMask | ButtonPressMask |
 		ButtonReleaseMask | ResizeRedirectMask | PointerMotionMask;
 
-	Window XWin = XCreateWindow( pDisplay, DefaultRootWindow( pDisplay ),
+	Window XWin = XCreateWindow( pDisplay,
+		RootWindow( pDisplay, pVI->screen ),
 		X, Y, Width, Height,
-		0, CopyFromParent, InputOutput, CopyFromParent,
-		CWEventMask, &WinAttr );
+		0, pVI->depth, InputOutput, pVI->visual,
+		CWEventMask|CWColormap|CWBorderPixel, &WinAttr );
 
 	XMapWindow( pDisplay, XWin );
 	XMapRaised( pDisplay, XWin );
 
 	XStoreName( pDisplay, XWin, g_pWindowTitle );
 	XMoveWindow( pDisplay, XWin, X, Y );
+	XRaiseWindow( pDisplay, XWin );
+
+	pRenderer->SetWindow( XWin );
+	pRenderer->Create( Canvas );
+	pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
+
+	XSync( pDisplay, False );
 
 	g_Quit = false;
 	XEvent Events;
@@ -87,7 +108,12 @@ int main( int p_Argc, char **p_ppArgv )
 				}
 			}
 		}
+
+		pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
+		pRenderer->EndScene( );
 	}
+
+	delete pRenderer;
 
 	XDestroyWindow( pDisplay, XWin );
 	XCloseDisplay( pDisplay );

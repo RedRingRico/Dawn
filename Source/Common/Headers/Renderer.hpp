@@ -12,6 +12,7 @@
 #include <xtl.h>
 #elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
 #include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <GL/glxext.h>
@@ -32,6 +33,16 @@ namespace Dawn
 		virtual D_UINT32 Create( const CanvasDescription &p_Canvas,
 			const HDC &p_HDC ) = 0;
 		virtual D_UINT32 SetHDC( const HDC &p_HDC ) = 0;
+#endif
+#if ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+		virtual D_UINT32 Create( const CanvasDescription &p_Canvas,
+			Display **p_ppDisplay, Window *p_pWindow ) = 0;
+		virtual D_UINT32 SetDisplay( const Display *p_pDisplay ) = 0;
+		virtual D_UINT32 SetWindow( const Window p_Window ) = 0;
+		// Before calling Create, GLX needs to set up the Visual for
+		// use later, so set it up and return it
+		virtual D_UINT32 GetXVisualInfo( const CanvasDescription &p_Canvas,
+			Display *p_pDisplay, XVisualInfo **p_ppVisualInfo ) = 0;
 #endif
 
 		// Start the rendering process and clear any buffers required
