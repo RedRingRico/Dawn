@@ -17,6 +17,14 @@
 #include <GL/glx.h>
 #include <GL/glxext.h>
 #include <GL/glext.h>
+#elif PLATFORM_PANDORA
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <GLES2/gl2extimg.h>
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #endif
 
 #include <CanvasDescription.hpp>

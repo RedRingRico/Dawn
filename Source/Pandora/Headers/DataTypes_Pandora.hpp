@@ -4,7 +4,7 @@
 // For [u]int64_t
 #include <stdint.h>
 // For size_t
-#include <linux/types.h>
+#include <cstddef>
 
 typedef unsigned char	D_UCHAR8;
 typedef signed char		D_CHAR8;
