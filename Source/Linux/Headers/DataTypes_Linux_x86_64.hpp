@@ -18,8 +18,8 @@ typedef signed int			D_INT32;
 typedef uint64_t			D_UINT64;
 typedef int64_t				D_INT64;
 
-#define LITTLE_ENDIAN	1
-#define BIG_ENDIAN		0
+#define D_LITTLE_ENDIAN		1
+#define D_BIG_ENDIAN		0
 
 #define D_32BIT	0
 #define D_64BIT	1
