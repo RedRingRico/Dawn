@@ -52,6 +52,10 @@ namespace Dawn
 		virtual D_UINT32 GetXVisualInfo( const CanvasDescription &p_Canvas,
 			Display *p_pDisplay, XVisualInfo **p_ppVisualInfo ) = 0;
 #endif
+#ifdef PLATFORM_PANDORA
+		virtual D_UINT32 SetDisplay( const Display *p_pDisplay ) = 0;
+		virtual D_UINT32 SetWindow( const Window p_Window ) = 0;
+#endif
 
 		// Start the rendering process and clear any buffers required
 		virtual D_UINT32 BeginScene( const D_BOOL p_Colour,
