@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\WindowsRendererOGL1.cpp" />
   </ItemGroup>
@@ -141,6 +142,7 @@
     <ClInclude Include="..\Common\Headers\Compiler.hpp" />
     <ClInclude Include="..\Common\Headers\Compiler_MSVC.hpp" />
     <ClInclude Include="..\Common\Headers\DataTypes.hpp" />
+    <ClInclude Include="..\Common\Headers\Game.hpp" />
     <ClInclude Include="..\Common\Headers\Renderer.hpp" />
     <ClInclude Include="..\Common\Headers\RenderTypes.hpp" />
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp" />

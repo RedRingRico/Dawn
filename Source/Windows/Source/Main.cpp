@@ -1,174 +1,19 @@
 #include <Windows.h>
 #include <Main.hpp>
-#include <WindowsRendererOGL1.hpp>
-
-LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
-	LPARAM p_LParam );
-
-const LPCWSTR g_pAppName =
-#if BUILD_DEBUG
-L"Dawn [DEBUG]";
-#elif BUILD_PROFILE
-L"Dawn [PROFILE]";
-#else
-L"Dawn";
-#endif
-
-D_BOOL g_Quit;
+#include <Game.hpp>
 
 int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	LPSTR p_CmdLine, int p_CmdShow )
 {
-	WNDCLASSEX WinClass;
-	WinClass.cbSize = sizeof( WNDCLASSEX );
-	WinClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	WinClass.cbClsExtra = 0;
-	WinClass.cbWndExtra = 0;
-	WinClass.hInstance = p_ThisInst;
-	WinClass.hbrBackground = NULL;
-	WinClass.lpszClassName = g_pAppName;
-	WinClass.lpfnWndProc = ( WNDPROC )WinProc;
-	WinClass.hIcon = LoadIcon( NULL, IDI_WINLOGO );
-	WinClass.hCursor = LoadCursor( NULL, IDC_ARROW );
-	WinClass.lpszMenuName = NULL;
-	WinClass.hIconSm = NULL;
+	Dawn::Game MyGame;
 
-	if( !RegisterClassEx( &WinClass ) )
-	{
-		return 1;
-	}
-
-	// Create a window which is 90% of the main monitor's resolution and
-	// centre it
-	DWORD Style, ExStyle;
-	RECT WindowRect;
-	D_UINT32 Width, Height, X, Y;
-	HWND DesktopWindow = GetDesktopWindow( );
-	HDC DesktopDC = GetDC( DesktopWindow );
-	Width = ( GetDeviceCaps( DesktopDC, HORZRES ) / 100 ) * 90;
-	Height = ( GetDeviceCaps( DesktopDC, VERTRES ) / 100 ) * 90;
-	X = ( GetDeviceCaps( DesktopDC, HORZRES ) / 100 ) * 5;
-	Y = ( GetDeviceCaps( DesktopDC, VERTRES ) / 100 ) * 5;
-
-	WindowRect.left = ( long )0;
-	WindowRect.right = ( long )Width;
-	WindowRect.top = ( long )0;
-	WindowRect.bottom = ( long )Height;
-	ExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-	Style = WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_OVERLAPPEDWINDOW;
-
-	AdjustWindowRectEx( &WindowRect, Style, FALSE, ExStyle );
-
-	g_Window = CreateWindowEx( ExStyle, g_pAppName, g_pAppName, Style, X, Y,
-		WindowRect.right - WindowRect.left,
-		WindowRect.bottom - WindowRect.top,
-		NULL, NULL, p_ThisInst, NULL );
-
-	if( g_Window == NULL )
+	if( MyGame.Initialise( D_FALSE ) != D_OK )
 	{
 		return D_ERROR;
 	}
+	MyGame.Render( );
 
-	// Associate the renderer with the window
-	Dawn::CanvasDescription Canvas;
-	memset( &Canvas, 0, sizeof( Canvas ) );
-	Canvas.BackBufferCount( 1 );
-	Canvas.Width( WindowRect.right );
-	Canvas.Height( WindowRect.bottom );
-	Canvas.Colour( FORMAT_ARGB8 );
-	Canvas.DepthStencil( FORMAT_D24S8 );
-
-	HDC WinDC = GetDC( g_Window );
-	g_pRenderer = new Dawn::WindowsRendererOGL1( );
-	if( g_pRenderer->Create( Canvas, WinDC ) != D_OK )
-	{
-		return D_ERROR;
-	}
-
-	g_pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
-
-	MSG Message;
-	g_Quit = D_FALSE;
-
-	ShowWindow( g_Window, SW_SHOW );
-	SetForegroundWindow( g_Window );
-	SetFocus( g_Window );
-
-	while( g_Quit == D_FALSE )
-	{
-		while( PeekMessage( &Message, NULL, 0, 0, PM_NOREMOVE ) )
-		{
-			if( GetMessage( &Message, NULL, 0, 0 ) )
-			{
-				TranslateMessage( &Message );
-				DispatchMessage( &Message );
-			}
-			else
-			{
-				if( Message.message == WM_CLOSE )
-				{
-					g_Quit = D_TRUE;
-				}
-			}
-		}
-		g_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
-		g_pRenderer->EndScene( );
-	}
-
-	delete g_pRenderer;
+	Sleep( 5000 );
 
 	return 0;
-}
-
-LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
-	LPARAM p_LParam )
-{
-	switch( p_Message )
-	{
-	case WM_SYSCOMMAND:
-		{
-			switch( p_WParam )
-			{
-			case SC_SCREENSAVE:
-			case SC_MONITORPOWER:
-				{
-					return 0L;
-				}
-			case SC_CLOSE:
-				{
-					g_Quit = D_TRUE;
-					return 0L;
-				}
-			}
-			return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
-		}
-	case WM_KEYDOWN:
-		{
-			if( p_WParam == VK_ESCAPE )
-			{
-				g_Quit = D_TRUE;
-			}
-			break;
-		}
-	case WM_DESTROY:
-		{
-			PostQuitMessage( 0 );
-			g_Quit = D_TRUE;
-			break;
-		}
-	case WM_MOVE:
-	case WM_SIZE:
-		{
-			RECT NewCanvas;
-			GetWindowRect( g_Window, &NewCanvas );
-
-			g_pRenderer->ResizeCanvas( NewCanvas.right - NewCanvas.left,
-				NewCanvas.bottom - NewCanvas.top );
-			break;
-		}
-	default:
-		return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
-	}
-
-	return 0L;
 }

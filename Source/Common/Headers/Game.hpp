@@ -33,7 +33,7 @@ namespace Dawn
 		Game( );
 		~Game( );
 
-		D_UINT32 Initialise( );
+		D_UINT32 Initialise( const D_BOOL p_FullScreen = D_FALSE );
 		void Update( const D_FLOAT64 p_ElapsedGameTime );
 		void Render( );
 
@@ -47,6 +47,10 @@ namespace Dawn
 		Window	m_Window;
 #elif ( PLATFORM_XBOX || PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HANDLE m_ConfigFile;
+#endif
+#if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
+		HWND m_Window;
+		HDC m_DeviceContext;
 #endif
 		D_BOOL m_FullScreen;
 		Dawn::CanvasDescription m_Canvas;
