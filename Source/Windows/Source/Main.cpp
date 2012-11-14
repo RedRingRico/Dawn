@@ -2,6 +2,9 @@
 #include <Main.hpp>
 #include <Game.hpp>
 
+#include <Hash.hpp>
+#include <Event.hpp>
+
 int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	LPSTR p_CmdLine, int p_CmdShow )
 {
@@ -11,9 +14,8 @@ int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	{
 		return D_ERROR;
 	}
-	MyGame.Render( );
 
-	Sleep( 5000 );
+	MyGame.Execute( );
 
 	return 0;
 }

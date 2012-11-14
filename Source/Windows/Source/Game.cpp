@@ -6,6 +6,18 @@ namespace Dawn
 	LRESULT CALLBACK WndProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
 		LPARAM p_LParam )
 	{
+		switch( p_Message )
+		{
+		case WM_DESTROY:
+			{
+				PostQuitMessage( 0 );
+				break;
+			}
+		default:
+			{
+				return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
+			}
+		}
 		return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
 	}
 
@@ -182,5 +194,34 @@ namespace Dawn
 	{
 		m_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
 		m_pRenderer->EndScene( );
+	}
+
+	D_UINT32 Game::Execute( )
+	{
+		D_BOOL Quit = D_FALSE;
+
+		MSG Message;
+		while( Quit != D_TRUE )
+		{
+			if( PeekMessage( &Message, D_NULL, 0, 0, PM_REMOVE ) )
+			{
+				if( Message.message == WM_QUIT )
+				{
+					Quit = D_TRUE;
+				}
+				else
+				{
+					TranslateMessage( &Message );
+					DispatchMessage( &Message );
+				}
+			}
+			else
+			{
+				this->Update( 0.0f );
+				this->Render( );
+			}
+		}
+
+		return D_OK;
 	}
 }

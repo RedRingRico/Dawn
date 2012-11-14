@@ -14,7 +14,7 @@ static const wchar_t *g_pWindowTitle =
 #elif BUILD_RELEASE
 	L"Dawn";
 #endif
-#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 || PLATFORM_PANDORA )
 static const char *g_pWindowTitle =
 #ifdef BUILD_DEBUG
 	"Dawn [DEBUG]";
@@ -36,6 +36,8 @@ namespace Dawn
 		D_UINT32 Initialise( const D_BOOL p_FullScreen = D_FALSE );
 		void Update( const D_FLOAT64 p_ElapsedGameTime );
 		void Render( );
+
+		D_UINT32 Execute( );
 
 		bool Running( );
 
