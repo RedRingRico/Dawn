@@ -153,6 +153,8 @@
     <ClInclude Include="..\Common\Headers\Compiler_MSVC.hpp" />
     <ClInclude Include="..\Common\Headers\DataTypes.hpp" />
     <ClInclude Include="..\Common\Headers\Event.hpp" />
+    <ClInclude Include="..\Common\Headers\EventListener.hpp" />
+    <ClInclude Include="..\Common\Headers\EventRouter.hpp" />
     <ClInclude Include="..\Common\Headers\Game.hpp" />
     <ClInclude Include="..\Common\Headers\Hash.hpp" />
     <ClInclude Include="..\Common\Headers\Renderer.hpp" />

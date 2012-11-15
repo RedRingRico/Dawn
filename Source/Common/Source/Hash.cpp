@@ -8,6 +8,7 @@ namespace Dawn
 
 	D_UINT32 Hash( const char *p_pString )
 	{
+		// Just making sure this is worth the time to run...
 		if( p_pString == D_NULL )
 		{
 			return D_ERROR;
