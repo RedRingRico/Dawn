@@ -1,5 +1,6 @@
 #include <Game.hpp>
 #include <WindowsRendererOGL1.hpp>
+#include <Time.hpp>
 
 namespace Dawn
 {
@@ -182,6 +183,9 @@ namespace Dawn
 		ShowWindow( m_Window, SW_SHOW );
 		SetForegroundWindow( m_Window );
 		SetFocus( m_Window );
+
+		// Start the global timer
+		Dawn::StartTime( );
 
 		return D_OK;
 	}

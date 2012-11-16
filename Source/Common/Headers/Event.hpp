@@ -92,6 +92,16 @@ namespace Dawn
 			return reinterpret_cast< T * >( m_pData );
 		}
 
+		const D_BOOL operator<( const Event &p_Other ) const
+		{
+			if( ( m_TimeDelay + m_TimeStamp ) <
+				( p_Other.m_TimeDelay + p_Other.m_TimeStamp ) )
+			{
+				return D_TRUE;
+			}
+			return D_FALSE;
+		}
+
 	private:
 		// Type is unique and it should be very slim to have two similar event
 		// types registered which are intended to be different
