@@ -32,7 +32,7 @@ namespace Dawn
 			return ( m_ID < p_Other.m_ID );
 		}
 
-		D_BOOL operator==( EventType const &p_Other )
+		D_BOOL operator==( const EventType &p_Other ) const
 		{
 			if( p_Other.m_ID == this->m_ID )
 			{
@@ -67,7 +67,8 @@ namespace Dawn
 			D_FLOAT32 p_TimeStamp = 0.0f, EventData *p_pData = D_NULL ) :
 			m_Type( p_pEventName ),
 			m_pData( p_pData ),
-			m_TimeStamp( p_TimeStamp )
+			m_TimeStamp( p_TimeStamp ),
+			m_TimeDelay( 0.0f )
 		{
 		}
 
@@ -79,6 +80,11 @@ namespace Dawn
 		const EventData *Data( ) const { return m_pData; }
 
 		const D_FLOAT32 Time( ) const { return m_TimeStamp; }
+
+		// Time delay manipulator and accessor
+		void TimeDelay( const D_FLOAT32 p_TimeDelay )
+			{ m_TimeDelay = p_TimeDelay; }
+		const D_FLOAT32 TimeDelay( ) const { return m_TimeDelay; }
 
 		// Get the real data
 		template< typename T > T *DataPtr( ) const
@@ -95,6 +101,8 @@ namespace Dawn
 		EventData *m_pData;
 		// Time at which the event was generated
 		D_FLOAT32	m_TimeStamp;
+		// Offset for delaying the delivery of the event
+		D_FLOAT32	m_TimeDelay;
 	};
 }
 
