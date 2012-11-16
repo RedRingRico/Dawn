@@ -17,28 +17,27 @@ namespace Dawn
 	class EventRouter
 	{
 	public:
-		virtual ~EventRouter( ) { }
+		~EventRouter( ) { }
 
 		// Add and remove event listeners
-		virtual D_UINT32 Add( const EventListener &p_Listener ) = 0;
-		virtual D_UINT32 Remove( const EventListener &p_Listener ) = 0;
+		D_UINT32 Add( EventListener *p_pListener,
+			const EventType &p_Type );
+		D_UINT32 Remove( const EventListener *p_Listener );
 
 		// Event passing functions
-		virtual D_UINT32 Send( const Event &p_Event ) = 0;
-		virtual D_UINT32 Queue( const Event &p_Event,
-			const D_FLOAT32 p_DeliveryTime = 0.0f ) = 0;
-		virtual D_UINT32 Abort( const Event &p_Event,
-			const D_BOOL p_AllOfType = D_FALSE ) = 0;
+		D_UINT32 Send( const Event &p_Event );
+		D_UINT32 Queue( const Event &p_Event,
+			const D_FLOAT32 p_DeliveryTime = 0.0f );
+		D_UINT32 Abort( const Event &p_Event,
+			const D_BOOL p_AllOfType = D_FALSE );
 
 		// Process the events in the queue
-		virtual D_UINT32 Tick( const D_UINT32 p_MaxTime = TIME_INFINITE ) = 0;
+		D_UINT32 Tick( const D_UINT32 p_MaxTime = IEEE754_INFINITE32 );
 
 		// Verify the event type is valid
-		virtual D_UINT32 Verify( const EventType &p_Type ) = 0;
+		D_BOOL Verify( const EventType &p_Type ) const;
 
 	private:
-		// Queued events, known events, event listeners to events mapping
-		
 		// Event types are unique and only one of each need to persist
 		typedef std::set< EventType > EventTypeSet;
 		typedef std::pair< EventTypeSet::iterator, D_BOOL > EventTypeSetInsRes;
@@ -47,7 +46,7 @@ namespace Dawn
 		typedef std::list< EventListener * > EventListenerList;
 		// Map an event ID to an event listener
 		typedef std::map< D_UINT32, EventListenerList > EventListenerMap;
-		typedef std::pair< D_UINT32, EventListenerMap > EventListenerMapEntry;
+		typedef std::pair< D_UINT32, EventListenerList > EventListenerMapEntry;
 		typedef std::pair< EventListenerMap::iterator, D_BOOL >
 			EventListenerMapInsRes;
 

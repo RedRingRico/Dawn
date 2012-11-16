@@ -27,6 +27,11 @@ namespace Dawn
 			return m_pIDString;
 		}
 
+		D_BOOL operator<( const EventType &p_Other ) const
+		{
+			return ( m_ID < p_Other.m_ID );
+		}
+
 		D_BOOL operator==( EventType const &p_Other )
 		{
 			if( p_Other.m_ID == this->m_ID )
