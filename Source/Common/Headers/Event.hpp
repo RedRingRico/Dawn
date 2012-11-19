@@ -3,6 +3,7 @@
 
 #include <DataTypes.hpp>
 #include <Hash.hpp>
+#include <Time.hpp>
 
 namespace Dawn
 {
@@ -54,7 +55,7 @@ namespace Dawn
 	class EventData
 	{
 	public:
-		virtual ~EventData( );
+		virtual ~EventData( ){ }
 	};
 
 	// NOTES:
@@ -64,7 +65,8 @@ namespace Dawn
 	{
 	public:
 		D_EXPLICIT Event( const char * const p_pEventName,
-			D_FLOAT32 p_TimeStamp = 0.0f, EventData *p_pData = D_NULL ) :
+			D_FLOAT32 p_TimeStamp = Dawn::GetTimeMS( ),
+			EventData *p_pData = D_NULL ) :
 			m_Type( p_pEventName ),
 			m_pData( p_pData ),
 			m_TimeStamp( p_TimeStamp ),

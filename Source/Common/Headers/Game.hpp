@@ -1,8 +1,10 @@
-#ifndef __DAWNGAME_HPP__
-#define __DAWNGAME_HPP__
+#ifndef __DAWN_GAME_HPP__
+#define __DAWN_GAME_HPP__
 
 #include <DataTypes.hpp>
 #include <Renderer.hpp>
+#include <EventRouter.hpp>
+#include <WindowEventListener.hpp>
 #include <cstdio>
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
@@ -53,9 +55,22 @@ namespace Dawn
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HWND m_Window;
 		HDC m_DeviceContext;
+
+		static LRESULT CALLBACK WindowProc( HWND p_HWND, UINT p_Message,
+			WPARAM p_WParam, LPARAM p_LParam );
+
+		D_BOOL WindowProc( UINT p_Message, WPARAM p_WParam, LPARAM p_LParam );
 #endif
 		D_BOOL m_FullScreen;
 		Dawn::CanvasDescription m_Canvas;
+
+		EventRouter m_WindowEvents;
+		Dawn::WindowEventListener *m_pWindowEventListener;
+
+		// Append the base g_pWindowTitle with the version
+		wchar_t *m_pWindowTitle;
+
+		D_BOOL m_Running;
 	};
 }
 

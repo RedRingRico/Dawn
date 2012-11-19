@@ -147,6 +147,7 @@
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Time.cpp" />
+    <ClCompile Include="Source\WindowEventListener.cpp" />
     <ClCompile Include="Source\WindowsRendererOGL1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,11 +158,13 @@
     <ClInclude Include="..\Common\Headers\Event.hpp" />
     <ClInclude Include="..\Common\Headers\EventListener.hpp" />
     <ClInclude Include="..\Common\Headers\EventRouter.hpp" />
+    <ClInclude Include="..\Common\Headers\Events.hpp" />
     <ClInclude Include="..\Common\Headers\Game.hpp" />
     <ClInclude Include="..\Common\Headers\Hash.hpp" />
     <ClInclude Include="..\Common\Headers\Renderer.hpp" />
     <ClInclude Include="..\Common\Headers\RenderTypes.hpp" />
     <ClInclude Include="..\Common\Headers\Time.hpp" />
+    <ClInclude Include="..\Common\Headers\WindowEventListener.hpp" />
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp" />
     <ClInclude Include="Headers\HgVersion.h" />
     <ClInclude Include="Headers\Main.hpp" />

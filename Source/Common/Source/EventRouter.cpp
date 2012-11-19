@@ -1,4 +1,5 @@
 #include <EventRouter.hpp>
+#include <Time.hpp>
 
 namespace Dawn
 {
@@ -257,7 +258,7 @@ namespace Dawn
 
 	D_UINT32 EventRouter::Tick( const D_FLOAT32 p_MaxTime )
 	{
-		D_FLOAT32 CurrentTime = 0.0f;//Dawn::GetTimeMs( );
+		D_FLOAT32 CurrentTime = Dawn::GetTimeMS( );
 		D_FLOAT32 MaxTime = ( p_MaxTime == IEEE754_INFINITE32 ) ?
 			IEEE754_INFINITE32 : ( CurrentTime + p_MaxTime );
 		// Use the current queue and empty ther next one
@@ -271,6 +272,14 @@ namespace Dawn
 		while( m_pQueue[ CurrentQueue ].size( ) > 0 )
 		{
 			Event *pEvent = m_pQueue[ CurrentQueue ].front( );
+
+			// As events are sorted by the timestamp + delay, any events after
+			// this one should also not occur until after this event has been
+			// fired
+			if( pEvent->Time( ) + pEvent->TimeDelay( ) > Dawn::GetTimeMS( ) )
+			{
+				break;
+			}
 
 			m_pQueue[ CurrentQueue ].pop_front( );
 
@@ -290,7 +299,7 @@ namespace Dawn
 				}
 			}
 
-			//Nothing is listenning, keep going
+			//Nothing is listening, keep going
 			if( ListenItr == m_EventRegistry.end( ) )
 			{
 				continue;
@@ -308,7 +317,7 @@ namespace Dawn
 				}
 			}
 
-			CurrentTime = 0.0f;//Dawn::GetTimeMs( );
+			CurrentTime = Dawn::GetTimeMS( );
 
 			if( p_MaxTime != IEEE754_INFINITE32 )
 			{

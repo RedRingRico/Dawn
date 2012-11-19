@@ -1,11 +1,15 @@
 #include <Game.hpp>
+#include <Events.hpp>
 #include <WindowsRendererOGL1.hpp>
 #include <Time.hpp>
+#include <HgVersion.h>
+#include <string>
+#include <sstream>
 
 namespace Dawn
 {
-	LRESULT CALLBACK WndProc( HWND p_HWND, UINT p_Message, WPARAM p_WParam,
-		LPARAM p_LParam )
+	LRESULT CALLBACK WinProc( HWND p_HWND, UINT p_Message,
+		WPARAM p_WParam, LPARAM p_LParam )
 	{
 		switch( p_Message )
 		{
@@ -22,16 +26,68 @@ namespace Dawn
 		return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
 	}
 
+	LRESULT CALLBACK Game::WindowProc( HWND p_HWND, UINT p_Message,
+		WPARAM p_WParam, LPARAM p_LParam )
+	{
+		switch( p_Message )
+		{
+		case WM_DESTROY:
+			{
+				break;
+			}
+		default:
+			return DefWindowProc( p_HWND, p_Message, p_WParam, p_LParam );
+		}
+		return 0L;
+	}
+
+	D_BOOL Game::WindowProc( UINT p_Message, WPARAM p_WParam, LPARAM p_LParam )
+	{
+		switch( p_Message )
+		{
+		case WM_DESTROY:
+			{
+				m_Running = D_FALSE;
+				break;
+			}
+		case WM_MOVE:
+		case WM_SIZE:
+			{
+				RECT NewSize;
+				GetWindowRect( m_Window, &NewSize );
+
+				EventWindowResize Resize( NewSize.right, NewSize.bottom );
+				m_WindowEvents.Send( Resize );
+
+				break;
+			}
+		default:
+			break;
+		}
+		return D_TRUE;
+	}
+
 	Game::Game( )
 	{
 		m_Window = D_NULL;
 		m_FullScreen = D_FALSE;
 		m_pRenderer = D_NULL;
 		m_DeviceContext = D_NULL;
+		m_pWindowTitle = D_NULL;
 	}
 
 	Game::~Game( )
 	{
+		if( m_pWindowTitle )
+		{
+			delete m_pWindowTitle;
+		}
+
+		if( m_pWindowEventListener )
+		{
+			delete m_pWindowEventListener;
+		}
+
 		if( m_pRenderer )
 		{
 			delete m_pRenderer;
@@ -66,6 +122,18 @@ namespace Dawn
 		HWND DesktopWindow = D_NULL;
 		HDC DesktopDC = D_NULL;
 
+		// Append the version to the base title
+		std::wstringstream CompleteTitle;
+
+		CompleteTitle << g_pWindowTitle << L" | Ver. " << 0 << L"." << 0 << 
+			L"." << 0 << L"." << HG_REVISION << " [" << HG_CHANGESET << "]";
+
+		m_pWindowTitle = new wchar_t[ CompleteTitle.str( ).size( ) + 1 ];
+
+		wcsncpy( m_pWindowTitle, CompleteTitle.str( ).c_str( ),
+			CompleteTitle.str( ).size( ) );
+		m_pWindowTitle[ CompleteTitle.str( ).size( ) ] = '\0';
+
 		memset( &WindowRect, 0, sizeof( RECT ) );
 
 		WinClass.cbSize = sizeof( WNDCLASSEX );
@@ -76,8 +144,8 @@ namespace Dawn
 		WinClass.hIcon = D_NULL;
 		WinClass.hIconSm = D_NULL;
 		WinClass.hCursor = D_NULL;
-		WinClass.lpfnWndProc = (WNDPROC)WndProc;
-		WinClass.lpszClassName = g_pWindowTitle;
+		WinClass.lpfnWndProc = (WNDPROC)Game::WindowProc;
+		WinClass.lpszClassName = m_pWindowTitle;
 		WinClass.lpszMenuName = D_NULL;
 		WinClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 
@@ -155,7 +223,7 @@ namespace Dawn
 		ReleaseDC( DesktopWindow, DesktopDC );
 		AdjustWindowRectEx( &WindowRect, Style, FALSE, ExStyle );
 
-		m_Window = CreateWindowEx( ExStyle, g_pWindowTitle, g_pWindowTitle,
+		m_Window = CreateWindowEx( ExStyle, m_pWindowTitle, m_pWindowTitle,
 			Style, X, Y, Width, Height, D_NULL, D_NULL,
 			GetModuleHandle( D_NULL ), D_NULL );
 
@@ -187,11 +255,18 @@ namespace Dawn
 		// Start the global timer
 		Dawn::StartTime( );
 
+		// Set up the event listener for window events
+		m_pWindowEventListener = new Dawn::WindowEventListener( m_pRenderer,
+			m_Window );
+
+		m_WindowEvents.Add( m_pWindowEventListener, g_EventTypeWindowResize );
+
 		return D_OK;
 	}
 
 	void Game::Update( const D_FLOAT64 p_ElapsedGameTime )
 	{
+		this->m_WindowEvents.Tick( 16.6667f );
 	}
 
 	void Game::Render( )
