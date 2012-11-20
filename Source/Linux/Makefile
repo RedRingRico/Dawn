@@ -57,17 +57,24 @@ $(TARGETDIR):
 	-mkdir -p $(TARGETDIR)
 
 CPPFILES	:= $(foreach dir,$(SOURCEDIR),$(notdir $(wildcard $(dir)/*.cpp)))
+COMFILES	:= $(foreach dir,../Common/Source,$(notdir $(wildcard $(dir)/*.cpp)))
+
 
 ###############
 OBJS	= $(CPPFILES:.cpp=.o)
+COBJS	= $(COMFILES:.cpp=.o)
 HEADERS	= $(wildcard *.hpp)
 ###############
 
-$(TARGET): $(OBJS) $(TARGETDIR)
+$(TARGET): $(OBJS) $(COBJS) $(TARGETDIR)
 	-mkdir -p $(OBJSDIR)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(SYSLIBS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(COBJS) $(SYSLIBS)
 
-%.o: $(SOURCEDIR)/%.cpp
+%.o: ../Common/Source/%.cpp
+	-mkdir -p $(OBJSDIR)
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
+
+%.o: $(SOURCEDIR)/%.cpp 
 	-mkdir -p $(OBJSDIR)
 	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
 

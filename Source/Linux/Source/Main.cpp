@@ -1,16 +1,16 @@
-#include <LinuxRendererOGL1.hpp>
-#include <X11/Xatom.h>
 #include <iostream>
 #include <Game.hpp>
 
 int main( int p_Argc, char **p_ppArgv )
 {
-	Dawn::Game MyGame;
+	Dawn::Game TheGame;
 
-	MyGame.Initialise( );
-	MyGame.Render( );
+	if( TheGame.Initialise( D_FALSE ) != D_OK )
+	{
+		return D_ERROR;
+	}
 
-	sleep( 5 );
+	TheGame.Execute( );
 
 	return D_OK;
 }

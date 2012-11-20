@@ -41,7 +41,7 @@ namespace Dawn
 
 		D_UINT32 Execute( );
 
-		bool Running( );
+		D_BOOL Running( );
 
 	private:
 		Dawn::Renderer *m_pRenderer;

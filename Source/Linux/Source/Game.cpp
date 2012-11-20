@@ -7,7 +7,7 @@ namespace Dawn
 	{
 		m_pRenderer = D_NULL;
 		m_pConfigFile = D_NULL;
-		m_FullScreen = false;
+		m_FullScreen = D_FALSE;
 	}
 
 	Game::~Game( )
@@ -21,8 +21,9 @@ namespace Dawn
 		XCloseDisplay( m_pDisplay );
 	}
 
-	D_UINT32 Game::Initialise( )
+	D_UINT32 Game::Initialise( const D_BOOL p_FullScreen )
 	{
+		m_FullScreen = p_FullScreen;
 		// TODO
 		// Attempt to create an OpenGL 3 renderer, then fall back to 2,
 		// finally try to get an OpenGL 1 renderer
@@ -90,6 +91,11 @@ namespace Dawn
 
 		m_pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
 
+		return D_OK;
+	}
+
+	D_UINT32 Game::Execute( )
+	{
 		return D_OK;
 	}
 
