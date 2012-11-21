@@ -1,5 +1,6 @@
 #include <Game.hpp>
 #include <LinuxRendererOGL1.hpp>
+#include <Events.hpp>
 
 namespace Dawn
 {
@@ -91,16 +92,57 @@ namespace Dawn
 
 		m_pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
 
+		Dawn::StartTime( );
+
+		m_pWindowEventListener = new Dawn::WindowEventListener( m_pRenderer,
+			m_pDisplay );
+
+		m_WindowEvents.Add( m_pWindowEventListener, g_EventTypeWindowResize );
+
 		return D_OK;
 	}
 
 	D_UINT32 Game::Execute( )
 	{
+		XEvent m_Events;
+		KeySym Key;
+		m_Running = D_TRUE;
+		while( m_Running == D_TRUE )
+		{
+			while( XPending( m_pDisplay ) > 0 )
+			{
+				XNextEvent( m_pDisplay, &m_Events );
+				switch( m_Events.type )
+				{
+					case KeyPress:
+					{
+						Key = XLookupKeysym( &m_Events.xkey, 0 );
+						if( Key == 'q' )
+						{
+							m_Running = D_FALSE;
+						}
+						break;
+					}
+					case ConfigureNotify:
+					{
+						Dawn::EventWindowResize Resize(
+							m_Events.xconfigure.width,
+							m_Events.xconfigure.height );
+						m_WindowEvents.Send( Resize );
+						break;
+					}
+				}
+			}
+
+			this->Update( 0.0f );
+			this->Render( );
+		}
 		return D_OK;
 	}
 
 	void Game::Update( const D_FLOAT64 p_ElapsedGameTime )
 	{
+		this->m_WindowEvents.Tick( 16.6667f );
 	}
 
 	void Game::Render( )

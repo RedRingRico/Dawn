@@ -5,10 +5,13 @@
 
 namespace Dawn
 {
+	// Strings for the event types
 	static char *g_pEventWindowResize = "Event::Window::Resize";
 
+	// The hashes for the strings of the event types
 	static D_UINT32 g_EventWindowResizeID = Dawn::Hash( g_pEventWindowResize );
 
+	// The event types
 	static EventType g_EventTypeWindowResize( g_pEventWindowResize );
 
 	class EventDataWindowResize : public EventData

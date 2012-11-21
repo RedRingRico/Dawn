@@ -14,6 +14,11 @@ namespace Dawn
 			const HWND &p_HWND ) :
 			m_pRenderer( p_pRenderer ), m_HWND( p_HWND )
 		{ }
+#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+		D_EXPLICIT WindowEventListener( Renderer *p_pRenderer,
+			Display *p_pDisplay ) :
+			m_pRenderer( p_pRenderer ), m_pDisplay( p_pDisplay )
+		{ }
 #endif
 		virtual ~WindowEventListener( ) { }
 
@@ -27,6 +32,8 @@ namespace Dawn
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HWND m_HWND;
+#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+		Display *m_pDisplay;
 #endif
 	};
 }
