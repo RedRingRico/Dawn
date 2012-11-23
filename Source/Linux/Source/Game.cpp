@@ -116,6 +116,8 @@ namespace Dawn
 				{
 					case KeyPress:
 					{
+						// Need to create some kind of EventInputKeyDown
+						// and m_InputEvents.Send()
 						Key = XLookupKeysym( &m_Events.xkey, 0 );
 						if( Key == 'q' )
 						{
