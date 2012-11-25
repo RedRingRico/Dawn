@@ -1,8 +1,18 @@
 #include <Windows.h>
+#include <Main.hpp>
+#include <Game.hpp>
 
 int __stdcall WinMain( HINSTANCE p_ThisInst, HINSTANCE p_PrevInst,
 	LPSTR p_CmdLine, int p_CmdShow )
 {
-	MessageBox( NULL, L"Starting Point", L"Message Box", MB_OK );
+	Dawn::Game MyGame;
+
+	if( MyGame.Initialise( D_FALSE ) != D_OK )
+	{
+		return D_ERROR;
+	}
+
+	MyGame.Execute( );
+
 	return 0;
 }

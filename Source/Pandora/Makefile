@@ -14,8 +14,8 @@ UNAME_MACHINE	= $(shell uname -m)
 
 PREFIX = arm-angstrom-linux-gnueabi-
 
-BUILD_PLATFORM	= PANDORA_LINUX
-PLATFORM		= Pandora_Linux
+BUILD_PLATFORM	= PANDORA
+PLATFORM		= Pandora
 
 CC = $(PREFIX)g++
 
@@ -70,7 +70,7 @@ $(TARGET): $(OBJS) $(TARGETDIR)
 
 %.o: $(SOURCEDIR)/%.cpp
 	-mkdir -p $(OBJSDIR)
-	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(PLATFORM) -DSUPPORT_X11 -IHeaders $(SYSIPATH) $< -o $(OBJSDIR)/$@
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 endif
 

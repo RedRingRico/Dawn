@@ -20,12 +20,12 @@ ifeq ($(UNAME), Linux)
 	SYSIPATH	= -I/usr/include/xorg
 	SYSLIBS		= -lX11 -lGL -lrt
 ifeq ($(UNAME_MACHINE), x86_64)
-	BUILD_PLATFORM	= LINUX64_X86
-	PLATFORM		= Linux64_x86
+	BUILD_PLATFORM	= LINUX_X86_64
+	PLATFORM		= Linux_x86_64
 endif
 ifeq ($(UNAME_MACHINE), i686)
-	BUILD_PLATFORM	= LINUX32_X86
-	PLATFORM		= Linux32_x86
+	BUILD_PLATFORM	= LINUX_X86_32
+	PLATFORM		= Linux_x86_32
 endif
 endif
 
@@ -57,19 +57,26 @@ $(TARGETDIR):
 	-mkdir -p $(TARGETDIR)
 
 CPPFILES	:= $(foreach dir,$(SOURCEDIR),$(notdir $(wildcard $(dir)/*.cpp)))
+COMFILES	:= $(foreach dir,../Common/Source,$(notdir $(wildcard $(dir)/*.cpp)))
+
 
 ###############
 OBJS	= $(CPPFILES:.cpp=.o)
+COBJS	= $(COMFILES:.cpp=.o)
 HEADERS	= $(wildcard *.hpp)
 ###############
 
-$(TARGET): $(OBJS) $(TARGETDIR)
+$(TARGET): $(OBJS) $(COBJS) $(TARGETDIR)
 	-mkdir -p $(OBJSDIR)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(SYSLIBS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(COBJS) $(SYSLIBS)
 
-%.o: $(SOURCEDIR)/%.cpp
+%.o: ../Common/Source/%.cpp
 	-mkdir -p $(OBJSDIR)
-	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(PLATFORM) -IHeaders -I$(GLINCPATH) $(SYSIPATH) $< -o $(OBJSDIR)/$@
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
+
+%.o: $(SOURCEDIR)/%.cpp 
+	-mkdir -p $(OBJSDIR)
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 endif
 
