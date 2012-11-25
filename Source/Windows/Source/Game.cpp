@@ -33,6 +33,12 @@ namespace Dawn
 		{
 		case WM_DESTROY:
 			{
+				PostQuitMessage( 0 );
+				break;
+			}
+		case WM_CLOSE:
+			{
+				PostQuitMessage( 0 );
 				break;
 			}
 		default:
@@ -48,6 +54,12 @@ namespace Dawn
 		case WM_DESTROY:
 			{
 				m_Running = D_FALSE;
+				PostQuitMessage( 0 );
+				break;
+			}
+		case WM_CLOSE:
+			{
+				PostQuitMessage( 0 );
 				break;
 			}
 		case WM_MOVE:
@@ -280,7 +292,8 @@ namespace Dawn
 		D_BOOL Quit = D_FALSE;
 
 		MSG Message;
-		while( Quit != D_TRUE )
+		m_Running = D_TRUE;
+		while( Quit == D_FALSE )
 		{
 			if( PeekMessage( &Message, D_NULL, 0, 0, PM_REMOVE ) )
 			{
