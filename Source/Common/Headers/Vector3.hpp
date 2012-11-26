@@ -45,6 +45,14 @@ namespace Dawn
 		Vector3 &operator*=( const D_FLOAT32 p_Scalar );
 		Vector3 &operator/=( const D_FLOAT32 p_Scalar );
 
+		// Accessors
+		D_FLOAT32 operator[ ]( const D_MEMSIZE p_Index ) const
+			{ return m_V[ p_Index ]; }
+
+		// Manipulators
+		D_FLOAT32 &operator[ ]( const D_MEMSIZE p_Index )
+			{ return m_V[ p_Index ]; }
+
 	private:
 		// 0 == X
 		// 1 == Y

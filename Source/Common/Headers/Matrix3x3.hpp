@@ -32,13 +32,13 @@ namespace Dawn
 			const Vector3 &p_Row3 );
 		void GetRows( Vector3 &p_Row1, Vector3 &p_Row2,
 			Vector3 &p_Row3 ) const;
-		Vector3 GetRow( const D_MEMSIZE p_Index ) const;
+		Vector3 &GetRow( const D_MEMSIZE p_Index ) const;
 
 		void SetColumns( const Vector3 &p_Column1, const Vector3 &p_Column2,
 			const Vector3 &p_Column3 );
 		void GetColumns( Vector3 &p_Column1, Vector3 &p_Column2,
 			Vector3 &p_Column3 ) const;
-		void GetColumn( const D_MEMSIZE p_Index ) const;
+		Vector3 &GetColumn( const D_MEMSIZE p_Index ) const;
 
 		// Get the matrix as a contiguous array
 		D_INLINE D_FLOAT32 *GetMatrix( ) const
