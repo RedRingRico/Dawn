@@ -5,6 +5,9 @@
 
 namespace Dawn
 {
+	// Forward-declarations
+	class Matrix3x3;
+
 	class Vector3
 	{
 	public:
@@ -31,7 +34,9 @@ namespace Dawn
 		Vector3 operator+( const Vector3 &p_Other ) const;
 		Vector3 operator-( const Vector3 &p_Other ) const;
 		Vector3 operator*( const Vector3 &p_Other ) const;
+		Vector3 operator*( const Matrix3x3 &p_Matrix ) const;
 		Vector3 operator*( const D_FLOAT32 p_Scalar ) const;
+		
 		Vector3 operator/( const D_FLOAT32 p_Scalar ) const;
 
 		Vector3 &operator+=( const Vector3 &p_Other );

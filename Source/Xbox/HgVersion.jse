@@ -14,8 +14,8 @@ if( String( Rev ).replace( /\n/g, "" ).indexOf( "+" ) != -1 )
 {
 	HgLocalModifications = 1;
 }
-OutFile.WriteLine( "#ifndef __DAWN_HGVERSION_HPP__" );
-OutFile.WriteLine( "#define __DAWN_HGVERSION_HPP__" );
+OutFile.WriteLine( "#ifndef __UPDATER_HGVERSION_HPP__" );
+OutFile.WriteLine( "#define __UPDATER_HGVERSION_HPP__" );
 OutFile.WriteLine( "" );
 OutFile.WriteLine( "#define HG_REVISION				" + HgRevision );
 OutFile.WriteLine( "#define HG_LOCAL_MODIFICATIONS	" + HgLocalModifications );

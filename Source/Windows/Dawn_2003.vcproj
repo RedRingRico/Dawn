@@ -235,6 +235,9 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\Common\Source\Arithmetic.cpp">
+			</File>
+			<File
 				RelativePath="..\Common\Source\EventRouter.cpp">
 			</File>
 			<File
@@ -245,6 +248,9 @@
 			</File>
 			<File
 				RelativePath=".\Source\Main.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Matrix3x3.cpp">
 			</File>
 			<File
 				RelativePath=".\Source\Time.cpp">
@@ -310,6 +316,9 @@
 			</File>
 			<File
 				RelativePath="..\Common\Headers\InputEventListener.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Matrix3x3.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\Renderer.hpp">
