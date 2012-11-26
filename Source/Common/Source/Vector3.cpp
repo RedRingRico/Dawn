@@ -1,5 +1,6 @@
 #include <Arithmetic.hpp>
 #include <Vector3.hpp>
+#include <Matrix3x3.hpp>
 #include <cmath>
 
 namespace Dawn
@@ -137,6 +138,21 @@ namespace Dawn
 	{
 		return Vector3( m_V[ 0 ]*p_Other.m_V[ 0 ], m_V[ 1 ]*p_Other.m_V[ 1 ],
 			m_V[ 2 ]*p_Other.m_V[ 2 ] );
+	}
+
+	Vector3 Vector3::operator*( const Matrix3x3 &p_Matrix ) const
+	{
+		D_FLOAT32 X =	m_V[ 0 ]*p_Matrix[ 0 ] +
+						m_V[ 1 ]*p_Matrix[ 1 ] +
+						m_V[ 2 ]*p_Matrix[ 2 ];
+		D_FLOAT32 Y =	m_V[ 0 ]*p_Matrix[ 3 ] +
+						m_V[ 1 ]*p_Matrix[ 4 ] +
+						m_V[ 2 ]*p_Matrix[ 5 ];
+		D_FLOAT32 Z =	m_V[ 0 ]*p_Matrix[ 6 ] +
+						m_V[ 1 ]*p_Matrix[ 7 ] +
+						m_V[ 2 ]*p_Matrix[ 8 ];
+
+		return Vector3( X, Y, Z );
 	}
 
 	Vector3 Vector3::operator*( const D_FLOAT32 p_Scalar ) const

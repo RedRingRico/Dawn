@@ -9,6 +9,11 @@ namespace Dawn
 	class Vector3;
 	class Quaternion;
 
+	// The matix is stored in column-major form:
+	// 0 3 6
+	// 1 4 7
+	// 2 5 8
+
 	class Matrix3x3
 	{
 	public:
