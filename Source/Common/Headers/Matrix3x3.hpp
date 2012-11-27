@@ -117,14 +117,14 @@ namespace Dawn
 		operator D_FLOAT32*( ){ return m_M; }
 		D_FLOAT32 &operator( )( const D_MEMSIZE p_Row,
 			const D_MEMSIZE p_Column );
-		D_FLOAT32 &operator[ ]( const D_MEMSIZE p_Index )
+		D_FLOAT32 &operator[ ]( const int p_Index )
 			{ return m_M[ p_Index ]; }
 
 		// Accessors
 		operator const D_FLOAT32*( ){ return m_M; }
 		D_FLOAT32 operator( )( const D_MEMSIZE p_Row,
 			const D_MEMSIZE p_Column ) const;
-		D_FLOAT32 operator[ ]( const D_MEMSIZE p_Index ) const
+		D_FLOAT32 operator[ ]( const int p_Index ) const
 			{ return m_M[ p_Index ]; }
 
 		// Unary negation

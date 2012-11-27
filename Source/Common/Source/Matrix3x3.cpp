@@ -358,22 +358,38 @@ namespace Dawn
 
 	void Matrix3x3::Transpose( Matrix3x3 &p_Transpose ) const
 	{
-		p_Transpose.TransposeOf( *this );
+		p_Transpose[ 0 ] = m_M[ 0 ];
+		p_Transpose[ 1 ] = m_M[ 3 ];
+		p_Transpose[ 2 ] = m_M[ 6 ];
+
+		p_Transpose[ 3 ] = m_M[ 1 ];
+		p_Transpose[ 4 ] = m_M[ 4 ];
+		p_Transpose[ 5 ] = m_M[ 7 ];
+
+		p_Transpose[ 6 ] = m_M[ 2 ];
+		p_Transpose[ 7 ] = m_M[ 5 ];
+		p_Transpose[ 8 ] = m_M[ 8 ];
 	}
 
 	Matrix3x3 &Matrix3x3::TransposeOf( const Matrix3x3 &p_Transpose )
 	{
-		m_M[ 0 ] = p_Transpose[ 0 ];
-		m_M[ 1 ] = p_Transpose[ 3 ];
-		m_M[ 2 ] = p_Transpose[ 6 ];
+		p_Transpose.Transpose( *this );
+		
+		return *this;
+	}
 
-		m_M[ 3 ] = p_Transpose[ 1 ];
-		m_M[ 4 ] = p_Transpose[ 4 ];
-		m_M[ 5 ] = p_Transpose[ 7 ];
+	Matrix3x3 &Matrix3x3::Inverse( )
+	{
+		return *this;
+	}
 
-		m_M[ 6 ] = p_Transpose[ 2 ];
-		m_M[ 7 ] = p_Transpose[ 5 ];
-		m_M[ 8 ] = p_Transpose[ 8 ];
+	void Matrix3x3::Inverse( Matrix3x3 &p_Inverse ) const
+	{
+	}
+
+	Matrix3x3 &Matrix3x3::InverseOf( const Matrix3x3 &p_Inverse )
+	{
+		p_Inverse.Inverse( *this );
 
 		return *this;
 	}
