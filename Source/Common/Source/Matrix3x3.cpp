@@ -380,11 +380,50 @@ namespace Dawn
 
 	Matrix3x3 &Matrix3x3::Inverse( )
 	{
+		D_FLOAT32 Determinate = this->Determinate( );
+
+		if( Dawn::IsZero( Determinate ) )
+		{
+			return *this;
+		}
+
+		D_FLOAT32 Factor = 1.0f/Determinate;
+
+		*this = this->Adjoint( );
+
+		m_M[ 0 ] *= Factor;
+		m_M[ 1 ] *= Factor;
+		m_M[ 2 ] *= Factor;
+		m_M[ 3 ] *= Factor;
+		m_M[ 4 ] *= Factor;
+		m_M[ 5 ] *= Factor;
+		m_M[ 6 ] *= Factor;
+		m_M[ 7 ] *= Factor;
+		m_M[ 8 ] *= Factor;
+
 		return *this;
 	}
 
 	void Matrix3x3::Inverse( Matrix3x3 &p_Inverse ) const
 	{
+		D_FLOAT32 Determinate = this->Determinate( );
+
+		if( Dawn::IsZero( Determinate ) )
+		{
+			return;
+		}
+
+		D_FLOAT32 Factor = 1.0f/Determinate;
+
+		p_Inverse[ 0 ] *= Factor;
+		p_Inverse[ 1 ] *= Factor;
+		p_Inverse[ 2 ] *= Factor;
+		p_Inverse[ 3 ] *= Factor;
+		p_Inverse[ 4 ] *= Factor;
+		p_Inverse[ 5 ] *= Factor;
+		p_Inverse[ 6 ] *= Factor;
+		p_Inverse[ 7 ] *= Factor;
+		p_Inverse[ 8 ] *= Factor;
 	}
 
 	Matrix3x3 &Matrix3x3::InverseOf( const Matrix3x3 &p_Inverse )
@@ -392,5 +431,37 @@ namespace Dawn
 		p_Inverse.Inverse( *this );
 
 		return *this;
+	}
+
+	D_FLOAT32 Matrix3x3::Determinate( ) const
+	{
+		return ( m_M[ 0 ]*( ( m_M[ 4 ]*m_M[ 8 ] ) - ( m_M[ 5 ]*m_M[ 7 ] ) ) +
+			m_M[ 3 ]*( ( m_M[ 7 ]*m_M[ 2 ] ) - ( m_M[ 1 ]*m_M[ 8 ] ) ) +
+			m_M[ 6 ]*( ( m_M[ 1 ]*m_M[ 5 ] ) - ( m_M[ 2 ]*m_M[ 4 ] ) ) );
+	}
+
+	Matrix3x3 Matrix3x3::Adjoint( ) const
+	{
+		Matrix3x3 Adjoint;
+
+		// Get the transposed co-efficients
+		Adjoint[ 0 ] = ( m_M[ 4 ]*m_M[ 8 ] ) - ( m_M[ 7 ]*m_M[ 5 ] );
+		Adjoint[ 1 ] = ( m_M[ 2 ]*m_M[ 7 ] ) - ( m_M[ 1 ]*m_M[ 8 ] );
+		Adjoint[ 2 ] = ( m_M[ 1 ]*m_M[ 5 ] ) - ( m_M[ 2 ]*m_M[ 4 ] );
+
+		Adjoint[ 3 ] = ( m_M[ 5 ]*m_M[ 6 ] ) - ( m_M[ 3 ]*m_M[ 8 ] );
+		Adjoint[ 4 ] = ( m_M[ 0 ]*m_M[ 8 ] ) - ( m_M[ 2 ]*m_M[ 6 ] );
+		Adjoint[ 5 ] = ( m_M[ 0 ]*m_M[ 5 ] ) - ( m_M[ 3 ]*m_M[ 2 ] );
+
+		Adjoint[ 6 ] = ( m_M[ 3 ]*m_M[ 7 ] ) - ( m_M[ 6 ]*m_M[ 4 ] );
+		Adjoint[ 7 ] = ( m_M[ 0 ]*m_M[ 7 ] ) - ( m_M[ 6 ]*m_M[ 1 ] );
+		Adjoint[ 8 ] = ( m_M[ 0 ]*m_M[ 4 ] ) - ( m_M[ 3 ]*m_M[ 1 ] );
+
+		return Adjoint;
+	}
+
+	D_FLOAT32 Matrix3x3::Trace( ) const
+	{
+		return ( m_M[ 0 ] + m_M[ 4 ] + m_M[ 8 ] );
 	}
 }
