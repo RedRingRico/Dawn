@@ -68,9 +68,9 @@ namespace Dawn
 		Matrix3x3 &RotateZ( const D_FLOAT32 p_Z );
 
 		// -- SCALING OPERATIONS -- //
-		// Uniformly scale
-		Matrix3x3 &Scale( const Vector3 p_Scale );
 		// Scale on a per-axis basis as defined via a Vector3
+		Matrix3x3 &Scale( const Vector3 &p_Scale );
+		// Uniformly scale
 		Matrix3x3 &Scale( const D_FLOAT32 p_Scale );
 		// Scale each axis individually
 		Matrix3x3 &ScaleX( const D_FLOAT32 p_Scale );
