@@ -415,6 +415,8 @@ namespace Dawn
 
 		D_FLOAT32 Factor = 1.0f/Determinate;
 
+		p_Inverse = this->Adjoint( );
+
 		p_Inverse[ 0 ] *= Factor;
 		p_Inverse[ 1 ] *= Factor;
 		p_Inverse[ 2 ] *= Factor;
