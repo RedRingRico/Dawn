@@ -466,4 +466,243 @@ namespace Dawn
 	{
 		return ( m_M[ 0 ] + m_M[ 4 ] + m_M[ 8 ] );
 	}
+
+	D_BOOL Matrix3x3::operator==( const Matrix3x3 &p_Other ) const
+	{
+		for( D_MEMSIZE i = 0; i < 9; ++i )
+		{
+			if( Dawn::Equal( m_M[ i ], p_Other[ i ] ) == D_FALSE )
+			{
+				return D_FALSE;
+			}
+		}
+
+		return D_TRUE;
+	}
+
+	D_BOOL Matrix3x3::operator!=( const Matrix3x3 &p_Other ) const
+	{
+		for( D_MEMSIZE i = 0; i < 9; ++i )
+		{
+			if( Dawn::Equal( m_M[ i ], p_Other[ i ] ) == D_TRUE )
+			{
+				return D_TRUE;
+			}
+		}
+		return D_FALSE;
+	}
+
+	Matrix3x3 Matrix3x3::operator+( const Matrix3x3 &p_Other ) const
+	{
+		Matrix3x3 Matrix;
+
+		Matrix[ 0 ] = m_M[ 0 ] + p_Other[ 0 ];
+		Matrix[ 1 ] = m_M[ 1 ] + p_Other[ 1 ];
+		Matrix[ 2 ] = m_M[ 2 ] + p_Other[ 2 ];
+		Matrix[ 3 ] = m_M[ 3 ] + p_Other[ 3 ];
+		Matrix[ 4 ] = m_M[ 4 ] + p_Other[ 4 ];
+		Matrix[ 5 ] = m_M[ 5 ] + p_Other[ 5 ];
+		Matrix[ 6 ] = m_M[ 6 ] + p_Other[ 6 ];
+		Matrix[ 7 ] = m_M[ 7 ] + p_Other[ 7 ];
+		Matrix[ 8 ] = m_M[ 8 ] + p_Other[ 8 ];
+
+		return Matrix;
+	}
+
+	Matrix3x3 Matrix3x3::operator-( const Matrix3x3 &p_Other ) const
+	{
+		Matrix3x3 Matrix;
+
+		Matrix[ 0 ] = m_M[ 0 ] - p_Other[ 0 ];
+		Matrix[ 1 ] = m_M[ 1 ] - p_Other[ 1 ];
+		Matrix[ 2 ] = m_M[ 2 ] - p_Other[ 2 ];
+		Matrix[ 3 ] = m_M[ 3 ] - p_Other[ 3 ];
+		Matrix[ 4 ] = m_M[ 4 ] - p_Other[ 4 ];
+		Matrix[ 5 ] = m_M[ 5 ] - p_Other[ 5 ];
+		Matrix[ 6 ] = m_M[ 6 ] - p_Other[ 6 ];
+		Matrix[ 7 ] = m_M[ 7 ] - p_Other[ 7 ];
+		Matrix[ 8 ] = m_M[ 8 ] - p_Other[ 8 ];
+
+		return Matrix;
+	}
+
+	Matrix3x3 Matrix3x3::operator*( const Matrix3x3 &p_Other ) const
+	{
+		Matrix3x3 Matrix;
+
+        Matrix[ 0 ] =	m_M[ 0 ]*p_Other[ 0 ] +
+						m_M[ 3 ]*p_Other[ 1 ] +
+						m_M[ 6 ]*p_Other[ 2 ];
+		Matrix[ 1 ] =	m_M[ 1 ]*p_Other[ 0 ] +
+						m_M[ 4 ]*p_Other[ 1 ] +
+						m_M[ 7 ]*p_Other[ 2 ];
+		Matrix[ 2 ]	=	m_M[ 2 ]*p_Other[ 0 ] +
+						m_M[ 5 ]*p_Other[ 1 ] +
+						m_M[ 8 ]*p_Other[ 2 ];
+
+		Matrix[ 3 ] =	m_M[ 0 ]*p_Other[ 3 ] +
+						m_M[ 3 ]*p_Other[ 4 ] +
+						m_M[ 6 ]*p_Other[ 5 ];
+		Matrix[ 4 ] =	m_M[ 1 ]*p_Other[ 3 ] +
+						m_M[ 4 ]*p_Other[ 4 ] +
+						m_M[ 7 ]*p_Other[ 5 ];
+		Matrix[ 5 ] =	m_M[ 2 ]*p_Other[ 3 ] +
+						m_M[ 5 ]*p_Other[ 4 ] +
+						m_M[ 8 ]*p_Other[ 5 ];
+
+		Matrix[ 6 ] =	m_M[ 0 ]*p_Other[ 6 ] +
+						m_M[ 3 ]*p_Other[ 7 ] +
+						m_M[ 6 ]*p_Other[ 8 ];
+		Matrix[ 7 ] =	m_M[ 1 ]*p_Other[ 6 ] +
+						m_M[ 4 ]*p_Other[ 7 ] +
+						m_M[ 7 ]*p_Other[ 8 ];
+		Matrix[ 8 ] =	m_M[ 2 ]*p_Other[ 6 ] +
+						m_M[ 5 ]*p_Other[ 7 ] +
+						m_M[ 8 ]*p_Other[ 8 ];
+
+		return Matrix;
+	}
+
+	Matrix3x3 Matrix3x3::operator*( const D_FLOAT32 p_Scalar ) const
+	{
+		Matrix3x3 Matrix;
+	
+		Matrix[ 0 ] = m_M[ 0 ]*p_Scalar;
+		Matrix[ 1 ] = m_M[ 1 ]*p_Scalar;
+		Matrix[ 2 ] = m_M[ 2 ]*p_Scalar;
+		Matrix[ 3 ] = m_M[ 3 ]*p_Scalar;
+		Matrix[ 4 ] = m_M[ 4 ]*p_Scalar;
+		Matrix[ 5 ] = m_M[ 5 ]*p_Scalar;
+		Matrix[ 6 ] = m_M[ 6 ]*p_Scalar;
+		Matrix[ 7 ] = m_M[ 7 ]*p_Scalar;
+		Matrix[ 8 ] = m_M[ 8 ]*p_Scalar;
+
+		return Matrix;
+	}
+
+	Vector3 Matrix3x3::operator*( const Vector3 &p_Vec ) const
+	{
+		return Vector3( (	m_M[ 0 ]*p_Vec[ 0 ] +
+							m_M[ 3 ]*p_Vec[ 1 ] +
+							m_M[ 6 ]*p_Vec[ 2 ] ),
+						(	m_M[ 1 ]*p_Vec[ 0 ] +
+							m_M[ 4 ]*p_Vec[ 1 ] +
+							m_M[ 7 ]*p_Vec[ 2 ] ),
+						(	m_M[ 2 ]*p_Vec[ 0 ] +
+							m_M[ 5 ]*p_Vec[ 1 ] +
+							m_M[ 8 ]*p_Vec[ 2 ] ) );
+	}
+
+	Matrix3x3 &Matrix3x3::operator+=( const Matrix3x3 &p_Other )
+	{
+		m_M[ 0 ] += p_Other[ 0 ];
+		m_M[ 1 ] += p_Other[ 1 ];
+		m_M[ 2 ] += p_Other[ 2 ];
+		m_M[ 3 ] += p_Other[ 3 ];
+		m_M[ 4 ] += p_Other[ 4 ];
+		m_M[ 5 ] += p_Other[ 5 ];
+		m_M[ 6 ] += p_Other[ 6 ];
+		m_M[ 7 ] += p_Other[ 7 ];
+		m_M[ 8 ] += p_Other[ 8 ];
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::operator-=( const Matrix3x3 &p_Other )
+	{
+		m_M[ 0 ] -= p_Other[ 0 ];
+		m_M[ 1 ] -= p_Other[ 1 ];
+		m_M[ 2 ] -= p_Other[ 2 ];
+		m_M[ 3 ] -= p_Other[ 3 ];
+		m_M[ 4 ] -= p_Other[ 4 ];
+		m_M[ 5 ] -= p_Other[ 5 ];
+		m_M[ 6 ] -= p_Other[ 6 ];
+		m_M[ 7 ] -= p_Other[ 7 ];
+		m_M[ 8 ] -= p_Other[ 8 ];
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::operator*=( const Matrix3x3 &p_Other )
+	{
+		Matrix3x3 Copy;
+		for( D_MEMSIZE i = 0; i < 9; ++i )
+		{
+			Copy[ i ] = m_M[ i ];
+		}
+
+		m_M[ 0 ] =	Copy[ 0 ]*p_Other[ 0 ] +
+					Copy[ 3 ]*p_Other[ 1 ] +
+					Copy[ 6 ]*p_Other[ 2 ];
+		m_M[ 1 ] =	Copy[ 1 ]*p_Other[ 0 ] +
+					Copy[ 4 ]*p_Other[ 1 ] +
+					Copy[ 7 ]*p_Other[ 2 ];
+		m_M[ 2 ] =	Copy[ 2 ]*p_Other[ 0 ] +
+					Copy[ 5 ]*p_Other[ 1 ] +
+					Copy[ 8 ]*p_Other[ 2 ];
+
+		m_M[ 3 ] =	Copy[ 0 ]*p_Other[ 3 ] +
+					Copy[ 3 ]*p_Other[ 4 ] +
+					Copy[ 6 ]*p_Other[ 5 ];
+		m_M[ 4 ] =	Copy[ 1 ]*p_Other[ 3 ] +
+					Copy[ 4 ]*p_Other[ 4 ] +
+					Copy[ 7 ]*p_Other[ 5 ];
+		m_M[ 5 ] =	Copy[ 2 ]*p_Other[ 3 ] +
+					Copy[ 5 ]*p_Other[ 4 ] +
+					Copy[ 8 ]*p_Other[ 5 ];
+
+		m_M[ 6 ] =	Copy[ 0 ]*p_Other[ 6 ] +
+					Copy[ 3 ]*p_Other[ 7 ] +
+					Copy[ 6 ]*p_Other[ 8 ];
+		m_M[ 7 ] =	Copy[ 1 ]*p_Other[ 6 ] +
+					Copy[ 4 ]*p_Other[ 7 ] +
+					Copy[ 7 ]*p_Other[ 8 ];
+		m_M[ 8 ] =	Copy[ 2 ]*p_Other[ 6 ] +
+					Copy[ 5 ]*p_Other[ 7 ] +
+					Copy[ 8 ]*p_Other[ 8 ];
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::operator*=( const D_FLOAT32 p_Scalar )
+	{
+		m_M[ 0 ] *= p_Scalar;
+		m_M[ 1 ] *= p_Scalar;
+		m_M[ 2 ] *= p_Scalar;
+		m_M[ 3 ] *= p_Scalar;
+		m_M[ 4 ] *= p_Scalar;
+		m_M[ 5 ] *= p_Scalar;
+		m_M[ 6 ] *= p_Scalar;
+		m_M[ 7 ] *= p_Scalar;
+		m_M[ 8 ] *= p_Scalar;
+
+		return *this;
+	}
+
+	D_FLOAT32 &Matrix3x3::operator( )( const D_MEMSIZE p_Row,
+		const D_MEMSIZE p_Column )
+	{
+		return ( m_M[ p_Row+( p_Column*3 ) ] );
+	}
+
+	D_FLOAT32 Matrix3x3::operator( )( const D_MEMSIZE p_Row,
+		const D_MEMSIZE p_Column ) const
+	{
+		return ( m_M[ p_Row+( p_Column*3 ) ] );
+	}
+
+	Matrix3x3 &Matrix3x3::operator-( )
+	{
+		m_M[ 0 ] = -m_M[ 0 ];
+		m_M[ 1 ] = -m_M[ 1 ];
+		m_M[ 2 ] = -m_M[ 2 ];
+		m_M[ 3 ] = -m_M[ 3 ];
+		m_M[ 4 ] = -m_M[ 4 ];
+		m_M[ 5 ] = -m_M[ 5 ];
+		m_M[ 6 ] = -m_M[ 6 ];
+		m_M[ 7 ] = -m_M[ 7 ];
+		m_M[ 8 ] = -m_M[ 8 ];
+
+		return *this;
+	}
 }

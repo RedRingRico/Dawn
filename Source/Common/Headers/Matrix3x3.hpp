@@ -117,6 +117,8 @@ namespace Dawn
 		operator D_FLOAT32*( ){ return m_M; }
 		D_FLOAT32 &operator( )( const D_MEMSIZE p_Row,
 			const D_MEMSIZE p_Column );
+		D_FLOAT32 &operator[ ]( const D_MEMSIZE p_Index )
+			{ return m_M[ p_Index ]; }
 		D_FLOAT32 &operator[ ]( const int p_Index )
 			{ return m_M[ p_Index ]; }
 
@@ -126,9 +128,11 @@ namespace Dawn
 			const D_MEMSIZE p_Column ) const;
 		D_FLOAT32 operator[ ]( const int p_Index ) const
 			{ return m_M[ p_Index ]; }
+		D_FLOAT32 operator[ ]( const D_MEMSIZE p_Index ) const
+			{ return m_M[ p_Index ]; }
 
 		// Unary negation
-		Matrix3x3 operator-( );
+		Matrix3x3 &operator-( );
 
 	private:
 		D_FLOAT32 m_M[ 9 ];
