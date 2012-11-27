@@ -300,7 +300,31 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\Common\Source\Arithmetic.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\EventRouter.cpp">
+			</File>
+			<File
+				RelativePath=".\Source\Game.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Hash.cpp">
+			</File>
+			<File
 				RelativePath=".\Source\Main.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Matrix3x3.cpp">
+			</File>
+			<File
+				RelativePath=".\Source\Time.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Vector3.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\WindowEventRouter.cpp">
 			</File>
 			<File
 				RelativePath=".\Source\XboxRenderer.cpp">
@@ -310,6 +334,9 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\Common\Headers\Arithmetic.hpp">
+			</File>
 			<File
 				RelativePath="..\Common\Headers\CanvasDescription.hpp">
 			</File>
@@ -326,10 +353,49 @@
 				RelativePath=".\Headers\DataTypes_Xbox.hpp">
 			</File>
 			<File
+				RelativePath="..\Common\Headers\Event.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\EventListener.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\EventRouter.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Events.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Game.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Hash.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Input.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\InputEventListener.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Matrix3x3.hpp">
+			</File>
+			<File
 				RelativePath="..\Common\Headers\Renderer.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\RenderTypes.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Time.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Vector3.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\WindowEventListener.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\WindowEventRouter.hpp">
 			</File>
 			<File
 				RelativePath=".\Headers\XboxRenderer.hpp">

@@ -1,6 +1,7 @@
 #include <Matrix3x3.hpp>
 #include <Vector3.hpp>
 #include <Arithmetic.hpp>
+#include <cmath>
 
 namespace Dawn
 {
@@ -132,5 +133,36 @@ namespace Dawn
 	Vector3 &Matrix3x3::GetColumn( const D_MEMSIZE p_Index ) const
 	{
 		return Vector3( m_M[ p_Index ], m_M[ p_Index+1 ], m_M[ p_Index+2 ] );
+	}
+
+	Matrix3x3 &Matrix3x3::Rotate( const Vector3 &p_Axis,
+		const D_FLOAT32 p_Angle )
+	{
+		D_FLOAT32 Sine = 0.0f, Cosine = 0.0f;
+
+		Sine = sinf( p_Angle );
+		Cosine = cosf( p_Angle );
+
+		D_FLOAT32 Tangent = ( 1.0f - Cosine );
+
+		m_M[ 0 ] = ( Tangent*( p_Axis[ 0 ]*p_Axis[ 0 ] ) ) + Cosine;
+		m_M[ 1 ] = ( Tangent*p_Axis[ 0 ]*p_Axis[ 1 ] ) + ( Sine*p_Axis[ 2 ] );
+		m_M[ 2 ] = ( Tangent*p_Axis[ 0 ]*p_Axis[ 2 ] ) + ( Sine*p_Axis[ 1 ] );
+
+		m_M[ 3 ] = ( Tangent*p_Axis[ 0 ]*p_Axis[ 1 ] ) + ( Sine*p_Axis[ 2 ] );
+		m_M[ 4 ] = ( Tangent*( p_Axis[ 1 ]*p_Axis[ 1 ] ) ) + Cosine;
+		m_M[ 5 ] = ( Tangent*p_Axis[ 1 ]*p_Axis[ 2 ] ) + ( Sine*p_Axis[ 0 ] );
+
+		m_M[ 6 ] = ( Tangent*p_Axis[ 0 ]*p_Axis[ 1 ] ) - ( Sine*p_Axis[ 1 ] );
+		m_M[ 7 ] = ( Tangent*p_Axis[ 1 ]*p_Axis[ 0 ] ) - ( Sine*p_Axis[ 0 ] );
+		m_M[ 8 ] = ( Tangent*( p_Axis[ 2 ]*p_Axis[ 2 ] ) ) + Cosine;
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::Rotate( const D_FLOAT32 p_Roll, const D_FLOAT32 p_Pitch,
+		const D_FLOAT32 p_Yaw )
+	{
+		return *this;
 	}
 }

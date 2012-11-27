@@ -57,7 +57,7 @@ namespace Dawn
 		// Quaternion rotation
 		Matrix3x3 &Rotate( const Quaternion &p_Quaternion );
 		// Axis-angle rotation
-		Matrix3x3 &Rotate( const Vector3 &p_Axis, D_FLOAT32 p_Angle );
+		Matrix3x3 &Rotate( const Vector3 &p_Axis, const D_FLOAT32 p_Angle );
 		// Euler rotation
 		Matrix3x3 &Rotate( const D_FLOAT32 p_Roll, const D_FLOAT32 p_Pitch,
 			const D_FLOAT32 p_Yaw );
