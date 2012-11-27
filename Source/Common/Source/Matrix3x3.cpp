@@ -163,6 +163,94 @@ namespace Dawn
 	Matrix3x3 &Matrix3x3::Rotate( const D_FLOAT32 p_Roll, const D_FLOAT32 p_Pitch,
 		const D_FLOAT32 p_Yaw )
 	{
+		D_FLOAT32 SX = 0.0f, SY = 0.0f, SZ = 0.0f;
+		D_FLOAT32 CX = 0.0f, CY = 0.0f, CZ = 0.0f;
+
+		SX = sinf( p_Pitch );
+		CX = cosf( p_Pitch );
+		SY = sinf( p_Yaw );
+		CY = cosf( p_Yaw );
+		SZ = sinf( p_Roll );
+		CZ = cosf( p_Roll );
+
+		m_M[ 0 ] = CY*CZ;
+		m_M[ 1 ] = ( SX*SY*CZ ) + ( CX*SZ );
+		m_M[ 2 ] = -( CX*SY*CZ ) + ( SX*SZ );
+
+		m_M[ 3 ] = -( CY*SZ );
+		m_M[ 4 ] = -( SX*SY*SZ ) + ( CX*CZ );
+		m_M[ 5 ] = ( CX*SY*SZ ) + ( SX*SZ );
+
+		m_M[ 6 ] = SY;
+		m_M[ 7 ] = -( SX*CY );
+		m_M[ 8 ] = CX*CY;
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::RotateX( const D_FLOAT32 p_X )
+	{
+		D_FLOAT32 Sine = 0.0f, Cosine = 0.0f;
+
+		Sine = sinf( p_X );
+		Cosine = cosf( p_X );
+
+		m_M[ 0 ] = 1.0f;
+		m_M[ 1 ] = 0.0f;
+		m_M[ 2 ] = 0.0f;
+
+		m_M[ 3 ] = 0.0f;
+		m_M[ 4 ] = Cosine;
+		m_M[ 5 ] = -Sine;
+
+		m_M[ 6 ] = 0.0f;
+		m_M[ 7 ] = Sine;
+		m_M[ 8 ] = Cosine;
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::RotateY( const D_FLOAT32 p_Y )
+	{
+		D_FLOAT32 Sine = 0.0f, Cosine = 0.0f;
+
+		Sine = sinf( p_Y );
+		Cosine = cosf( p_Y );
+
+		m_M[ 0 ] = Cosine;
+		m_M[ 1 ] = 0.0f;
+		m_M[ 2 ] = -Sine;
+
+		m_M[ 3 ] = 0.0f;
+		m_M[ 4 ] = 1.0f;
+		m_M[ 5 ] = 0.0f;
+
+		m_M[ 6 ] = Sine;
+		m_M[ 7 ] = 0.0f;
+		m_M[ 8 ] = Cosine;
+
+		return *this;
+	}
+
+	Matrix3x3 &Matrix3x3::RotateZ( const D_FLOAT32 p_Z )
+	{
+		D_FLOAT32 Sine = 0.0f, Cosine = 0.0f;
+
+		Sine = sinf( p_Z );
+		Cosine = cosf( p_Z );
+
+		m_M[ 0 ] = Cosine;
+		m_M[ 1 ] = Sine;
+		m_M[ 2 ] = 0.0f;
+
+		m_M[ 3 ] = -Sine;
+		m_M[ 4 ] = Cosine;
+		m_M[ 5 ] = 0.0f;
+
+		m_M[ 6 ] = 0.0f;
+		m_M[ 7 ] = 0.0f;
+		m_M[ 8 ] = 1.0f;
+
 		return *this;
 	}
 }

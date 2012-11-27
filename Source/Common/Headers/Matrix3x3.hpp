@@ -63,9 +63,9 @@ namespace Dawn
 			const D_FLOAT32 p_Yaw );
 
 		// Rotate on an individual axis
-		Matrix3x3 &RotateX( );
-		Matrix3x3 &RotateY( );
-		Matrix3x3 &RotateZ( );
+		Matrix3x3 &RotateX( const D_FLOAT32 p_X );
+		Matrix3x3 &RotateY( const D_FLOAT32 p_Y );
+		Matrix3x3 &RotateZ( const D_FLOAT32 p_Z );
 
 		// -- SCALING OPERATIONS -- //
 		// Uniformly scale
