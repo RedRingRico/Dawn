@@ -46,7 +46,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -103,7 +104,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -161,7 +163,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -218,7 +221,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -369,6 +373,9 @@
 			</File>
 			<File
 				RelativePath="..\Common\Headers\Hash.hpp">
+			</File>
+			<File
+				RelativePath=".\Headers\HgVersion.h">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\Input.hpp">
