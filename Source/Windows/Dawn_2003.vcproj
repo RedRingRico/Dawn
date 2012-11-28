@@ -70,7 +70,7 @@
 			IntermediateDirectory="../../Obj/Windows/VS2003/Release/"
 			ConfigurationType="1"
 			CharacterSet="1"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="TRUE"
