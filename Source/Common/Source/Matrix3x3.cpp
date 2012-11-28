@@ -91,7 +91,7 @@ namespace Dawn
 		p_Row3[ 2 ] = m_M[ 8 ];
 	}
 
-	Vector3 &Matrix3x3::GetRow( const D_MEMSIZE p_Index ) const
+	Vector3 Matrix3x3::GetRow( const D_MEMSIZE p_Index ) const
 	{
 		return Vector3( m_M[ ( p_Index*3 ) ],
 						m_M[ ( p_Index*3 )+1 ],
@@ -130,7 +130,7 @@ namespace Dawn
 		p_Column3[ 2 ] = m_M[ 8 ];
 	}
 
-	Vector3 &Matrix3x3::GetColumn( const D_MEMSIZE p_Index ) const
+	Vector3 Matrix3x3::GetColumn( const D_MEMSIZE p_Index ) const
 	{
 		return Vector3( m_M[ p_Index ], m_M[ p_Index+1 ], m_M[ p_Index+2 ] );
 	}
