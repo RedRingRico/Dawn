@@ -102,7 +102,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -156,7 +157,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -210,7 +212,8 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				CommandLine="cscript ./HgVersion.jse"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -242,6 +245,9 @@
 			</File>
 			<File
 				RelativePath=".\Source\Game.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Ogl\GLVertexCache.cpp">
 			</File>
 			<File
 				RelativePath="..\Common\Source\Hash.cpp">
@@ -306,6 +312,9 @@
 				RelativePath="..\Common\Headers\Game.hpp">
 			</File>
 			<File
+				RelativePath="..\Common\Headers\Ogl\GLVertexCache.hpp">
+			</File>
+			<File
 				RelativePath="..\Common\Headers\Hash.hpp">
 			</File>
 			<File
@@ -337,6 +346,9 @@
 			</File>
 			<File
 				RelativePath=".\Headers\Version.h">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\VertexCache.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\WindowEventListener.hpp">

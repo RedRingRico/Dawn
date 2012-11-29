@@ -32,6 +32,7 @@ typedef double		D_FLOAT64;
 
 // Return codes
 const D_UINT32 D_OK		= 0x00000000;
+const D_ERROR_GRAPHICS	= 0x00000001;
 const D_UINT32 D_ERROR	= 0xFFFFFFFF;
 const D_UINT32 D_FAIL	= D_ERROR;
 
