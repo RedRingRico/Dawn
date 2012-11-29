@@ -146,6 +146,7 @@
     <ClCompile Include="..\Common\Source\EventRouter.cpp" />
     <ClCompile Include="..\Common\Source\Hash.cpp" />
     <ClCompile Include="..\Common\Source\Matrix3x3.cpp" />
+    <ClCompile Include="..\Common\Source\OGL\GLVertexCache.cpp" />
     <ClCompile Include="..\Common\Source\Vector3.cpp" />
     <ClCompile Include="..\Common\Source\WindowEventRouter.cpp" />
     <ClCompile Include="Source\Game.cpp" />
@@ -169,10 +170,12 @@
     <ClInclude Include="..\Common\Headers\Input.hpp" />
     <ClInclude Include="..\Common\Headers\InputEventListener.hpp" />
     <ClInclude Include="..\Common\Headers\Matrix3x3.hpp" />
+    <ClInclude Include="..\Common\Headers\OGL\GLVertexCache.hpp" />
     <ClInclude Include="..\Common\Headers\Renderer.hpp" />
     <ClInclude Include="..\Common\Headers\RenderTypes.hpp" />
     <ClInclude Include="..\Common\Headers\Time.hpp" />
     <ClInclude Include="..\Common\Headers\Vector3.hpp" />
+    <ClInclude Include="..\Common\Headers\VertexCache.hpp" />
     <ClInclude Include="..\Common\Headers\WindowEventListener.hpp" />
     <ClInclude Include="..\Common\Headers\WindowEventRouter.hpp" />
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp" />
