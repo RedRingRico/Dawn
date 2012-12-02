@@ -37,8 +37,8 @@ printf "_HGVERSION_HPP__\n\n" >> $HGHEADER
 
 printf "#define HG_REVISION            $HGREVNOMOD\n" >> $HGHEADER
 printf "#define HG_LOCAL_MODIFICATIONS $HGLOCALMODIFICATIONS\n" >> $HGHEADER
-printf "#define HG_CHANGESET           $HGCHANGESET\n" >> $HGHEADER
-printf "#define HG_CHANGESET_SHORT     $HGCHANGESETSHORT\n" >> $HGHEADER
+printf "#define HG_CHANGESET           \"$HGCHANGESET\"\n" >> $HGHEADER
+printf "#define HG_CHANGESET_SHORT     \"$HGCHANGESETSHORT\"\n" >> $HGHEADER
 
 printf "\n#endif\n\n" >> $HGHEADER
 

@@ -1,7 +1,9 @@
 #include <iostream>
 #include <OGLES2/GLES2Extender.hpp>
-
 #include <PandoraRenderer.hpp>
+#include <Game.hpp>
+#include <string>
+#include <sstream>
 
 int main( int p_Argc, char **p_ppArgv )
 {
@@ -29,6 +31,11 @@ int main( int p_Argc, char **p_ppArgv )
 
 	XMapWindow( pDisplay, XWindow );
 	XMapRaised( pDisplay, XWindow );
+	std::stringstream CompleteTitle;
+
+	CompleteTitle << g_pWindowTitle << " | Ver. " << 0 << "." << 0 << "." << 0
+		<< "." << HG_REVISION << " [" << HG_CHANGESET << "]";
+	XStoreName( pDisplay, XWindow, CompleteTitle.str( ).c_str( ) );
 
 	Dawn::CanvasDescription Canvas;
 
