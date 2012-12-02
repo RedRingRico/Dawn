@@ -59,16 +59,22 @@ $(OBJSDIR):
 
 CPPFILES	:= $(foreach dir,$(SOURCEDIR),$(notdir $(wildcard $(dir)/*.cpp)))
 COMFILES	:= $(foreach dir,../Common/Source,$(notdir $(wildcard $(dir)/*.cpp)))
+GLESFILES	:= $(foreach dir,../Common/Source/OGLES2,$(notdir $(wildcard $(dir)/*.cpp)))
 
 ###############
-OBJS	= $(CPPFILES:.cpp=.o)
-COBJS	= $(COMFILES:.cpp=.o)
-HEADERS	= $(wildcard *.hpp)
+OBJS		= $(CPPFILES:.cpp=.o)
+COBJS		= $(COMFILES:.cpp=.o)
+GLESOBJS	= $(GLESFILES:.cpp=.o)
+HEADERS		= $(wildcard *.hpp)
 ###############
 
-$(TARGET): $(OBJS) $(COBJS) $(TARGETDIR)
+$(TARGET): $(OBJS) $(GLESOBJS) $(COBJS) $(TARGETDIR)
 	-mkdir -p $(OBJSDIR)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(COBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(GLESOBJS) $(COBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
+
+%.o: ../Common/Source/OGLES2/%.cpp
+	-mkdir -p $(OBJSDIR)
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 %.o: ../Common/Source/%.cpp
 	-mkdir -p $(OBJSDIR)

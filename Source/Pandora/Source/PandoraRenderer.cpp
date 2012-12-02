@@ -138,6 +138,11 @@ namespace Dawn
 			return D_ERROR;
 		}
 
+		if( m_GLES2Extender.Initialise( ) != D_OK )
+		{
+			return D_ERROR;
+		}
+
 		glViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
 
 		return D_OK;

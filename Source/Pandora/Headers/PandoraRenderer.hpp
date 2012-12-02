@@ -35,6 +35,8 @@ namespace Dawn
 		EGLDisplay	m_EGLDisplay;
 		EGLSurface	m_EGLSurface;
 		EGLContext	m_EGLContext;
+
+		GLES2Extender m_GLES2Extender;
 	};
 }
 

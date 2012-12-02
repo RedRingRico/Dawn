@@ -25,6 +25,7 @@
 #include <EGL/eglext.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <OGLES2/GLES2Extender.hpp>
 #endif
 
 #include <CanvasDescription.hpp>
