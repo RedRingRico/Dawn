@@ -14,9 +14,20 @@ extern "C"
 {
 #endif
 
+typedef void ( GL_APIENTRYP PFNGLGENVERTEXARRAYSOESPROC )( GLsizei, GLuint * );
 typedef void ( GL_APIENTRYP PFNGLBINDVERTEXARRAYOESPROC )( GLuint );
+typedef GLboolean ( GL_APIENTRYP PFNGLISVERTEXARRAYOESPROC )( GLuint );
+typedef void ( GL_APIENTRYP PFNGLDELETEVERTEXARRAYSOESPROC )( GLsizei n,
+	const GLuint * );
 
-extern PFNGLBINDVERTEXARRAYOESPROC	__dglBindVertexArray;
+#if !defined( GL_OES_vertex_array_object )
+#define GL_VERTEX_ARRAY_BINDING_OES	0x85B5
+#endif
+
+extern PFNGLGENVERTEXARRAYSOESPROC		__dglGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYOESPROC		__dglBindVertexArray;
+extern PFNGLISVERTEXARRAYOESPROC		__dglIsVertexArray;
+extern PFNGLDELETEVERTEXARRAYSOESPROC	__dglDeleteVertexArrays;
 
 ///////////////////////////////////////////////////////////////////////////////
 // CORE GLES2 FUNCTIONS ///////////////////////////////////////////////////////
@@ -24,7 +35,10 @@ extern PFNGLBINDVERTEXARRAYOESPROC	__dglBindVertexArray;
 #define dglClear		glClear
 #define dglGetString	glGetString
 
-#define dglBindVertexArray	__dglBindVertexArray
+#define dglGenVertexArray		__dglGenVertexArray
+#define dglBindVertexArray		__dglBindVertexArray
+#define dglIsVertexArray		__dglIsVertexArray
+#define dglDeleteVertexArrays	__dglDeleteVertexArrays
 
 
 #ifdef __cplusplus

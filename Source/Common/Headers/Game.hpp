@@ -50,12 +50,14 @@ namespace Dawn
 		FILE	*m_pConfigFile;
 		Display	*m_pDisplay;
 		Window	m_Window;
+		char *m_pWindowTitle;
 #elif ( PLATFORM_XBOX || PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HANDLE m_ConfigFile;
 #endif
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HWND m_Window;
 		HDC m_DeviceContext;
+		wchar_t m_pWindowTitle;
 
 		static LRESULT CALLBACK WindowProc( HWND p_HWND, UINT p_Message,
 			WPARAM p_WParam, LPARAM p_LParam );
@@ -67,9 +69,6 @@ namespace Dawn
 
 		EventRouter m_WindowEvents;
 		Dawn::WindowEventListener *m_pWindowEventListener;
-
-		// Append the base g_pWindowTitle with the version
-		wchar_t *m_pWindowTitle;
 
 		D_BOOL m_Running;
 	};

@@ -2,7 +2,10 @@
 #include <iostream>
 #include <cstring>
 
-PFNGLBINDVERTEXARRAYOESPROC __dglBindVertexArray = D_NULL;
+PFNGLGENVERTEXARRAYSOESPROC		__dglGenVertexArrays = D_NULL;
+PFNGLBINDVERTEXARRAYOESPROC 	__dglBindVertexArray = D_NULL;
+PFNGLISVERTEXARRAYOESPROC		__dglIsVertexArray = D_NULL;
+PFNGLDELETEVERTEXARRAYSOESPROC	__dglDeleteVertexArrays;
 
 namespace Dawn
 {
@@ -60,9 +63,33 @@ namespace Dawn
 		{
 			if( ( *Itr ).compare( "GL_OES_vertex_array_object" ) == 0 )
 			{
+				Ret = ( ( __dglGenVertexArrays =
+					( PFNGLGENVERTEXARRAYSOESPROC )eglGetProcAddress(
+						"glGenVertexArraysOES" ) ) == D_NULL ) || Ret;
 				Ret = ( ( __dglBindVertexArray =
 					( PFNGLBINDVERTEXARRAYOESPROC )eglGetProcAddress(
 						"glBindVertexArrayOES" ) ) == D_NULL ) || Ret;
+				Ret = ( ( __dglIsVertexArray =
+					( PFNGLISVERTEXARRAYOESPROC )eglGetProcAddress(
+						"glIsVertexArrayOES" ) ) == D_NULL ) || Ret;
+				Ret = ( ( __dglDeleteVertexArrays =
+					( PFNGLDELETEVERTEXARRAYSOESPROC )eglGetProcAddress(
+						"glDeleteVertexArraysOES" ) ) == D_NULL ) || Ret;
+#ifdef BUILD_DEBUG
+				if( __dglGenVertexArrays && __dglBindVertexArray &&
+					__dglIsVertexArray && __dglDeleteVertexArrays )
+				{
+					std::cout << "[Dawn::GLES2Extender::Initialise] " <<
+						"<INFO> Successfully bound " <<
+						"GL_OES_vertex_array_object functions" << std::endl;
+				}
+				else
+				{
+					std::cout << "[Dawn::GLES2Extender::Initialise] " <<
+						"<ERROR> Failed to bind GL_OES_vertex_array_object " <<
+						"functions" << std::endl;
+				}
+#endif
 			}
 		}
 		

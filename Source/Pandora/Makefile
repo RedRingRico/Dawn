@@ -36,7 +36,7 @@ debug:		$(TARGET)
 
 ##### Release #####
 release:	BUILD = Release
-release:	BUID_DEF = RELEASE
+release:	BUILD_DEF = RELEASE
 release:	TARGET := $(TARGET)
 release:	CFLAGS = -c -O3 $(CFLAGS_EXT)
 release:	$(TARGET)
