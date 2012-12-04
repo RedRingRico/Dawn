@@ -7,7 +7,7 @@
 #include <string>
 
 // Helper macro for determining the offset to use in the buffer objects
-#define D_BUFFER_OFFSET( p_Offset )( ( D_BYTE * )NULL + ( p_Offset ) )
+#define D_BUFFER_OFFSET( p_Offset )( ( GLubyte * )NULL + ( p_Offset ) )
 
 #ifdef __cplusplus
 extern "C"
@@ -32,10 +32,24 @@ extern PFNGLDELETEVERTEXARRAYSOESPROC	__dglDeleteVertexArrays;
 ///////////////////////////////////////////////////////////////////////////////
 // CORE GLES2 FUNCTIONS ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-#define dglClear		glClear
-#define dglGetString	glGetString
+#define dglBindBuffer				glBindBuffer
+#define dglBufferData				glBufferData
+#define dglBufferSubData			glBufferSubData
+#define dglClear					glClear
+#define dglClearColor				glClearColor
+#define dglDeleteBuffers			glDeleteBuffers
+#define dglDrawElements				glDrawElements
+#define dglEnableVertexAttribArray	glEnableVertexAttribArray
+#define dglGenBuffers				glGenBuffers
+#define dglGetError					glGetError
+#define dglGetString				glGetString
+#define dglVertexAttribPointer		glVertexAttribPointer
+#define dglViewport					glViewport
 
-#define dglGenVertexArray		__dglGenVertexArray
+///////////////////////////////////////////////////////////////////////////////
+// VERTEX ARRAY OBJECTS ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+#define dglGenVertexArrays		__dglGenVertexArrays
 #define dglBindVertexArray		__dglBindVertexArray
 #define dglIsVertexArray		__dglIsVertexArray
 #define dglDeleteVertexArrays	__dglDeleteVertexArrays

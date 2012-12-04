@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstring>
 #include <iostream>
+#include <OGLES2/GLES2VertexCache.hpp>
 
 namespace Dawn
 {
@@ -61,7 +62,8 @@ namespace Dawn
 		std::stringstream CompleteTitle;
 
 		CompleteTitle << g_pWindowTitle << " Ver. " << 0 << "." << 0 << "." <<
-			0 << "." << HG_REVISION << " [" << HG_CHANGESET << "]";
+			0 << "." << HG_REVISION << ( HG_LOCAL_MODIFICATIONS ? "M" : "" ) <<
+			" [" << HG_CHANGESET << "]";
 
 		m_pWindowTitle = new char[ CompleteTitle.str( ).size( ) + 1 ];
 		strncpy( m_pWindowTitle, CompleteTitle.str( ).c_str( ),
@@ -82,6 +84,13 @@ namespace Dawn
 		m_pRenderer->SetClearColour( 0.15f, 0.0f, 0.15f );
 
 		Dawn::StartTime( );
+		
+		m_pCache = new Dawn::GLES2VertexCache( 1024, 1024, 1, 0x6, 10 );
+
+		if( m_pCache->Initialise( ) != D_OK )
+		{
+			return D_ERROR;
+		}
 
 		return D_OK;
 	}
@@ -120,7 +129,97 @@ namespace Dawn
 
 	void Game::Render( )
 	{
+		D_FLOAT32 pVerts [ ] =
+		{
+			-0.4f, -0.4f, 0.0f,
+			0.0f, 0.4f, 0.0f,
+			0.4f, -0.4f, 0.0f
+		};
+		GLushort pInd[ ] = { 0, 1, 2 };
+
+		m_pCache->Add( 3, ( D_BYTE * )pVerts, 3, pInd, 1 );
+
+		GLint compile;
+		const char *Vert = 
+		"attribute vec3 vPos;\nvoid main( )\n{\ngl_Position = vec4( vPos, 1.0 );\n}\n";
+		const char *Frag =
+		"precision mediump float;\nvoid main( )\n{\ngl_FragColor = vec4( 0.0, 1.0, 0.0, 1.0 );\n}\n";
+
+		GLint Vshad, Fshad;
+		Vshad = glCreateShader( GL_VERTEX_SHADER );
+		Fshad = glCreateShader( GL_FRAGMENT_SHADER );
+
+		glShaderSource( Vshad, 1, &Vert, NULL );
+		glShaderSource( Fshad, 1, &Frag, NULL );
+
+		glCompileShader( Vshad );
+		glGetShaderiv( Vshad, GL_COMPILE_STATUS, &compile );
+		if( !compile )
+		{
+			GLint infoLen = 0;
+			glGetShaderiv( Vshad, GL_INFO_LOG_LENGTH, &infoLen );
+			if( infoLen > 1 )
+			{
+				char *pLog = new char[ infoLen ];
+				glGetShaderInfoLog( Vshad, infoLen, NULL, pLog );
+
+				std::cout << pLog << std::endl;
+
+				delete [ ] pLog;
+			}
+		}
+
+		glCompileShader( Fshad );
+		glGetShaderiv( Fshad, GL_COMPILE_STATUS, &compile );
+		if( !compile )
+		{
+			GLint infoLen = 0;
+			glGetShaderiv( Vshad, GL_INFO_LOG_LENGTH, &infoLen );
+			if( infoLen > 1 )
+			{
+				char *pLog = new char[ infoLen ];
+				glGetShaderInfoLog( Vshad, infoLen, NULL, pLog );
+
+				std::cout << pLog << std::endl;
+
+				delete [ ] pLog;
+			}
+		}
+
+		GLint Prog = glCreateProgram( );
+		if( Prog == 0 )
+		{
+		}
+
+		glAttachShader( Prog, Vshad );
+		glAttachShader( Prog, Fshad );
+
+		glBindAttribLocation( Prog, 0, "vPos" );
+
+		glLinkProgram( Prog );
+
+		glGetProgramiv( Prog, GL_LINK_STATUS, &compile );
+		if( !compile )
+		{
+			GLsizei infoLen = 0;
+			glGetProgramiv( Prog, GL_INFO_LOG_LENGTH, &infoLen );
+			if( infoLen > 1 )
+			{
+				char *pLog = new char[ infoLen];
+				glGetProgramInfoLog( Prog, infoLen, NULL, pLog );
+				std::cout << pLog;
+				delete [ ] pLog;
+			}
+		}
+
 		m_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
+		glUseProgram( Prog );
+		m_pCache->Flush( );
+//		m_pRenderer->EndScene( );
+		glDeleteShader( Vshad );
+		glDeleteShader( Fshad );
+		glDeleteProgram( Prog );
+
 		m_pRenderer->EndScene( );
 	}
 

@@ -19,7 +19,7 @@ namespace Dawn
 		virtual D_UINT32 Add( const D_MEMSIZE p_VertexCount,
 			const D_BYTE *p_pVertices,
 			const D_MEMSIZE p_IndexCount,
-			const D_BYTE *p_pIndices,
+			const D_UINT16 *p_pIndices,
 			const D_UINT32 p_MaterialID ) = 0;
         
 		// Completely clear the cache

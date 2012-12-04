@@ -21,7 +21,7 @@ namespace Dawn
 		virtual D_UINT32 Add( const D_MEMSIZE p_VertexCount,
 			const D_BYTE *p_pVertices,
 			const D_MEMSIZE p_IndexCount,
-			const D_BYTE *p_pIndices,
+			const D_UINT16 *p_pIndices,
 			const D_UINT32 p_MaterialID );
 
 		virtual void Clear( );
@@ -60,7 +60,7 @@ namespace Dawn
 
 		GLuint	*m_pVertexBuffer;
 		GLuint	*m_pIndexBuffer;
-		GLuint	m_VertexAttributeID;
+		GLuint	*m_pVertexArrayID;
 	};
 }
 

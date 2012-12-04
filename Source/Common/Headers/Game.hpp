@@ -28,6 +28,9 @@ static const char *g_pWindowTitle =
 #endif
 #endif
 
+
+#include <VertexCache.hpp>
+
 namespace Dawn
 {
 	class Game
@@ -71,6 +74,8 @@ namespace Dawn
 		Dawn::WindowEventListener *m_pWindowEventListener;
 
 		D_BOOL m_Running;
+
+		Dawn::VertexCache *m_pCache;
 	};
 }
 
