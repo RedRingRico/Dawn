@@ -1,5 +1,6 @@
 #include <Matrix3x3.hpp>
 #include <Vector3.hpp>
+#include <Quaternion.hpp>
 #include <Arithmetic.hpp>
 #include <cmath>
 
@@ -133,6 +134,11 @@ namespace Dawn
 	Vector3 Matrix3x3::GetColumn( const D_MEMSIZE p_Index ) const
 	{
 		return Vector3( m_M[ p_Index ], m_M[ p_Index+1 ], m_M[ p_Index+2 ] );
+	}
+
+	Matrix3x3 &Matrix3x3::Rotate( const Quaternion &p_Quaternion )
+	{
+		return *this;
 	}
 
 	Matrix3x3 &Matrix3x3::Rotate( const Vector3 &p_Axis,
