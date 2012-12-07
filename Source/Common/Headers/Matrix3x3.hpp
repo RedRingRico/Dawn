@@ -41,16 +41,12 @@ namespace Dawn
 		Vector3 GetColumn( const D_MEMSIZE p_Index ) const;
 
 		// Get the matrix as a contiguous array
-		D_INLINE D_FLOAT32 *GetMatrix( ) const
+		D_INLINE void GetMatrix( D_FLOAT32 *p_pArray ) const
 		{
-			D_FLOAT32 *pRaw = new D_FLOAT32[ 9 ];
-
 			for( D_MEMSIZE i = 0; i < 9; ++i )
 			{
-				pRaw[ i ] = m_M[ i ];
+				p_pArray[ i ] = m_M[ i ];
 			}
-
-			return pRaw;
 		}
 
 		// -- ROTATION OPERATIONS -- //
