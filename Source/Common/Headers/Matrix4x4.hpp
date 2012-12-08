@@ -19,7 +19,7 @@ namespace Dawn
 		void Identity( );
 		D_BOOL IsIdentity( ) const;
 		D_BOOL IsZero( ) const;
-		D_FLOAT32 Trace( );
+		D_FLOAT32 Trace( ) const;
 
 		void Clean( );
 
@@ -27,13 +27,13 @@ namespace Dawn
 			const Vector4 &p_Row3, const Vector4 &p_Row4 );
 		void GetRows( Vector4 &p_Row1, Vector4 &p_Row2, Vector4 &p_Row3,
 			Vector4 &p_Row4 ) const;
-		Vector4 &GetRow( const D_MEMSIZE p_Index ) const;
+		Vector4 GetRow( const D_MEMSIZE p_Index ) const;
 
 		void SetColumns( const Vector4 &p_Column1, const Vector4 &p_Column2,
 			const Vector4 &p_Column3, const Vector4 &p_Column4 );
 		void GetColumns( Vector4 &p_Column1, Vector4 &p_Column2,
 			Vector4 &p_Column3, Vector4 &p_Column4 ) const;
-		Vector4 &GetColumn( const D_MEMSIZE p_Index ) const;
+		Vector4 GetColumn( const D_MEMSIZE p_Index ) const;
 
 		void GetMatrix( D_FLOAT32 *p_pArray ) const
 		{
@@ -43,8 +43,8 @@ namespace Dawn
 			}
 		}
 
-		Matrix4x4 &Translate( const Vector4 &p_Translation );
-		Vector3 &Transform( const Vector3 &p_Point ) const;
+		Matrix4x4 &Translate( const Vector3 &p_Translation );
+		Vector3 Transform( const Vector3 &p_Point ) const;
 
 		Matrix4x4 &Rotate( const Matrix3x3 &p_Rotation );
 		Matrix4x4 &Rotate( const Quaternion &p_Quaternion );
