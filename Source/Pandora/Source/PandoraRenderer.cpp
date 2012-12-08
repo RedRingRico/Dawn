@@ -138,7 +138,14 @@ namespace Dawn
 			return D_ERROR;
 		}
 
-		glViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
+		if( m_GLES2Extender.Initialise( ) != D_OK )
+		{
+			return D_ERROR;
+		}
+
+		dglViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
+		glEnable( GL_DEPTH_TEST );
+		glDisable( GL_CULL_FACE );
 
 		return D_OK;
 	}
@@ -179,7 +186,7 @@ namespace Dawn
 			Flags |= GL_STENCIL_BUFFER_BIT;
 		}
 
-		glClear( Flags );
+		dglClear( Flags );
 		return D_OK;
 	}
 
@@ -191,13 +198,13 @@ namespace Dawn
 	void PandoraRenderer::SetClearColour( const D_FLOAT32 p_Red,
 		const D_FLOAT32 p_Green, const D_FLOAT32 p_Blue )
 	{
-		glClearColor( p_Red, p_Green, p_Blue, 1.0f );
+		dglClearColor( p_Red, p_Green, p_Blue, 1.0f );
 	}
 
 	D_UINT32 PandoraRenderer::ResizeCanvas( const D_UINT32 p_Width,
 		const D_UINT32 p_Height )
 	{
-		glViewport( 0, 0, p_Width, p_Height );
+		dglViewport( 0, 0, p_Width, p_Height );
 		return D_OK;
 	}
 }

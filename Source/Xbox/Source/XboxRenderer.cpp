@@ -48,10 +48,40 @@ namespace Dawn
 			}
 		}
 
+		DWORD Flags = 0;
+
+		if( m_Canvas.Interlaced( ) == D_TRUE )
+		{
+			Flags |= D3DPRESENTFLAG_INTERLACED;
+		}
+		else
+		{
+			Flags |= D3DPRESENTFLAG_PROGRESSIVE;
+		}
+
+		if( m_Canvas.Widescreen( ) == D_TRUE )
+		{
+			Flags |= D3DPRESENTFLAG_WIDESCREEN;
+		}
+
+		if( m_Canvas.PAL60( ) == D_TRUE )
+		{
+			m_PresentParams.FullScreen_PresentationInterval = 60;
+		}
+		else
+		{
+			m_PresentParams.FullScreen_PresentationInterval =
+				D3DPRESENT_RATE_DEFAULT;
+		}
+
+		m_PresentParams.Flags = Flags;
 		m_PresentParams.BackBufferWidth = m_Canvas.Width( );
 		m_PresentParams.BackBufferHeight = m_Canvas.Height( );
 		m_PresentParams.BackBufferCount = m_Canvas.BackBufferCount( );
 		m_PresentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		m_PresentParams.FullScreen_PresentationInterval =
+			D3DPRESENT_INTERVAL_IMMEDIATE;
+		m_PresentParams.Windowed = FALSE;
 
 		if( FAILED( m_pD3D->CreateDevice( 0, D3DDEVTYPE_HAL, NULL,
 			D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_PresentParams,

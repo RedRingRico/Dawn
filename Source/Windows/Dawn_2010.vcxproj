@@ -142,8 +142,13 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\Source\Arithmetic.cpp" />
     <ClCompile Include="..\Common\Source\EventRouter.cpp" />
     <ClCompile Include="..\Common\Source\Hash.cpp" />
+    <ClCompile Include="..\Common\Source\Matrix3x3.cpp" />
+    <ClCompile Include="..\Common\Source\OGL\GLVertexCache.cpp" />
+    <ClCompile Include="..\Common\Source\Vector3.cpp" />
+    <ClCompile Include="..\Common\Source\WindowEventRouter.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Time.cpp" />
@@ -151,6 +156,7 @@
     <ClCompile Include="Source\WindowsRendererOGL1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\Headers\Arithmetic.hpp" />
     <ClInclude Include="..\Common\Headers\CanvasDescription.hpp" />
     <ClInclude Include="..\Common\Headers\Compiler.hpp" />
     <ClInclude Include="..\Common\Headers\Compiler_MSVC.hpp" />
@@ -161,10 +167,17 @@
     <ClInclude Include="..\Common\Headers\Events.hpp" />
     <ClInclude Include="..\Common\Headers\Game.hpp" />
     <ClInclude Include="..\Common\Headers\Hash.hpp" />
+    <ClInclude Include="..\Common\Headers\Input.hpp" />
+    <ClInclude Include="..\Common\Headers\InputEventListener.hpp" />
+    <ClInclude Include="..\Common\Headers\Matrix3x3.hpp" />
+    <ClInclude Include="..\Common\Headers\OGL\GLVertexCache.hpp" />
     <ClInclude Include="..\Common\Headers\Renderer.hpp" />
     <ClInclude Include="..\Common\Headers\RenderTypes.hpp" />
     <ClInclude Include="..\Common\Headers\Time.hpp" />
+    <ClInclude Include="..\Common\Headers\Vector3.hpp" />
+    <ClInclude Include="..\Common\Headers\VertexCache.hpp" />
     <ClInclude Include="..\Common\Headers\WindowEventListener.hpp" />
+    <ClInclude Include="..\Common\Headers\WindowEventRouter.hpp" />
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp" />
     <ClInclude Include="Headers\HgVersion.h" />
     <ClInclude Include="Headers\Main.hpp" />

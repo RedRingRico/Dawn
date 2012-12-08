@@ -36,7 +36,7 @@ debug:		$(TARGET)
 
 ##### Release #####
 release:	BUILD = Release
-release:	BUID_DEF = RELEASE
+release:	BUILD_DEF = RELEASE
 release:	TARGET := $(TARGET)
 release:	CFLAGS = -c -O3 $(CFLAGS_EXT)
 release:	$(TARGET)
@@ -51,26 +51,41 @@ profile:	$(TARGET)
 ##### Build the object files while not in the Obj directory ###################
 ifneq ($(OBJSDIR), $(notdir $(CURDIR)))
 
-$(TARGETDIR):
-	-mkdir -p $(TARGETDIR)
+.PHONY: VERSIONINFO OBJSDIR TARGETDIR
+VERSIONINFO:
+	@echo "---------------------- Generating Version Information -------------------------"
+	@sh ./HgVersion.sh
+	@echo "-------------------------------------------------------------------------------"
 
-$(OBJSDIR):
-	mkdir -p $(OBJSDIR)
+TARGETDIR:
+	@mkdir -p $(TARGETDIR)
+
+OBJSDIR:
+	@mkdir -p $(OBJSDIR)
 
 CPPFILES	:= $(foreach dir,$(SOURCEDIR),$(notdir $(wildcard $(dir)/*.cpp)))
+COMFILES	:= $(foreach dir,../Common/Source,$(notdir $(wildcard $(dir)/*.cpp)))
+GLESFILES	:= $(foreach dir,../Common/Source/OGLES2,$(notdir $(wildcard $(dir)/*.cpp)))
 
 ###############
-OBJS	= $(CPPFILES:.cpp=.o)
-HEADERS	= $(wildcard *.hpp)
+OBJS		= $(CPPFILES:.cpp=.o)
+COBJS		= $(COMFILES:.cpp=.o)
+GLESOBJS	= $(GLESFILES:.cpp=.o)
+HEADERS		= $(wildcard *.hpp)
 ###############
 
-$(TARGET): $(OBJS) $(TARGETDIR)
-	-mkdir -p $(OBJSDIR)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
+$(TARGET): VERSIONINFO OBJSDIR TARGETDIR $(OBJS) $(GLESOBJS) $(COBJS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(GLESOBJS) $(COBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
+
+%.o: ../Common/Source/OGLES2/%.cpp
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
+
+%.o: ../Common/Source/%.cpp
+	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
 
 %.o: $(SOURCEDIR)/%.cpp
-	-mkdir -p $(OBJSDIR)
 	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
+
 
 endif
 

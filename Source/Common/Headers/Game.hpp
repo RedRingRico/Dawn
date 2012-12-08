@@ -5,6 +5,7 @@
 #include <Renderer.hpp>
 #include <EventRouter.hpp>
 #include <WindowEventListener.hpp>
+#include <HgVersion.hpp>
 #include <cstdio>
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
@@ -27,6 +28,9 @@ static const char *g_pWindowTitle =
 #endif
 #endif
 
+
+#include <VertexCache.hpp>
+
 namespace Dawn
 {
 	class Game
@@ -41,7 +45,7 @@ namespace Dawn
 
 		D_UINT32 Execute( );
 
-		D_BOOL Running( );
+		D_BOOL Running( ) const { return m_Running; }
 
 	private:
 		Dawn::Renderer *m_pRenderer;
@@ -49,12 +53,14 @@ namespace Dawn
 		FILE	*m_pConfigFile;
 		Display	*m_pDisplay;
 		Window	m_Window;
+		char *m_pWindowTitle;
 #elif ( PLATFORM_XBOX || PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HANDLE m_ConfigFile;
 #endif
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HWND m_Window;
 		HDC m_DeviceContext;
+		wchar_t m_pWindowTitle;
 
 		static LRESULT CALLBACK WindowProc( HWND p_HWND, UINT p_Message,
 			WPARAM p_WParam, LPARAM p_LParam );
@@ -67,10 +73,9 @@ namespace Dawn
 		EventRouter m_WindowEvents;
 		Dawn::WindowEventListener *m_pWindowEventListener;
 
-		// Append the base g_pWindowTitle with the version
-		wchar_t *m_pWindowTitle;
-
 		D_BOOL m_Running;
+
+		Dawn::VertexCache *m_pCache;
 	};
 }
 
