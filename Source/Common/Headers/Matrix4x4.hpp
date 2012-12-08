@@ -74,9 +74,9 @@ namespace Dawn
 
 		Matrix4x4 operator+( const Matrix4x4 &p_Other ) const;
 		Matrix4x4 operator-( const Matrix4x4 &p_Other ) const;
-		Matrix4x4 operator-( ) const;
+		Matrix4x4 &operator-( );
 		Matrix4x4 operator*( const Matrix4x4 &p_Other ) const;
-		Matrix4x4 operator*( const Vector4 &p_Vec ) const;
+		Vector4 operator*( const Vector4 &p_Vec ) const;
 		Matrix4x4 operator*( const D_FLOAT32 p_Scalar ) const;
 		
 		Matrix4x4 &operator+=( const Matrix4x4 &p_Other );

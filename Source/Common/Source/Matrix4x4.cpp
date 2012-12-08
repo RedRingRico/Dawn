@@ -616,5 +616,226 @@ namespace Dawn
 		p_AffineInverse.AffineInverse( *this );
 		return *this;
 	}
+
+	D_BOOL Matrix4x4::operator==( const Matrix4x4 &p_Other ) const
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			if( Dawn::Equal( m_M[ i ], p_Other[ i ] ) != D_TRUE )
+			{
+				return D_FALSE;
+			}
+		}
+		return D_TRUE;
+	}
+
+	D_BOOL Matrix4x4::operator!=( const Matrix4x4 &p_Other ) const
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			if( Dawn::Equal( m_M[ i ], p_Other[ i ] ) )
+			{
+				return D_FALSE;
+			}
+		}
+
+		return D_TRUE;
+	}
+
+	Matrix4x4 Matrix4x4::operator+( const Matrix4x4 &p_Other ) const
+	{
+		Matrix4x4 Return;
+
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			Return[ i ] = m_M[ i ] + p_Other[ i ];
+		}
+
+		return Return;
+	}
+
+	Matrix4x4 Matrix4x4::operator-( const Matrix4x4 &p_Other ) const
+	{
+		Matrix4x4 Return;
+
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			Return[ i ] = m_M[ i ] - p_Other[ i ];
+		}
+
+		return Return;
+	}
+
+	Matrix4x4 &Matrix4x4::operator-( )
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			m_M[ i ] = -m_M[ i ];
+		}
+
+		return *this;
+	}
+
+	Matrix4x4 Matrix4x4::operator*( const Matrix4x4 &p_Other ) const
+	{
+		Matrix4x4 Return;
+
+		Return[ 0 ] = m_M[ 0 ]*p_Other[ 0 ] + m_M[ 4 ]*p_Other[ 1 ]
+					+ m_M[ 8 ]*p_Other[ 3 ] + m_M[ 12 ]*p_Other[ 3 ];
+		Return[ 1 ] = m_M[ 1 ]*p_Other[ 0 ] + m_M[ 5 ]*p_Other[ 1 ]
+					+ m_M[ 9 ]*p_Other[ 2 ] + m_M[ 13 ]*p_Other[ 3 ];
+		Return[ 2 ] = m_M[ 2 ]*p_Other[ 0 ] + m_M[ 6 ]*p_Other[ 1 ]
+					+ m_M[ 10 ]*p_Other[ 2 ] + m_M[ 14 ]*p_Other[ 3 ];
+		Return[ 3 ] = m_M[ 3 ]*p_Other[ 0 ] + m_M[ 7 ]*p_Other[ 1 ]
+					+ m_M[ 11 ]*p_Other[ 2 ] + m_M[ 15 ]*p_Other[ 3 ];
+
+		Return[ 4 ] = m_M[ 0 ]*p_Other[ 4 ] + m_M[ 4 ]*p_Other[ 5 ]
+					+ m_M[ 8 ]*p_Other[ 6 ] + m_M[ 12 ]*p_Other[ 7 ];
+		Return[ 5 ] = m_M[ 1 ]*p_Other[ 4 ] + m_M[ 5 ]*p_Other[ 5 ]
+					+ m_M[ 9 ]*p_Other[ 7 ] + m_M[ 13 ]*p_Other[ 7 ];
+		Return[ 6 ] = m_M[ 2 ]*p_Other[ 4 ] + m_M[ 6 ]*p_Other[ 5 ]
+					+ m_M[ 10 ]*p_Other[ 6 ] + m_M[ 14 ]*p_Other[ 7 ];
+		Return[ 7 ] = m_M[ 3 ]*p_Other[ 4 ] + m_M[ 7 ]*p_Other[ 5 ]
+					+ m_M[ 11 ]*p_Other[ 6 ] + m_M[ 15 ]*p_Other[ 7 ];
+
+		Return[ 8 ] = m_M[ 0 ]*p_Other[ 8 ] + m_M[ 4 ]*p_Other[ 9 ]
+					+ m_M[ 8 ]*p_Other[ 10 ] + m_M[ 12 ]*p_Other[ 11 ];
+		Return[ 9 ] = m_M[ 1 ]*p_Other[ 8 ] + m_M[ 5 ]*p_Other[ 9 ]
+					+ m_M[ 9 ]*p_Other[ 10 ] + m_M[ 13 ]*p_Other[ 11 ];
+		Return[ 10 ] = m_M[ 2 ]*p_Other[ 8 ] + m_M[ 6 ]*p_Other[ 9 ]
+					+ m_M[ 10 ]*p_Other[ 10 ] + m_M[ 14 ]*p_Other[ 11 ];
+		Return[ 11 ] = m_M[ 3 ]*p_Other[ 8 ] + m_M[ 7 ]*p_Other[ 9 ]
+					+ m_M[ 11 ]*p_Other[ 10 ] + m_M[ 14 ]*p_Other[ 11 ];
+
+		Return[ 12 ] = m_M[ 0 ]*p_Other[ 12 ] + m_M[ 4 ]*p_Other[ 13 ]
+					+ m_M[ 8 ]*p_Other[ 14 ] + m_M[ 12 ]*p_Other[ 15 ];
+		Return[ 13 ] = m_M[ 1 ]*p_Other[ 12 ] + m_M[ 5 ]*p_Other[ 13 ]
+					+ m_M[ 9 ]*p_Other[ 14 ] + m_M[ 13 ]*p_Other[ 15 ];
+		Return[ 14 ] = m_M[ 2 ]*p_Other[ 12 ] + m_M[ 6 ]*p_Other[ 13 ]
+					+ m_M[ 10 ]*p_Other[ 14 ] + m_M[ 14 ]*p_Other[ 15 ];
+		Return[ 15 ] = m_M[ 3 ]*p_Other[ 12 ] + m_M[ 7 ]*p_Other[ 13 ]
+					+ m_M[ 11 ]*p_Other[ 14 ] + m_M[ 15 ]*p_Other[ 15 ];
+
+		return Return;
+	}
+
+	Vector4 Matrix4x4::operator*( const Vector4 &p_Vec ) const
+	{
+		Vector4 Return;
+
+		Return[ 0 ] = m_M[ 0 ]*p_Vec[ 0 ] + m_M[ 4 ]*p_Vec[ 1 ]
+					+ m_M[ 8 ]*p_Vec[ 2 ] + m_M[ 12 ]*p_Vec[ 3 ];
+		Return[ 1 ] = m_M[ 1 ]*p_Vec[ 0 ] + m_M[ 5 ]*p_Vec[ 1 ]
+					+ m_M[ 9 ]*p_Vec[ 2 ] + m_M[ 13 ]*p_Vec[ 3 ];
+		Return[ 2 ] = m_M[ 2 ]*p_Vec[ 0 ] + m_M[ 6 ]*p_Vec[ 1 ]
+					+ m_M[ 10 ]*p_Vec[ 2 ] + m_M[ 14 ]*p_Vec[ 3 ];
+		Return[ 3 ] = m_M[ 3 ]*p_Vec[ 0 ] + m_M[ 7 ]*p_Vec[ 1 ]
+					+ m_M[ 11 ]*p_Vec[ 2 ] + m_M[ 15 ]*p_Vec[ 3 ];
+
+		return Return;
+	}
+
+	Matrix4x4 Matrix4x4::operator*( const D_FLOAT32 p_Scalar ) const
+	{
+		Matrix4x4 Return;
+
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			Return[ i ] = m_M[ i ]*p_Scalar;
+		}
+
+		return Return;
+	}
+
+	Matrix4x4 &Matrix4x4::operator+=( const Matrix4x4 &p_Other )
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			m_M[ i ] += p_Other[ i ];
+		}
+
+		return *this;
+	}
+
+	Matrix4x4 &Matrix4x4::operator-=( const Matrix4x4 &p_Other )
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			m_M[ i ] -= p_Other[ i ];
+		}
+
+		return *this;
+	}
+
+	Matrix4x4 &Matrix4x4::operator*=( const Matrix4x4 &p_Other )
+	{
+		Matrix4x4 Copy;
+
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			Copy[ i ] = m_M[ i ];
+		}
+
+		m_M[ 0 ] = Copy[ 0 ]*p_Other[ 0 ] + Copy[ 4 ]*p_Other[ 1 ]
+				+ Copy[ 8 ]*p_Other[ 2 ] + Copy[ 12 ]*p_Other[ 3 ];
+		m_M[ 1 ] = Copy[ 1 ]*p_Other[ 0 ] + Copy[ 5 ]*p_Other[ 1 ]
+				+ Copy[ 9 ]*p_Other[ 2 ] + Copy[ 13 ]*p_Other[ 3 ];
+		m_M[ 2 ] = Copy[ 2 ]*p_Other[ 0 ] + Copy[ 7 ]*p_Other[ 1 ]
+				+ Copy[ 10 ]*p_Other[ 2 ] + Copy[ 14 ]*p_Other[ 3 ];
+		m_M[ 3 ] = Copy[ 3 ]*p_Other[ 0 ] + Copy[ 8 ]*p_Other[ 1 ]
+				+ Copy[ 11 ]*p_Other[ 2 ] + Copy[ 15 ]*p_Other[ 3 ];
+
+		m_M[ 4 ] = Copy[ 0 ]*p_Other[ 4 ] + Copy[ 4 ]*p_Other[ 5 ]
+				+ Copy[ 8 ]*p_Other[ 6 ] + Copy[ 12 ]*p_Other[ 7 ];
+		m_M[ 5 ] = Copy[ 1 ]*p_Other[ 4 ] + Copy[ 5 ]*p_Other[ 5 ]
+				+ Copy[ 9 ]*p_Other[ 6 ] + Copy[ 13 ]*p_Other[ 7 ];
+		m_M[ 6 ] = Copy[ 2 ]*p_Other[ 4 ] + Copy[ 6 ]*p_Other[ 5 ]
+				+ Copy[ 10 ]*p_Other[ 6 ] + Copy[ 14 ]*p_Other[ 7 ];
+		m_M[ 7 ] = Copy[ 3 ]*p_Other[ 4 ] + Copy[ 7 ]*p_Other[ 5 ]
+				+ Copy[ 11 ]*p_Other[ 6 ] + Copy[ 15 ]*p_Other[ 7 ];
+
+
+		m_M[ 8 ] = Copy[ 0 ]*p_Other[ 8 ] + Copy[ 4 ]*p_Other[ 9 ]
+				+ Copy[ 8 ]*p_Other[ 10 ] + Copy[ 12 ]*p_Other[ 11 ];
+		m_M[ 9 ] = Copy[ 1 ]*p_Other[ 8 ] + Copy[ 5 ]*p_Other[ 9 ]
+				+ Copy[ 9 ]*p_Other[ 10 ] + Copy[ 13 ]*p_Other[ 11 ];
+		m_M[ 10 ] = Copy[ 2 ]*p_Other[ 8 ] + Copy[ 6 ]*p_Other[ 9 ]
+				+ Copy[ 10 ]*p_Other[ 10 ] + Copy[ 14 ]*p_Other[ 11 ];
+		m_M[ 11 ] = Copy[ 3 ]*p_Other[ 8 ] + Copy[ 7 ]*p_Other[ 9 ]
+				+ Copy[ 11 ]*p_Other[ 10 ] + Copy[ 15 ]*p_Other[ 11 ];
+
+		m_M[ 12 ] = Copy[ 0 ]*p_Other[ 12 ] + Copy[ 4 ]*p_Other[ 13 ]
+				+ Copy[ 8 ]*p_Other[ 14 ] + Copy[ 12 ]*p_Other[ 15 ];
+		m_M[ 13 ] = Copy[ 1 ]*p_Other[ 12 ] + Copy[ 5 ]*p_Other[ 13 ]
+				+ Copy[ 9 ]*p_Other[ 14 ] + Copy[ 13 ]*p_Other[ 15 ];
+		m_M[ 14 ] = Copy[ 2 ]*p_Other[ 12 ] + Copy[ 6 ]*p_Other[ 13 ]
+				+ Copy[ 10 ]*p_Other[ 14 ] + Copy[ 14 ]*p_Other[ 15 ];
+		m_M[ 15 ] = Copy[ 3 ]*p_Other[ 12 ] + Copy[ 7 ]*p_Other[ 13 ]
+				+ Copy[ 11 ]*p_Other[ 14 ] + Copy[ 15 ]*p_Other[ 15 ];
+
+		return *this;
+	}
+
+	Matrix4x4 &Matrix4x4::operator*=( const D_FLOAT32 p_Scalar )
+	{
+		for( D_MEMSIZE i = 0; i < 16; ++i )
+		{
+			m_M[ i ] *= p_Scalar;
+		}
+
+		return *this;
+	}
+
+	D_FLOAT32 &Matrix4x4::operator( )( const D_MEMSIZE p_Row,
+		const D_MEMSIZE p_Column )
+	{
+		return ( m_M[ p_Row+( p_Column*4 ) ] );
+	}
+
+	D_FLOAT32 Matrix4x4::operator( )( const D_MEMSIZE p_Row,
+		const D_MEMSIZE p_Column ) const
+	{
+		return ( m_M[ p_Row+( p_Column*4 ) ] );
+	}
 }
 
