@@ -1,7 +1,5 @@
-#ifndef __DAWN_OGLES2_GLES2SHADERDEFINES_HPP__
-#define __DAWN_OGLES2_GLES2SHADERDEFINES_HPP__
-
-#include <Renderer.hpp>
+#ifndef __DAWN_OGLES2_GLES2SHADERDATATYPES_HPP__
+#define __DAWN_OGLES2_GLES2SHADERDATATYPES_HPP__
 
 namespace Dawn
 {
@@ -44,7 +42,6 @@ namespace Dawn
 
 	typedef struct __D_SHADERCONSTANT
 	{
-		void			*pData;
 		char			*pName;
 		D_SHADERTYPE	Type;
 
@@ -55,13 +52,6 @@ namespace Dawn
 		char	*pName;
 		GLuint	Unit;
 	}D_TEXTUREUNIT;
-
-	typedef struct __D_SHADER
-	{
-		D_VERTEXATTRIBUTE	*pVertexAttribute;
-		D_SHADERCONSTANT	*pShaderConstant;
-		D_TEXTUREUNIT		*pTextureUnit;
-	}D_SHADER;
 }
 
 #endif

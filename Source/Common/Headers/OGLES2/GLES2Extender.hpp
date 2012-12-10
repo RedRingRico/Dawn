@@ -32,17 +32,27 @@ extern PFNGLDELETEVERTEXARRAYSOESPROC	__dglDeleteVertexArrays;
 ///////////////////////////////////////////////////////////////////////////////
 // CORE GLES2 FUNCTIONS ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+#define dglAttachShader				glAttachShader
+#define dglBindAttribLocation		glBindAttribLocation
 #define dglBindBuffer				glBindBuffer
 #define dglBufferData				glBufferData
 #define dglBufferSubData			glBufferSubData
 #define dglClear					glClear
 #define dglClearColor				glClearColor
+#define dglCompileShader			glCompileShader
+#define dglCreateProgram			glCreateProgram
+#define dglCreateShader				glCreateShader
 #define dglDeleteBuffers			glDeleteBuffers
+#define dglDeleteProgram			glDeleteProgram
+#define dglDeleteShader				glDeleteShader
 #define dglDrawElements				glDrawElements
 #define dglEnableVertexAttribArray	glEnableVertexAttribArray
 #define dglGenBuffers				glGenBuffers
 #define dglGetError					glGetError
 #define dglGetString				glGetString
+#define dglLinkProgram				glLinkProgram
+#define dglShaderSource				glShaderSource
+#define dglUseProgram				glUseProgram
 #define dglVertexAttribPointer		glVertexAttribPointer
 #define dglViewport					glViewport
 
