@@ -1,5 +1,6 @@
 #include <OGLES2/GLES2Shader.hpp>
 #include <OGLES2/GLES2Extender.hpp>
+#include <iostream>
 
 namespace Dawn
 {
@@ -20,11 +21,33 @@ namespace Dawn
 	{
 		switch( p_Type )
 		{
+			GLint Compiled;
 			case D_SHADERTYPE_VERTEX:
 			{
 				m_VertexID = dglCreateShader( GL_VERTEX_SHADER );
 				dglShaderSource( m_VertexID, 1, &p_pSource, NULL );
 				dglCompileShader( m_VertexID );
+
+				dglGetShaderiv( m_VertexID, GL_COMPILE_STATUS, &Compiled );
+
+				if( !Compiled )
+				{
+					GLint InfoLen = 0;
+					dglGetShaderiv( m_VertexID, GL_INFO_LOG_LENGTH,
+						&InfoLen );
+					
+					if( InfoLen > 1 )
+					{
+						char *pLog = new char[ InfoLen ];
+						
+						dglGetShaderInfoLog( m_VertexID, InfoLen, NULL,
+							pLog );
+						
+						std::cout << pLog << std::endl;
+
+						delete [ ] pLog;
+					}
+				}
 
 				break;
 			}
@@ -33,6 +56,24 @@ namespace Dawn
 				m_FragmentID = dglCreateShader( GL_FRAGMENT_SHADER );
 				dglShaderSource( m_FragmentID, 1, &p_pSource, NULL );
 				dglCompileShader( m_FragmentID );
+
+				dglGetShaderiv( m_FragmentID, GL_COMPILE_STATUS, &Compiled );
+				if( !Compiled )
+				{
+					GLint infoLen = 0;
+					dglGetShaderiv( m_FragmentID, GL_INFO_LOG_LENGTH,
+						&infoLen );
+					if( infoLen > 1 )
+					{
+						char *pLog = new char[ infoLen ];
+						dglGetShaderInfoLog( m_FragmentID, infoLen, NULL,
+							pLog );
+		
+						std::cout << pLog << std::endl;
+
+						delete [ ] pLog;
+					}
+				}
 
 				break;
 			}
@@ -58,6 +99,9 @@ namespace Dawn
 		dglAttachShader( m_ProgramID, m_VertexID );
 		dglAttachShader( m_ProgramID, m_FragmentID );
 
+		// REMARK!
+		// This seems pretty terrible for optimisation
+		// !REMARK
 		for( D_MEMSIZE i = 0; i < p_ShaderData.VertexAttributeCount( ); ++i )
 		{
 			D_VERTEXATTRIBUTE Attr = p_ShaderData.GetVertexAttribute( i );
@@ -65,6 +109,26 @@ namespace Dawn
 		}
 
 		dglLinkProgram( m_ProgramID );
+
+		GLint Linked;
+		dglGetProgramiv( m_ProgramID, GL_LINK_STATUS, &Linked );
+		if( !Linked )
+		{
+			GLsizei infoLen = 0;
+			dglGetProgramiv( m_ProgramID, GL_INFO_LOG_LENGTH, &infoLen );
+			if( infoLen > 1 )
+			{
+				char *pLog = new char[ infoLen];
+				dglGetProgramInfoLog( m_ProgramID, infoLen, NULL, pLog );
+				std::cout << pLog;
+				delete [ ] pLog;
+			}
+		}
+
+		// ----- TODO ---------------------------------------------------------
+		// Implement the Uniform data set functions
+		// For now, just get and set the WVP
+		m_Uniform = dglGetUniformLocation( m_ProgramID, "uWVP" );
 
 		m_Linked = D_TRUE;
 
@@ -76,6 +140,8 @@ namespace Dawn
 	{
 		if( m_Linked )
 		{
+			dglUniformMatrix4fv( m_Uniform, 1, D_FALSE,
+				reinterpret_cast< const GLfloat * >( p_pData ) );
 			return D_OK;
 		}
 

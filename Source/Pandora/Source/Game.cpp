@@ -5,6 +5,7 @@
 #include <iostream>
 #include <OGLES2/GLES2VertexCache.hpp>
 #include <OGLES2/GLES2Shader.hpp>
+#include <Matrix4x4.hpp>
 
 namespace Dawn
 {
@@ -130,6 +131,8 @@ namespace Dawn
 
 	void Game::Render( )
 	{
+		static D_FLOAT32 YRot = 0.0f;
+
 		D_FLOAT32 pVerts [ ] =
 		{
 			-0.4f, -0.4f, 0.0f,
@@ -140,79 +143,10 @@ namespace Dawn
 
 		m_pCache->Add( 3, ( D_BYTE * )pVerts, 3, pInd, 1 );
 	
-
-//		GLint compile;
 		const char *Vert = 
-		"attribute vec3 vPos;\nvoid main( )\n{\ngl_Position = vec4( vPos, 1.0 );\n}\n";
+		"attribute vec3 vPos;\nuniform mat4 uWVP;\nvoid main( )\n{\ngl_Position = uWVP * vec4( vPos, 1.0 );\n}\n";
 		const char *Frag =
 		"precision mediump float;\nvoid main( )\n{\ngl_FragColor = vec4( 0.0, 1.0, 0.0, 1.0 );\n}\n";
-/*
-		GLint Vshad, Fshad;
-		Vshad = glCreateShader( GL_VERTEX_SHADER );
-		Fshad = glCreateShader( GL_FRAGMENT_SHADER );
-
-		glShaderSource( Vshad, 1, &Vert, NULL );
-		glShaderSource( Fshad, 1, &Frag, NULL );
-
-		glCompileShader( Vshad );
-		glGetShaderiv( Vshad, GL_COMPILE_STATUS, &compile );
-		if( !compile )
-		{
-			GLint infoLen = 0;
-			glGetShaderiv( Vshad, GL_INFO_LOG_LENGTH, &infoLen );
-			if( infoLen > 1 )
-			{
-				char *pLog = new char[ infoLen ];
-				glGetShaderInfoLog( Vshad, infoLen, NULL, pLog );
-
-				std::cout << pLog << std::endl;
-
-				delete [ ] pLog;
-			}
-		}
-
-		glCompileShader( Fshad );
-		glGetShaderiv( Fshad, GL_COMPILE_STATUS, &compile );
-		if( !compile )
-		{
-			GLint infoLen = 0;
-			glGetShaderiv( Vshad, GL_INFO_LOG_LENGTH, &infoLen );
-			if( infoLen > 1 )
-			{
-				char *pLog = new char[ infoLen ];
-				glGetShaderInfoLog( Vshad, infoLen, NULL, pLog );
-
-				std::cout << pLog << std::endl;
-
-				delete [ ] pLog;
-			}
-		}
-
-		GLint Prog = glCreateProgram( );
-		if( Prog == 0 )
-		{
-		}
-
-		glAttachShader( Prog, Vshad );
-		glAttachShader( Prog, Fshad );
-
-		glBindAttribLocation( Prog, 0, "vPos" );
-
-		glLinkProgram( Prog );
-
-		glGetProgramiv( Prog, GL_LINK_STATUS, &compile );
-		if( !compile )
-		{
-			GLsizei infoLen = 0;
-			glGetProgramiv( Prog, GL_INFO_LOG_LENGTH, &infoLen );
-			if( infoLen > 1 )
-			{
-				char *pLog = new char[ infoLen];
-				glGetProgramInfoLog( Prog, infoLen, NULL, pLog );
-				std::cout << pLog;
-				delete [ ] pLog;
-			}
-		}*/
 
 		Dawn::GLES2Shader Shader;
 		Dawn::GLES2ShaderData Shad;
@@ -220,18 +154,27 @@ namespace Dawn
 		Attr.Location = 0;
 		Attr.pName = "vPos";
 
+		D_FLOAT32 Matrix[ 16 ];
+
+		Dawn::Matrix4x4 RotY;
+
+		RotY.RotateY( YRot );
+		YRot += 0.01f;
+
+		RotY.GetMatrix( Matrix );
+
 		Shader.Compile( Vert, D_SHADERTYPE_VERTEX );
 		Shader.Compile( Frag, D_SHADERTYPE_FRAGMENT );
 		Shad.AddVertexAttribute( Attr );
 		Shader.Link( Shad );
 		m_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
 		Shader.Activate( );
-		m_pCache->Flush( );
-//		m_pRenderer->EndScene( );
-//		glDeleteShader( Vshad );
-//		glDeleteShader( Fshad );
-//		glDeleteProgram( Prog );
 
+		// Doesn't care about shader type -- also, there's only one thing to
+		// set
+		Shader.SetConstantData( Matrix, D_SHADERTYPE_VERTEX );
+
+		m_pCache->Flush( );
 		m_pRenderer->EndScene( );
 	}
 

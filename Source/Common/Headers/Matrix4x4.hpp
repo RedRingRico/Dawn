@@ -15,6 +15,7 @@ namespace Dawn
 	{
 	public:
 		D_EXPLICIT Matrix4x4( ){ this->Identity( ); }
+		~Matrix4x4( ){ }
 
 		void Identity( );
 		D_BOOL IsIdentity( ) const;

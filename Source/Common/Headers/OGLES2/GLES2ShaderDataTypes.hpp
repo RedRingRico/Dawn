@@ -36,7 +36,6 @@ namespace Dawn
 
 	typedef struct __D_VERTEXATTRIBUTE
 	{
-		D_VERTEXTYPE	Type;
 		GLint			Location;
 		char			*pName;
 	}D_VERTEXATTRIBUTE;

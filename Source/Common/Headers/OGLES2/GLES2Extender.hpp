@@ -49,9 +49,15 @@ extern PFNGLDELETEVERTEXARRAYSOESPROC	__dglDeleteVertexArrays;
 #define dglEnableVertexAttribArray	glEnableVertexAttribArray
 #define dglGenBuffers				glGenBuffers
 #define dglGetError					glGetError
+#define dglGetProgramiv				glGetProgramiv
+#define dglGetProgramInfoLog		glGetProgramInfoLog
+#define dglGetShaderiv				glGetShaderiv
+#define dglGetShaderInfoLog			glGetShaderInfoLog
 #define dglGetString				glGetString
+#define dglGetUniformLocation		glGetUniformLocation
 #define dglLinkProgram				glLinkProgram
 #define dglShaderSource				glShaderSource
+#define dglUniformMatrix4fv			glUniformMatrix4fv
 #define dglUseProgram				glUseProgram
 #define dglVertexAttribPointer		glVertexAttribPointer
 #define dglViewport					glViewport

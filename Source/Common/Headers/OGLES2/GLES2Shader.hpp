@@ -33,6 +33,8 @@ namespace Dawn
 		GLuint m_VertexID;
 		GLuint m_FragmentID;
 
+		GLint m_Uniform;
+
 		D_BOOL m_Linked;
 	};
 }
