@@ -89,9 +89,6 @@
     <ClInclude Include="Headers\Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\HgVersion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\Headers\Event.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Headers\VertexCache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\HgVersion.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

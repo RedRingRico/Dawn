@@ -4,7 +4,7 @@
 #ifndef __DAWN_VERSION_HPP__ 
 #define __DAWN_VERSION_HPP__ 
 
-#include "HgVersion.h"
+#include "HgVersion.hpp"
 
 #define STRINGISE2( s ) #s
 #define STRINGISE( s ) STRINGISE2( s )

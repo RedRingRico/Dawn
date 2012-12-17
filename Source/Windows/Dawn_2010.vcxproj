@@ -179,7 +179,7 @@
     <ClInclude Include="..\Common\Headers\WindowEventListener.hpp" />
     <ClInclude Include="..\Common\Headers\WindowEventRouter.hpp" />
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp" />
-    <ClInclude Include="Headers\HgVersion.h" />
+    <ClInclude Include="Headers\HgVersion.hpp" />
     <ClInclude Include="Headers\Main.hpp" />
     <ClInclude Include="Headers\resource.h" />
     <ClInclude Include="Headers\Version.h" />
