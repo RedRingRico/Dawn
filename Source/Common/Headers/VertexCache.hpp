@@ -41,7 +41,7 @@ namespace Dawn
 		virtual D_MEMSIZE LineCount( ) const = 0;
 
 	private:
-		virtual D_MEMSIZE AttribToSize( D_BYTE p_Attribute ) const = 0;
+		virtual D_MEMSIZE AttribToSize( const D_BYTE p_Attribute ) const = 0;
 	};
 }
 

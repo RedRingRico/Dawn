@@ -375,7 +375,7 @@
 				RelativePath="..\Common\Headers\Hash.hpp">
 			</File>
 			<File
-				RelativePath=".\Headers\HgVersion.h">
+				RelativePath=".\Headers\HgVersion.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\Input.hpp">
