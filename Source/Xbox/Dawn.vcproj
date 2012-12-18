@@ -322,16 +322,28 @@
 				RelativePath="..\Common\Source\Matrix3x3.cpp">
 			</File>
 			<File
+				RelativePath="..\Common\Source\Matrix4x4.cpp">
+			</File>
+			<File
+				RelativePath="..\Common\Source\Quaternion.cpp">
+			</File>
+			<File
 				RelativePath=".\Source\Time.cpp">
 			</File>
 			<File
 				RelativePath="..\Common\Source\Vector3.cpp">
 			</File>
 			<File
+				RelativePath="..\Common\Source\Vector4.cpp">
+			</File>
+			<File
 				RelativePath="..\Common\Source\WindowEventRouter.cpp">
 			</File>
 			<File
 				RelativePath=".\Source\XboxRenderer.cpp">
+			</File>
+			<File
+				RelativePath=".\Source\XboxVertexCache.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -387,16 +399,34 @@
 				RelativePath="..\Common\Headers\Matrix3x3.hpp">
 			</File>
 			<File
+				RelativePath="..\Common\Headers\Matrix4x4.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Quaternion.hpp">
+			</File>
+			<File
 				RelativePath="..\Common\Headers\Renderer.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\RenderTypes.hpp">
 			</File>
 			<File
+				RelativePath="..\Common\Headers\Shader.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\ShaderData.hpp">
+			</File>
+			<File
 				RelativePath="..\Common\Headers\Time.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\Vector3.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\Vector4.hpp">
+			</File>
+			<File
+				RelativePath="..\Common\Headers\VertexCache.hpp">
 			</File>
 			<File
 				RelativePath="..\Common\Headers\WindowEventListener.hpp">
@@ -406,6 +436,9 @@
 			</File>
 			<File
 				RelativePath=".\Headers\XboxRenderer.hpp">
+			</File>
+			<File
+				RelativePath=".\Headers\XboxVertexCache.hpp">
 			</File>
 		</Filter>
 	</Files>
