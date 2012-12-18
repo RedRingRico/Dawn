@@ -51,6 +51,9 @@
     <ClCompile Include="..\Common\Source\OGL\GLVertexCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\Source\OGL\GLExtender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\DataTypes_Windows_x86_32.hpp">
@@ -135,6 +138,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\HgVersion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\OGL\GLShaderDefines.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Headers\OGL\GLExtender.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
