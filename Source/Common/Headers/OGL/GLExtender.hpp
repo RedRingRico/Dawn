@@ -11,7 +11,10 @@ extern "C"
 {
 #endif
 
-extern PFNGLBINDVERTEXARRAYPROC __dglBindVertexArray;
+extern PFNGLGENVERTEXARRAYSPROC		__dglGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYPROC		__dglBindVertexArray;
+extern PFNGLISVERTEXARRAYPROC		__dglIsVertexArray;
+extern PFNGLDELETEVERTEXARRAYSPROC	__dglDeleteVertexArrays;
 
 ///////////////////////////////////////////////////////////////////////////////
 // CORE FUNCTIONS /////////////////////////////////////////////////////////////
@@ -19,7 +22,10 @@ extern PFNGLBINDVERTEXARRAYPROC __dglBindVertexArray;
 #define dglClear		glClear
 #define dglGetString	glGetString
 
-#define dglBindVertexArray	__dglBindVertexArray
+#define dglGetVertexArrays		__dglGetVertexArrays
+#define dglBindVertexArray		__dglBindVertexArray
+#define dglIsVertexArray		__dglIsVertexArray
+#define dglDeleteVertexArrays	__dglDeleteVertexArrays
 
 #ifdef __cplusplus
 }
