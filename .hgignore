@@ -23,3 +23,5 @@ glob:*.swo
 glob:*.docstates
 glob:*.aps
 glob:*.pch
+glob:*.vim
+glob:HgVersion.hpp

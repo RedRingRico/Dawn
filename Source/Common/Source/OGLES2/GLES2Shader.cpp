@@ -28,7 +28,7 @@ namespace Dawn
 				dglShaderSource( m_VertexID, 1, &p_pSource, NULL );
 				dglCompileShader( m_VertexID );
 
-				dglGetShaderiv( m_VertexID, GL_COMPILE_STATUS, &Compiled );
+				
 
 				if( !Compiled )
 				{
