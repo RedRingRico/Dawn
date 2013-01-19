@@ -2,17 +2,24 @@
 #                                      Dawn Makefile [Pandora|Linux] Ver. 1.0 #
 ###############################################################################
 
+##### Make sure that the Angstrom ARM toolchain root was defined ##############
+ifeq ($(strip $(PNDSDK)),)
+$(error Please set PNDSDK to point to your Pandora toolchain root directory  )
+endif
+
 TARGETDIR	= ../../Bin/$(PLATFORM)
 OBJSDIR		= ../../Obj/$(PLATFORM)/$(BUILD)
 SOURCEDIR	= Source
 
 TARGET := Dawn
+TOOLCHAIN_BIN = $(PNDSDK)/bin
+TOOLCHAIN_USR = $(PNDSDK)/usr
 
 # Get the machine type to determine which set of libraries to use
 UNAME			= $(shell uname)
 UNAME_MACHINE	= $(shell uname -m)
 
-PREFIX = arm-angstrom-linux-gnueabi-
+PREFIX = pandora-
 
 BUILD_PLATFORM	= PANDORA
 PLATFORM		= Pandora
@@ -21,10 +28,10 @@ CC = $(PREFIX)g++
 
 CFLAGS_EXT =
 ifeq ($(UNAME), Linux)
-	CFLAGS_EXT	= -ffriend-injection -mcpu=cortex-a8 -Wa,-mcpu=cortex-a8 -mfpu=neon -Wa,-mfpu=neon -mfloat-abi=softfp
-	SYSIPATH	= -I/usr/local/angstrom/arm/include
-	SYSLPATH	= -L/usr/local/angstrom/arm/lib
-	SYSLIBS		= -lX11 -lGLESv2 -lEGL -lrt -lc
+	CFLAGS_EXT	= -ffriend-injection -std=c++0x -mcpu=cortex-a8 -Wa,-mcpu=cortex-a8 -mfpu=neon -Wa,-mfpu=neon -mfloat-abi=softfp
+	SYSIPATH	= -idirafter $(PNDSDK)/usr/include
+	SYSLPATH	= -L$(PNDSDK)/usr/lib
+	SYSLIBS		= -lX11 -lGLESv2 -lEGL -lrt -lc -lIMGegl -lXau -lXdmcp -lsrv_um
 endif
 
 ##### Debug #######
@@ -54,7 +61,7 @@ ifneq ($(OBJSDIR), $(notdir $(CURDIR)))
 .PHONY: VERSIONINFO OBJSDIR TARGETDIR
 VERSIONINFO:
 	@echo "---------------------- Generating Version Information -------------------------"
-	@sh ./HgVersion.sh
+	@sh ./GitVersion.sh ./Headers/GitVersion.hpp
 	@echo "-------------------------------------------------------------------------------"
 
 TARGETDIR:
@@ -75,7 +82,7 @@ HEADERS		= $(wildcard *.hpp)
 ###############
 
 $(TARGET): VERSIONINFO OBJSDIR TARGETDIR $(OBJS) $(GLESOBJS) $(COBJS)
-	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(GLESOBJS) $(COBJS) -Wl,-rpath,$(SYSLPATH) $(SYSLIBS)
+	cd $(OBJSDIR) && $(CC) -o ../$(TARGETDIR)/$(TARGET) $(OBJS) $(GLESOBJS) $(COBJS) $(SYSLPATH) $(SYSLIBS)
 
 %.o: ../Common/Source/OGLES2/%.cpp
 	$(CC) $(CFLAGS) -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -IHeaders -I../Common/Headers $(SYSIPATH) $< -o $(OBJSDIR)/$@
