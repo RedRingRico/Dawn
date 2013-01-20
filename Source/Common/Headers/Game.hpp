@@ -5,7 +5,6 @@
 #include <Renderer.hpp>
 #include <EventRouter.hpp>
 #include <WindowEventListener.hpp>
-#include <HgVersion.hpp>
 #include <cstdio>
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
@@ -60,7 +59,7 @@ namespace Dawn
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 		HWND m_Window;
 		HDC m_DeviceContext;
-		wchar_t m_pWindowTitle;
+		wchar_t *m_pWindowTitle;
 
 		static LRESULT CALLBACK WindowProc( HWND p_HWND, UINT p_Message,
 			WPARAM p_WParam, LPARAM p_LParam );

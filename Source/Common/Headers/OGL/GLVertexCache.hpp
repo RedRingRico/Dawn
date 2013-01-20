@@ -2,8 +2,8 @@
 // OpenGL vertex buffer objects [VBO] require OpenGL 1.5, therefore this
 // will only be used for OpenGL versions equal to, or greater than, 1.5
 
-#ifndef __DAWN_GLVERTEXCACHE_HPP__
-#define __DAWN_GLVERTEXCACHE_HPP__
+#ifndef __DAWN_OGL_GLVERTEXCACHE_HPP__
+#define __DAWN_OGL_GLVERTEXCACHE_HPP__
 
 #include <VertexCache.hpp>
 #include <Renderer.hpp>

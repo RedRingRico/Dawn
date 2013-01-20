@@ -6,6 +6,7 @@
 #include <OGLES2/GLES2VertexCache.hpp>
 #include <OGLES2/GLES2Shader.hpp>
 #include <Matrix4x4.hpp>
+#include <GitVersion.hpp>
 
 namespace Dawn
 {
@@ -64,8 +65,8 @@ namespace Dawn
 		std::stringstream CompleteTitle;
 
 		CompleteTitle << g_pWindowTitle << " Ver. " << 0 << "." << 0 << "." <<
-			0 << "." << HG_REVISION << ( HG_LOCAL_MODIFICATIONS ? "M" : "" ) <<
-			" [" << HG_CHANGESET << "]";
+			0 << "." << GIT_ROLLINGCOUNT << " [" << GIT_COMMITHASH << " | "
+			<< GIT_COMMITTERDATE << "]";
 
 		m_pWindowTitle = new char[ CompleteTitle.str( ).size( ) + 1 ];
 		strncpy( m_pWindowTitle, CompleteTitle.str( ).c_str( ),

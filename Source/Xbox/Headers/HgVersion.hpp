@@ -1,0 +1,10 @@
+#ifndef __DAWN_HGVERSION_HPP__
+#define __DAWN_HGVERSION_HPP__
+
+#define HG_REVISION				75
+#define HG_LOCAL_MODIFICATIONS	1
+#define HG_CHANGESET			"b5176f004d305e622363fc2131780c4f2cdebc82"
+#define HG_CHANGESET_SHORT		"b5176f004d30"
+
+#endif
+

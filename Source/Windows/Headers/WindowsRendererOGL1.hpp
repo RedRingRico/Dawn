@@ -2,7 +2,7 @@
 #define __DAWN_WINDOWSRENDEREROGL1_HPP__
 
 #include <Renderer.hpp>
-
+#include <OGL/GLExtender.hpp>
 
 namespace Dawn
 {
@@ -33,6 +33,8 @@ namespace Dawn
 		PIXELFORMATDESCRIPTOR	m_PixelFormatDesc;
 		HGLRC					m_GLRC;
 		HDC						m_DC;
+
+		Dawn::GLExtender		m_Extender;
 
 		CanvasDescription		m_Canvas;
 	};

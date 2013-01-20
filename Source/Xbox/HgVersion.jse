@@ -3,7 +3,7 @@
 var FileSystem =	new ActiveXObject( "Scripting.FileSystemObject" );
 var Shell =	new ActiveXObject( "WScript.Shell" );
 
-var OutFile = FileSystem.CreateTextFile( "./Headers/HgVersion.h", true );
+var OutFile = FileSystem.CreateTextFile( "./Headers/HgVersion.hpp", true );
 
 var RevNum					= Shell.Exec( "hg identify -n" );
 var Rev						= RevNum.StdOut.ReadAll( );

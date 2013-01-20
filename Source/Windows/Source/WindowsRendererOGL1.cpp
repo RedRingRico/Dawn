@@ -69,7 +69,7 @@ namespace Dawn
 		D_BOOL PixelResult = SetPixelFormat( m_DC, PixelFormat,
 			&m_PixelFormatDesc );
 
-		if( PixelFormat == D_FALSE ) 
+		if( PixelFormat == D_FALSE )
 		{
 			return D_ERROR;
 		}
@@ -87,6 +87,8 @@ namespace Dawn
 		}
 
 		glViewport( 0, 0, m_Canvas.Width( ), m_Canvas.Height( ) );
+
+		m_Extender.Initialise( );
 
 		return D_OK;
 	}

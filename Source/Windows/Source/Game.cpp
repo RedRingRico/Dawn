@@ -2,7 +2,7 @@
 #include <Events.hpp>
 #include <WindowsRendererOGL1.hpp>
 #include <Time.hpp>
-#include <HgVersion.h>
+#include <HgVersion.hpp>
 #include <string>
 #include <sstream>
 
@@ -92,7 +92,8 @@ namespace Dawn
 	{
 		if( m_pWindowTitle )
 		{
-			delete m_pWindowTitle;
+			delete [ ] m_pWindowTitle;
+			m_pWindowTitle = D_NULL;
 		}
 
 		if( m_pWindowEventListener )
