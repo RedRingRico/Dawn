@@ -17,14 +17,8 @@ SOURCEDIR	= Source ../Common/Source ../Common/Source/OGLES2
 
 TARGET := Dawn
 OUTFILE	= $(TARGETDIR)/$(TARGET)
-TOOLCHAIN_BIN = $(PNDSDK)/bin
-TOOLCHAIN_USR = $(PNDSDK)/usr
 
-# Get the machine type to determine which set of libraries to use
-UNAME			= $(shell uname)
-UNAME_MACHINE	= $(shell uname -m)
-
-PREFIX = pandora-
+TOOL_PREFIX = pandora-
 
 BUILD_PLATFORM	= PANDORA
 PLATFORM		= Pandora
@@ -35,34 +29,44 @@ GCCVER	= $(shell $(CPP) -dumpversion)
 
 BUILD_TYPE := debug
 
-CPP = $(PREFIX)g++
+CPP = $(TOOL_PREFIX)g++
 
-CPPFLAGS	= -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) -DSUPPORT_X11 -I$(TOPSRC)/Pandora/Headers -I$(TOPSRC)/Common/Headers
-CPPFLAGS_EXT =
-CPPFLAGS_EXT	= -ffriend-injection -std=c++0x -mcpu=cortex-a8 -Wa,-mcpu=cortex-a8 -mfpu=neon -Wa,-mfpu=neon -mfloat-abi=softfp
-SYSIPATH	= -idirafter $(PNDSDK)/usr/include
-SYSLPATH	= -L$(PNDSDK)/usr/lib
-SYSLIBS		= -lX11 -lGLESv2 -lEGL -lrt -lc -lIMGegl -lXau -lXdmcp -lsrv_um
+CPPFLAGS	=	-c -DBUILD_$(BUILD_DEF) -DPLATFORM_$(BUILD_PLATFORM) \
+				-DPLATFORM_$(BUILD_PLATFORM)_$(ARCH) \
+				-DPLATFORM_$(BUILD_PLATFORM)_$(ARCH)_$(BITTYPE) \
+				-DBITSIZE_$(BITTYPE) -DARCH_$(ARCH) -DSUPPORT_X11 \
+				-I$(TOPSRC)/Pandora/Headers -I$(TOPSRC)/Common/Headers
+CPPFLAGS_EXT=	-ffriend-injection -std=c++0x -mcpu=cortex-a8 \
+				-Wa,-mcpu=cortex-a8 -mfpu=neon -Wa,-mfpu=neon \
+				-mfloat-abi=softfp
+SYSIPATH	=	-idirafter $(PNDSDK)/usr/include
+SYSLPATH	=	-L$(PNDSDK)/usr/lib
+SYSLIBS		=	-lX11 -lGLESv2 -lEGL -lrt -lc -lIMGegl -lXau -lXdmcp -lsrv_um
+LINKFLAGS	=
 
 ##### Debug #######
-debug:		BUILD = Debug
-debug:		BUILD_DEF = DEBUG
+debug:		BUILD		= Debug
+debug:		BUILD_TYPE	= debug
+debug:		BUILD_DEF	= DEBUG
 debug:		TARGET := $(TARGET)D
-debug:		CPPFLAGS += -c -g -ggdb -Wall -D_DEBUG $(CPPFLAGS_EXT)
+debug:		CPPFLAGS += -g -ggdb -Wall -D_DEBUG $(CPPFLAGS_EXT)
 debug:		$(TARGET)
 
 ##### Release #####
-release:	BUILD = Release
-release:	BUILD_DEF = RELEASE
+release:	BUILD		= Release
+release:	BUILD_TYPE	= release
+release:	BUILD_DEF	= RELEASE
 release:	TARGET := $(TARGET)
-release:	CPPFLAGS += -c -O3 $(CPPFLAGS_EXT)
+release:	CPPFLAGS += -O3 $(CPPFLAGS_EXT)
+release:	LINKFLAGS += -Wl,-S
 release:	$(TARGET)
 
 ##### Profile #####
-profile:	BUILD = Profile
-profile:	BUILD_DEF = PROFILE
+profile:	BUILD		= Profile
+profile:	BUILD_TYPE	= profile
+profile:	BUILD_DEF	= PROFILE
 profile:	TARGET := $(TARGET)P
-profile:	CPPFLAGS += -c -O3 -g -ggdb -Wall -D_DEBUG $(CPPFLAGS_EXT)
+profile:	CPPFLAGS += -O3 -g -ggdb -Wall -D_DEBUG $(CPPFLAGS_EXT)
 profile:	$(TARGET)
 
 ##### Build the object files while not in the Obj directory ###################
@@ -107,12 +111,12 @@ $(TARGET): $(OBJS)
 	@printf "%s" "------------------------------------------------------------"
 	@printf "%s\n\n" "-------------------"
 	@printf "Creating: $(OUTFILE)... "
-	@$(CPP) -o $(OUTFILE) $(OBJS) $(SYSLPATH) $(SYSLIBS) 2> lmsgs
+	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) $(OBJS) $(SYSLPATH) $(SYSLIBS) 2> lmsgs
 	@printf "[OK]\n"
 
 %.o: %.cpp
 	@printf "Compiling: $<... "
-	@$(CPP) -MMD -MP -MF $*.d $(CPPFLAGS)  $(SYSIPATH) $< -o $@ 2> $*.cmsgs;\
+	@$(CPP) -MMD -MP -MF $*.d $(CPPFLAGS) $(SYSIPATH) $< -o $@ 2> $*.cmsgs;\
 	RETVAL=$$?;\
 	if [[ $$RETVAL == 0 ]]; then\
 		printf "[OK]\n";\
