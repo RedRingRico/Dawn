@@ -6,6 +6,7 @@
 #include <OGLES2/GLES2VertexCache.hpp>
 #include <OGLES2/GLES2Shader.hpp>
 #include <Matrix4x4.hpp>
+#include <GitVersion.hpp>
 
 namespace Dawn
 {
@@ -52,7 +53,7 @@ namespace Dawn
 			KeyPressMask | KeyReleaseMask |
 			ButtonPressMask | ButtonReleaseMask;
 		m_Window = XCreateWindow( m_pDisplay, DefaultRootWindow( m_pDisplay ),
-			0, 0, 1280, 720, 0,
+			0, 0, 800, 480, 0,
 			CopyFromParent, InputOutput, CopyFromParent,
 			CWEventMask | CWBorderPixel,
 			&WinAttribs );
@@ -74,8 +75,8 @@ namespace Dawn
 
 		XStoreName( m_pDisplay, m_Window, m_pWindowTitle );
 
-		m_Canvas.Width( 1280 );
-		m_Canvas.Height( 720 );
+		m_Canvas.Width( 800 );
+		m_Canvas.Height( 480 );
 		m_Canvas.BackBufferCount( 1 );
 		m_Canvas.Colour( FORMAT_ARGB8 );
 		m_Canvas.DepthStencil( FORMAT_D24S8 );

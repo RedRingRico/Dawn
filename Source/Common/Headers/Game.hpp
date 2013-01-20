@@ -5,7 +5,6 @@
 #include <Renderer.hpp>
 #include <EventRouter.hpp>
 #include <WindowEventListener.hpp>
-#include <GitVersion.hpp>
 #include <cstdio>
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
