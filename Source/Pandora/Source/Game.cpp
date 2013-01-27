@@ -47,19 +47,102 @@ namespace Dawn
 			return D_ERROR;
 		}
 
+		Screen *pScreen = DefaultScreenOfDisplay( m_pDisplay );
+		D_UINT32 X = 0, Y = 0, Width = 0, Height = 0;
+
+		// Regardless of the fullscreen flag, if the width or height are
+		// 800x480 or less, set it to the width and height of the screen
+		// Basically, don't allow for a window at a resolution less than or
+		// equal to 800x480
+		Width = WidthOfScreen( pScreen );
+		Height = HeightOfScreen( pScreen );
+
+		if( Width <= 800 || Height <= 480 )
+		{
+			m_FullScreen = D_TRUE;
+		}
+
+		if( m_FullScreen )
+		{
+			Width = WidthOfScreen( pScreen );
+			Height = HeightOfScreen( pScreen );
+		}
+		else
+		{
+			D_FLOAT32 FWidth = static_cast< D_FLOAT32 >( Width );
+			D_FLOAT32 FHeight = static_cast< D_FLOAT32 >( Height );
+
+			X = static_cast< D_UINT32 >( ( FWidth / 100.0f )*5.0f );
+			Y = static_cast< D_UINT32 >( ( FHeight / 100.0f )*5.0f );
+
+			Width = static_cast< D_UINT32 >( ( FWidth / 100.0f )*90.0f );
+			Height = static_cast< D_UINT32 >( ( FHeight / 100.0f )*90.0f );
+		}
+
 		XSetWindowAttributes WinAttribs;
 		WinAttribs.border_pixel = 0;
 		WinAttribs.event_mask = StructureNotifyMask | ExposureMask |
 			KeyPressMask | KeyReleaseMask |
-			ButtonPressMask | ButtonReleaseMask;
+			ButtonPressMask | ButtonReleaseMask |
+			FocusChangeMask | EnterWindowMask | LeaveWindowMask;
+		WinAttribs.override_redirect = True;
 		m_Window = XCreateWindow( m_pDisplay, DefaultRootWindow( m_pDisplay ),
-			0, 0, 800, 480, 0,
+			X, Y, Width, Height, 0,
 			CopyFromParent, InputOutput, CopyFromParent,
-			CWEventMask | CWBorderPixel,
+			CWEventMask | CWBorderPixel | CWOverrideRedirect,
 			&WinAttribs );
-			
+		
+		// Hide the cursor
+		Pixmap BlankPointer;
+		XColor BlankColor;
+		char Data[ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+		Cursor NoCursor;
+		XColor Black, Dummy;
+		Colormap NoColourmap;
+
+		NoColourmap = DefaultColormap( m_pDisplay,
+			DefaultScreen( m_pDisplay ) );
+		XAllocNamedColor( m_pDisplay, NoColourmap, "black", &Black,
+			&Dummy );
+		BlankPointer = XCreateBitmapFromData( m_pDisplay, m_Window, Data,
+			8, 8 );
+
+		NoCursor = XCreatePixmapCursor( m_pDisplay, BlankPointer,
+			BlankPointer, &Black, &Black, 0, 0 );
+
+		XDefineCursor( m_pDisplay, m_Window, NoCursor );
+		XFreeCursor( m_pDisplay, NoCursor );
+		if( BlankPointer != None )
+		{
+			XFreePixmap( m_pDisplay, BlankPointer );
+		}
+		XFreeColors( m_pDisplay, NoColourmap, &Black.pixel, 1, 0 );
+
 		XMapWindow( m_pDisplay, m_Window );
 		XMapRaised( m_pDisplay, m_Window );
+
+		XMoveWindow( m_pDisplay, m_Window, X, Y );
+
+		// Set the window to fullscreen if applicable
+		if( m_FullScreen )
+		{
+			XEvent Ev;
+			Atom WM_State = XInternAtom( m_pDisplay, "_NET_WM_STATE", False );
+			Atom WM_FullScreen = XInternAtom( m_pDisplay,
+				"_NET_WM_STATE_FULLSCREEN", False );
+			memset( &Ev, 0, sizeof( Ev ) );
+
+			Ev.type = ClientMessage;
+			Ev.xclient.window = m_Window;
+			Ev.xclient.message_type = WM_State;
+			Ev.xclient.format = 32;
+			Ev.xclient.data.l[ 0 ] = 1;
+			Ev.xclient.data.l[ 1 ] = WM_FullScreen;
+			Ev.xclient.data.l[ 2 ] = 0;
+
+			XSendEvent( m_pDisplay, DefaultRootWindow( m_pDisplay ), False,
+				SubstructureNotifyMask, &Ev );
+		}
 
 		// Append the Mercurial version information to the window title
 		std::stringstream CompleteTitle;
@@ -75,8 +158,8 @@ namespace Dawn
 
 		XStoreName( m_pDisplay, m_Window, m_pWindowTitle );
 
-		m_Canvas.Width( 800 );
-		m_Canvas.Height( 480 );
+		m_Canvas.Width( Width );
+		m_Canvas.Height( Height );
 		m_Canvas.BackBufferCount( 1 );
 		m_Canvas.Colour( FORMAT_ARGB8 );
 		m_Canvas.DepthStencil( FORMAT_D24S8 );
@@ -120,6 +203,24 @@ namespace Dawn
 				}
 				case ConfigureNotify:
 				{
+					break;
+				}
+				case EnterNotify:
+				{
+					std::cout << "Got focus!\n";
+					XGrabKeyboard( m_pDisplay, m_Window, True, GrabModeAsync,
+						GrabModeAsync, CurrentTime );
+					XGrabPointer( m_pDisplay, m_Window, True,
+						EnterWindowMask | LeaveWindowMask | PointerMotionMask,
+						GrabModeAsync, GrabModeAsync, None, None,
+						CurrentTime );
+					break;
+				}
+				case LeaveNotify:
+				{
+					std::cout << "Lost focus\n";
+					XUngrabKeyboard( m_pDisplay, CurrentTime );
+					XUngrabPointer( m_pDisplay, CurrentTime );
 					break;
 				}
 				default:
