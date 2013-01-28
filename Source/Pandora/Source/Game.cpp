@@ -171,12 +171,28 @@ namespace Dawn
 
 		Dawn::StartTime( );
 		
-		m_pCache = new Dawn::GLES2VertexCache( 1024, 1024, 1, 0x6, 10 );
+		m_pCache = new Dawn::GLES2VertexCache( 1024, 1024, 1, 0x66, 10 );
 
 		if( m_pCache->Initialise( ) != D_OK )
 		{
 			return D_ERROR;
 		}
+		
+		Dawn::GLES2ShaderData Shad;
+		Dawn::D_VERTEXATTRIBUTE Attr[ 2 ];
+		Attr[ 0 ].Location = 0;
+		Attr[ 0 ].pName = "vPosition";
+		Attr[ 1 ].Location = 1;
+		Attr[ 1 ].pName = "vColour";
+
+		m_pShader = new Dawn::GLES2Shader( );
+
+		m_pShader->Load( "Data/Shaders/VertColour.vsh", D_SHADERTYPE_VERTEX );
+		m_pShader->Load( "Data/Shaders/VertColour.fsh",
+			D_SHADERTYPE_FRAGMENT );
+		Shad.AddVertexAttribute( Attr[ 0 ] );
+		Shad.AddVertexAttribute( Attr[ 1 ] );
+		m_pShader->Link( Shad );
 
 		return D_OK;
 	}
@@ -207,7 +223,6 @@ namespace Dawn
 				}
 				case EnterNotify:
 				{
-					std::cout << "Got focus!\n";
 					XGrabKeyboard( m_pDisplay, m_Window, True, GrabModeAsync,
 						GrabModeAsync, CurrentTime );
 					XGrabPointer( m_pDisplay, m_Window, True,
@@ -218,7 +233,6 @@ namespace Dawn
 				}
 				case LeaveNotify:
 				{
-					std::cout << "Lost focus\n";
 					XUngrabKeyboard( m_pDisplay, CurrentTime );
 					XUngrabPointer( m_pDisplay, CurrentTime );
 					break;
@@ -235,26 +249,28 @@ namespace Dawn
 	{
 		static D_FLOAT32 YRot = 0.0f;
 
+		// Draw an axis indicator four units in magnitude
 		D_FLOAT32 pVerts [ ] =
 		{
-			-0.4f, -0.4f, 0.0f,
-			0.0f, 0.4f, 0.0f,
-			0.4f, -0.4f, 0.0f
+			// X
+			0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			4.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+
+			// Y
+			0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 4.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+
+			// Z
+			0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 4.0f, 0.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 		};
-		GLushort pInd[ ] = { 0, 1, 2 };
 
-		m_pCache->Add( 3, ( D_BYTE * )pVerts, 3, pInd, 1 );
-	
-		const char *Vert = 
-		"attribute vec3 vPos;\nuniform mat4 uWVP;\nvoid main( )\n{\ngl_Position = uWVP * vec4( vPos, 1.0 );\n}\n";
-		const char *Frag =
-		"precision mediump float;\nvoid main( )\n{\ngl_FragColor = vec4( 0.0, 1.0, 0.0, 1.0 );\n}\n";
+		GLushort pInd[ ] = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-		Dawn::GLES2Shader Shader;
-		Dawn::GLES2ShaderData Shad;
-		Dawn::D_VERTEXATTRIBUTE Attr;
-		Attr.Location = 0;
-		Attr.pName = "vPos";
+		m_pCache->Add( 9, ( D_BYTE * )pVerts, 9, pInd, 3 );
 
 		D_FLOAT32 Matrix[ 16 ];
 
@@ -265,16 +281,12 @@ namespace Dawn
 
 		RotY.GetMatrix( Matrix );
 
-		Shader.Compile( Vert, D_SHADERTYPE_VERTEX );
-		Shader.Compile( Frag, D_SHADERTYPE_FRAGMENT );
-		Shad.AddVertexAttribute( Attr );
-		Shader.Link( Shad );
 		m_pRenderer->BeginScene( D_TRUE, D_TRUE, D_TRUE );
-		Shader.Activate( );
+		m_pShader->Activate( );
 
 		// Doesn't care about shader type -- also, there's only one thing to
 		// set
-		Shader.SetConstantData( Matrix, D_SHADERTYPE_VERTEX );
+		m_pShader->SetConstantData( Matrix, D_SHADERTYPE_VERTEX );
 
 		m_pCache->Flush( );
 		m_pRenderer->EndScene( );

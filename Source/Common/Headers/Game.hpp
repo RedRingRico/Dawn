@@ -6,6 +6,7 @@
 #include <EventRouter.hpp>
 #include <WindowEventListener.hpp>
 #include <cstdio>
+#include <Shader.hpp>
 
 #if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
 static const wchar_t *g_pWindowTitle =
@@ -75,6 +76,7 @@ namespace Dawn
 		D_BOOL m_Running;
 
 		Dawn::VertexCache *m_pCache;
+		Dawn::Shader *m_pShader;
 	};
 }
 

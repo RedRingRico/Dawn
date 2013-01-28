@@ -28,7 +28,7 @@ namespace Dawn
 				dglShaderSource( m_VertexID, 1, &p_pSource, NULL );
 				dglCompileShader( m_VertexID );
 
-				
+				dglGetShaderiv( m_VertexID, GL_COMPILE_STATUS, &Compiled );
 
 				if( !Compiled )
 				{
@@ -89,6 +89,110 @@ namespace Dawn
 	D_UINT32 GLES2Shader::Load( const char *p_pFileName,
 		const D_SHADERTYPE p_Type )
 	{
+		// TODO
+		// Determine if the file type is compiled or not
+
+		// Read the file and store the contents in memory
+		FILE *pFile = D_NULL;
+		pFile = fopen( p_pFileName, "rb" );
+
+		std::cout << "[Dawn::GLES2Shader::Load] <INFO> "
+			"Loading [" << p_pFileName << "] ... ";
+
+		if( pFile == D_NULL )
+		{
+			return D_ERROR;
+		}
+
+		fseek( pFile, 0, SEEK_END );
+		D_MEMSIZE FileSize = ftell( pFile );
+		rewind( pFile );
+
+		char *pSource = new char[ FileSize ];
+		fread( pSource, sizeof( char ), FileSize, pFile );
+		if( pFile != D_NULL )
+		{
+			fclose( pFile );
+		}
+
+		switch( p_Type )
+		{
+			GLint Compiled;
+
+			case D_SHADERTYPE_VERTEX:
+			{
+				m_VertexID = dglCreateShader( GL_VERTEX_SHADER );
+				dglShaderSource( m_VertexID, 1,
+					const_cast< const char ** >( &pSource ), NULL );
+				dglCompileShader( m_VertexID );
+
+				dglGetShaderiv( m_VertexID, GL_COMPILE_STATUS, &Compiled );
+
+				if( !Compiled )
+				{
+					GLint InfoLen = 0;
+					dglGetShaderiv( m_VertexID, GL_INFO_LOG_LENGTH,
+						&InfoLen );
+
+					if( InfoLen > 1 )
+					{
+						char *pLog = new char[ InfoLen ];
+
+						dglGetShaderInfoLog( m_VertexID, InfoLen, NULL,
+							pLog );
+						std::cout << pLog << std::endl;
+
+						delete [ ] pLog;
+					}
+
+					delete [ ] pSource;
+					return D_ERROR;
+				}
+
+				std::cout << "[OK]" << std::endl;
+				break;
+			}
+			case D_SHADERTYPE_FRAGMENT:
+			{
+				m_FragmentID = dglCreateShader( GL_FRAGMENT_SHADER );
+				dglShaderSource( m_FragmentID, 1,
+					const_cast< const char ** >( &pSource ), NULL );
+				dglCompileShader( m_FragmentID );
+				dglGetShaderiv( m_FragmentID, GL_COMPILE_STATUS, &Compiled );
+				if( !Compiled )
+				{
+					GLint InfoLen = 0;
+
+					dglGetShaderiv( m_FragmentID, GL_INFO_LOG_LENGTH,
+						&InfoLen );
+
+					if( InfoLen > 1 )
+					{
+						char *pLog = new char[ InfoLen ];
+
+						dglGetShaderInfoLog( m_FragmentID, InfoLen, NULL,
+							pLog );
+						std::cout << pLog << std::endl;
+
+						delete [ ] pLog;
+					}
+
+					delete [ ] pSource;
+					return D_ERROR;
+				}
+
+				std::cout << "[OK]" << std::endl;
+				break;
+			}
+			default:
+			{
+				return D_ERROR;
+			}
+		}
+
+		delete [ ] pSource;
+		pSource = D_NULL;
+
 		return D_OK;
 	}
 
