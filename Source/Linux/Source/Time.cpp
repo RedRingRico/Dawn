@@ -2,11 +2,12 @@
 
 namespace Dawn
 {
-	D_BOOL StartTime( )
+	ZED_BOOL StartTime( )
 	{
-		return D_TRUE;
+		return ZED_TRUE;
 	}
-	D_FLOAT32 GetTimeMS( )
+
+	ZED_FLOAT32 GetTimeMS( )
 	{
 		return 0.0f;
 	}

@@ -7,10 +7,10 @@ namespace Dawn
 {
 	class InputEventListener : public EventListener
 	{
-#if ( BUILD_DEBUG || BUILD_PROFILE )
+#if ( ZED_BUILD_DEBUG || ZED_BUILD_PROFILE )
 		virtual const char *GetName( ){ return "InputEventListner"; }
 #endif
-		virtual D_BOOL HandleEvent( const Event &p_Event );
+		virtual ZED_BOOL HandleEvent( const Event &p_Event );
 	};
 }
 

@@ -7,6 +7,10 @@ ifeq ($(strip $(PNDSDK)),)
 $(error Please set PNDSDK to point to your Pandora toolchain root directory  )
 endif
 
+ifeq ($(strip $(ZEDSDK)),)
+$(error Please set ZEDSDK to point to your ZED SDK root directory )
+endif
+
 ifndef TOPDIR
 export TOPDIR		:= $(shell cd ../../ && pwd)
 export TOPSRC		= $(TOPDIR)/Source
@@ -40,7 +44,9 @@ CPPFLAGS_EXT=	-ffriend-injection -std=c++0x -mcpu=cortex-a8 \
 				-Wa,-mcpu=cortex-a8 -mfpu=neon -Wa,-mfpu=neon \
 				-mfloat-abi=softfp
 SYSIPATH	=	-idirafter $(PNDSDK)/usr/include
+INCPATH		=	-I$(ZEDSDK)/include/Pandora
 SYSLPATH	=	-L$(PNDSDK)/usr/lib
+LIBPATH		=	-L$(ZEDSDK)/lib/Pandora
 SYSLIBS		=	-lX11 -lGLESv2 -lEGL -lrt -lc -lIMGegl -lXau -lXdmcp -lsrv_um
 LINKFLAGS	=
 
@@ -50,6 +56,7 @@ debug:		BUILD_TYPE	= debug
 debug:		BUILD_DEF	= DEBUG
 debug:		TARGET := $(TARGET)D
 debug:		CPPFLAGS += -g -ggdb -Wall -D_DEBUG $(CPPFLAGS_EXT)
+debug:		LIBS = -lZEDRendererD -lZEDArithmeticD -lZEDSystemD
 debug:		$(TARGET)
 
 ##### Release #####
@@ -111,12 +118,24 @@ $(TARGET): $(OBJS)
 	@printf "%s" "------------------------------------------------------------"
 	@printf "%s\n\n" "-------------------"
 	@printf "Creating: $(OUTFILE)... "
-	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) $(OBJS) $(SYSLPATH) $(SYSLIBS) 2> lmsgs
-	@printf "[OK]\n"
+	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) $(OBJS) $(SYSLPATH) $(LIBPATH) \
+	$(SYSLIBS) $(LIBS) 2> lmsgs;\
+	RETVAL=$$?;\
+	if [[ $$RETVAL == 0 ]]; then\
+		printf "[OK]\n";\
+	else\
+		printf "\n\n%s" "------------------------------------ ERROR --------";\
+		printf "%s\n" "----------------------------";\
+		cat lmsgs;\
+		printf "%s" "-------------------------------------------------------";\
+		printf "%s\n" "------------------------";\
+		exit 1;\
+	fi
 
 %.o: %.cpp
 	@printf "Compiling: $<... "
-	@$(CPP) -MMD -MP -MF $*.d $(CPPFLAGS) $(SYSIPATH) $< -o $@ 2> $*.cmsgs;\
+	@$(CPP) -MMD -MP -MF $*.d $(CPPFLAGS) $(SYSIPATH) $(INCPATH) \
+	$< -o $@ 2> $*.cmsgs;\
 	RETVAL=$$?;\
 	if [[ $$RETVAL == 0 ]]; then\
 		printf "[OK]\n";\

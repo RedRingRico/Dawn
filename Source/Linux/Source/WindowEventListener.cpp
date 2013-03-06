@@ -4,7 +4,7 @@
 
 namespace Dawn
 {
-	D_BOOL WindowEventListener::HandleEvent( const Event &p_Event )
+	ZED_BOOL WindowEventListener::HandleEvent( const Event &p_Event )
 	{
 		if( p_Event.Type( ).ID( ) == g_EventWindowResizeID )
 		{
@@ -13,10 +13,10 @@ namespace Dawn
 
 			m_pRenderer->ResizeCanvas( pData->Width( ), pData->Height( ) );
 
-			return D_TRUE;
+			return ZED_TRUE;
 		}
 		
-		return D_FALSE;
+		return ZED_FALSE;
 	}
 }
 

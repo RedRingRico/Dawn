@@ -12,13 +12,13 @@ namespace Dawn
 	class EventType
 	{
 	public:
-		D_EXPLICIT EventType( const char * const p_pIDString ) :
+		ZED_EXPLICIT EventType( const char * const p_pIDString ) :
 			m_ID( Dawn::Hash( p_pIDString ) ),
 			m_pIDString( p_pIDString )
 		{
 		}
 
-		D_UINT32 ID( ) const
+		ZED_UINT32 ID( ) const
 		{
 			return m_ID;
 		}
@@ -28,24 +28,24 @@ namespace Dawn
 			return m_pIDString;
 		}
 
-		D_BOOL operator<( const EventType &p_Other ) const
+		ZED_BOOL operator<( const EventType &p_Other ) const
 		{
 			return ( m_ID < p_Other.m_ID );
 		}
 
-		D_BOOL operator==( const EventType &p_Other ) const
+		ZED_BOOL operator==( const EventType &p_Other ) const
 		{
 			if( p_Other.m_ID == this->m_ID )
 			{
-				return D_TRUE;
+				return ZED_TRUE;
 			}
 
-			return D_FALSE;
+			return ZED_FALSE;
 		}
 
 	private:
 		// The hashed version of the ID
-		D_UINT32	m_ID;
+		ZED_UINT32	m_ID;
 		// ID in its raw form (much less runtime-friendly)
 		const char	*m_pIDString;
 	};
@@ -64,9 +64,9 @@ namespace Dawn
 	class Event
 	{
 	public:
-		D_EXPLICIT Event( const char * const p_pEventName,
-			D_FLOAT32 p_TimeStamp = Dawn::GetTimeMS( ),
-			EventData *p_pData = D_NULL ) :
+		ZED_EXPLICIT Event( const char * const p_pEventName,
+			ZED_FLOAT32 p_TimeStamp = Dawn::GetTimeMS( ),
+			EventData *p_pData = ZED_NULL ) :
 			m_Type( p_pEventName ),
 			m_pData( p_pData ),
 			m_TimeStamp( p_TimeStamp ),
@@ -81,12 +81,12 @@ namespace Dawn
 		// Get the data as an non-typed object
 		const EventData *Data( ) const { return m_pData; }
 
-		const D_FLOAT32 Time( ) const { return m_TimeStamp; }
+		const ZED_FLOAT32 Time( ) const { return m_TimeStamp; }
 
 		// Time delay manipulator and accessor
-		void TimeDelay( const D_FLOAT32 p_TimeDelay )
+		void TimeDelay( const ZED_FLOAT32 p_TimeDelay )
 			{ m_TimeDelay = p_TimeDelay; }
-		const D_FLOAT32 TimeDelay( ) const { return m_TimeDelay; }
+		const ZED_FLOAT32 TimeDelay( ) const { return m_TimeDelay; }
 
 		// Get the real data
 		template< typename T > T *DataPtr( ) const
@@ -94,14 +94,14 @@ namespace Dawn
 			return reinterpret_cast< T * >( m_pData );
 		}
 
-		const D_BOOL operator<( const Event &p_Other ) const
+		const ZED_BOOL operator<( const Event &p_Other ) const
 		{
 			if( ( m_TimeDelay + m_TimeStamp ) <
 				( p_Other.m_TimeDelay + p_Other.m_TimeStamp ) )
 			{
-				return D_TRUE;
+				return ZED_TRUE;
 			}
-			return D_FALSE;
+			return ZED_FALSE;
 		}
 
 	private:
@@ -112,9 +112,9 @@ namespace Dawn
 		// listener
 		EventData *m_pData;
 		// Time at which the event was generated
-		D_FLOAT32	m_TimeStamp;
+		ZED_FLOAT32	m_TimeStamp;
 		// Offset for delaying the delivery of the event
-		D_FLOAT32	m_TimeDelay;
+		ZED_FLOAT32	m_TimeDelay;
 	};
 }
 

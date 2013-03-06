@@ -4,6 +4,7 @@
 #include <DataTypes.hpp>
 #include <Event.hpp>
 #include <EventListener.hpp>
+#include <Arithmetic.hpp>
 #include <queue>
 #include <map>
 #include <set>
@@ -17,40 +18,42 @@ namespace Dawn
 	class EventRouter
 	{
 	public:
-		D_EXPLICIT EventRouter( const D_INT32 p_QueueCount = 1 );
+		ZED_EXPLICIT EventRouter( const ZED_SINT32 p_QueueCount = 1 );
 		~EventRouter( );
 
 		// Add and remove event listeners
-		D_UINT32 Add( EventListener *p_pListener,
+		ZED_UINT32 Add( EventListener *p_pListener,
 			const EventType &p_Type );
-		D_UINT32 Remove( const EventListener *p_Listener );
+		ZED_UINT32 Remove( const EventListener *p_Listener );
 
 		// Event passing functions
-		D_UINT32 Send( const Event &p_Event );
+		ZED_UINT32 Send( const Event &p_Event );
 		// Delivery Time is an offset in milliseconds to indicate when the
 		// event should trigger
-		D_UINT32 Queue( Event &p_Event,
-			const D_FLOAT32 p_DeliveryTime = 0.0f );
-		D_UINT32 Abort( const EventType &p_Type,
-			const D_BOOL p_AllOfType = D_FALSE );
+		ZED_UINT32 Queue( Event &p_Event,
+			const ZED_FLOAT32 p_DeliveryTime = 0.0f );
+		ZED_UINT32 Abort( const EventType &p_Type,
+			const ZED_BOOL p_AllOfType = ZED_FALSE );
 
 		// Process the events in the queue (p_MaxTime is in microseconds)
-		D_UINT32 Tick( const D_FLOAT32 p_MaxTime = IEEE754_INFINITE32 );
+		//ZED_UINT32 Tick( const ZED_FLOAT32 p_MaxTime = ZED_IEEE754Infinite32 );
+
+		ZED_UINT32 Tick( const ZED_FLOAT32 p_MaxTime );
 
 		// Verify the event type is valid
-		D_BOOL Verify( const EventType &p_Type ) const;
+		ZED_BOOL Verify( const EventType &p_Type ) const;
 
 	private:
 		// Event types are unique and only one of each need to persist
 		typedef std::set< EventType > EventTypeSet;
-		typedef std::pair< EventTypeSet::iterator, D_BOOL > EventTypeSetInsRes;
+		typedef std::pair< EventTypeSet::iterator, ZED_BOOL > EventTypeSetInsRes;
 		
 		// Track each event listener
 		typedef std::list< EventListener * > EventListenerList;
 		// Map an event ID to an event listener
-		typedef std::map< D_UINT32, EventListenerList > EventListenerMap;
-		typedef std::pair< D_UINT32, EventListenerList > EventListenerMapEntry;
-		typedef std::pair< EventListenerMap::iterator, D_BOOL >
+		typedef std::map< ZED_UINT32, EventListenerList > EventListenerMap;
+		typedef std::pair< ZED_UINT32, EventListenerList > EventListenerMapEntry;
+		typedef std::pair< EventListenerMap::iterator, ZED_BOOL >
 			EventListenerMapInsRes;
 
 		// Keep a copy of the previous and current queue, so that events can be
@@ -65,9 +68,9 @@ namespace Dawn
 		// An n-buffered queue
 		EventQueue *m_pQueue;
 		// Determines which event queue will be in use for the current update
-		D_INT32 m_ActiveQueue;
+		ZED_SINT32 m_ActiveQueue;
 		// Used to initialise the queue count, which must be one or greater
-		D_INT32 m_QueueCount;
+		ZED_SINT32 m_QueueCount;
 	};
 }
 

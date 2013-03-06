@@ -3,7 +3,7 @@
 
 namespace Dawn
 {
-	EventRouter::EventRouter( const D_INT32 p_QueueCount ) :
+	EventRouter::EventRouter( const ZED_SINT32 p_QueueCount ) :
 		m_QueueCount( p_QueueCount ),
 		m_ActiveQueue( 0 )
 	{
@@ -17,18 +17,18 @@ namespace Dawn
 
 	EventRouter::~EventRouter( )
 	{
-		if( m_pQueue != D_NULL )
+		if( m_pQueue != ZED_NULL )
 		{
 			delete [ ] m_pQueue;
 		}
 	}
 
-	D_UINT32 EventRouter::Add( EventListener *p_pListener,
+	ZED_UINT32 EventRouter::Add( EventListener *p_pListener,
 		const EventType &p_Type )
 	{
-		if( this->Verify( p_Type ) != D_TRUE )
+		if( this->Verify( p_Type ) != ZED_TRUE )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 		
 		// Check if this type is available
@@ -39,15 +39,15 @@ namespace Dawn
 		{
 			EventTypeSetInsRes IRes = m_Types.insert( p_Type );
 
-			if( IRes.second == D_FALSE )
+			if( IRes.second == ZED_FALSE )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 
 			// The list was left empty
 			if( IRes.first == m_Types.end( ) )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 
 			TSItr = IRes.first;
@@ -63,14 +63,14 @@ namespace Dawn
 			EventListenerMapInsRes IRes = m_EventRegistry.insert(
 				EventListenerMapEntry( p_Type.ID( ), EventListenerList( ) ) );
 			
-			if( IRes.second == D_FALSE )
+			if( IRes.second == ZED_FALSE )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 
 			if( IRes.first == m_EventRegistry.end( ) )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 
 			ELMItr = IRes.first;
@@ -81,22 +81,22 @@ namespace Dawn
 		for( EventListenerList::iterator Itr = ELList.begin( ),
 			ItrEnd = ELList.end( ); Itr != ItrEnd; ++Itr )
 		{
-			D_BOOL Match = ( *Itr == p_pListener );
+			ZED_BOOL Match = ( *Itr == p_pListener );
 
 			if( Match )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 		}
 
 		ELList.push_back( p_pListener );
 
-		return D_OK;
+		return ZED_OK;
 	}
 
-	D_UINT32 EventRouter::Remove( const EventListener *p_pListener )
+	ZED_UINT32 EventRouter::Remove( const EventListener *p_pListener )
 	{
-		D_UINT32 Return = D_ERROR;
+		ZED_UINT32 Return = ZED_FAIL;
 
 		for( EventListenerMap::iterator Itr = m_EventRegistry.begin( ),
 			ItrEnd = m_EventRegistry.end( ); Itr != ItrEnd; ++Itr )
@@ -110,7 +110,7 @@ namespace Dawn
 				if( *Itr2 == p_pListener )
 				{
 					ELList.erase( Itr2 );
-					Return = D_OK;
+					Return = ZED_OK;
 					break;
 				}
 			}
@@ -119,12 +119,12 @@ namespace Dawn
 		return Return;
 	}
 
-	D_UINT32 EventRouter::Send( const Event &p_Event )
+	ZED_UINT32 EventRouter::Send( const Event &p_Event )
 	{
 		// Make sure this router will handle the event
-		if( this->Verify( p_Event.Type( ) ) == D_FALSE )
+		if( this->Verify( p_Event.Type( ) ) == ZED_FALSE )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		// Get a listener for the event
@@ -145,45 +145,45 @@ namespace Dawn
 
 		if( Itr == m_EventRegistry.end( ) )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		const EventListenerList &ELList = Itr->second;
 
-		D_BOOL EventProcessed = D_FALSE;
+		ZED_BOOL EventProcessed = ZED_FALSE;
 
 		for( EventListenerList::const_iterator Itr2 = ELList.begin( ),
 			ItrEnd2 = ELList.end( ); Itr2 != ItrEnd2; ++Itr2 )
 		{
-			if( ( *Itr2 )->HandleEvent( p_Event ) == D_TRUE )
+			if( ( *Itr2 )->HandleEvent( p_Event ) == ZED_TRUE )
 			{
-				EventProcessed = D_TRUE;
+				EventProcessed = ZED_TRUE;
 			}
 		}
 
 		return EventProcessed;
 	}
 
-	D_UINT32 EventRouter::Queue( Event &p_Event,
-		const D_FLOAT32 p_DeliveryTime )
+	ZED_UINT32 EventRouter::Queue( Event &p_Event,
+		const ZED_FLOAT32 p_DeliveryTime )
 	{
-		if( this->Verify( p_Event.Type( ) ) != D_TRUE )
+		if( this->Verify( p_Event.Type( ) ) != ZED_TRUE )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		if( m_ActiveQueue < 0 )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 		if( m_ActiveQueue > m_QueueCount )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		if( p_DeliveryTime > 0.0f )
 		{
-			D_FLOAT32 TimeDelay = p_Event.Time( ) + p_DeliveryTime;
+			ZED_FLOAT32 TimeDelay = p_Event.Time( ) + p_DeliveryTime;
 			p_Event.TimeDelay( TimeDelay );
 		}
 
@@ -197,31 +197,31 @@ namespace Dawn
 
 			if( Itr2 == m_EventRegistry.end( ) )
 			{
-				return D_ERROR;
+				return ZED_FAIL;
 			}
 		}
 
 		m_pQueue[ m_ActiveQueue ].push_back( &p_Event );
 
-		return D_OK;
+		return ZED_OK;
 	}
 
-	D_UINT32 EventRouter::Abort( const EventType &p_Type,
-		const D_BOOL p_AllOfType )
+	ZED_UINT32 EventRouter::Abort( const EventType &p_Type,
+		const ZED_BOOL p_AllOfType )
 	{
-		if( this->Verify( p_Type ) != D_TRUE )
+		if( this->Verify( p_Type ) != ZED_TRUE )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		if( m_ActiveQueue < 0 )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		if( m_ActiveQueue > m_QueueCount )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
 		// Attempt to retrieve and remove the event from the queue
@@ -230,10 +230,10 @@ namespace Dawn
 
 		if( Itr == m_EventRegistry.end( ) )
 		{
-			return D_ERROR;
+			return ZED_FAIL;
 		}
 
-		D_UINT32 Return = D_ERROR;
+		ZED_UINT32 Return = ZED_FAIL;
 
 		for( EventQueue::iterator Itr2 = m_pQueue[ m_ActiveQueue ].begin( ),
 			ItrEnd2 = m_pQueue[ m_ActiveQueue ].end( );
@@ -243,10 +243,10 @@ namespace Dawn
 			{
 				m_pQueue[ m_ActiveQueue ].erase( Itr2 );
 
-				Return = D_OK;
+				Return = ZED_OK;
 
 				// Keep going?
-				if( p_AllOfType == D_FALSE )
+				if( p_AllOfType == ZED_FALSE )
 				{
 					break;
 				}
@@ -256,13 +256,14 @@ namespace Dawn
 		return Return;
 	}
 
-	D_UINT32 EventRouter::Tick( const D_FLOAT32 p_MaxTime )
+	ZED_UINT32 EventRouter::Tick( const ZED_FLOAT32 p_MaxTime )
 	{
-		D_FLOAT32 CurrentTime = Dawn::GetTimeMS( );
-		D_FLOAT32 MaxTime = ( p_MaxTime == IEEE754_INFINITE32 ) ?
-			IEEE754_INFINITE32 : ( CurrentTime + p_MaxTime );
+		ZED_FLOAT32 CurrentTime = Dawn::GetTimeMS( );
+/*		ZED_FLOAT32 MaxTime = ( p_MaxTime == IEEE754_INFINITE32 ) ?
+			IEEE754_INFINITE32 : ( CurrentTime + p_MaxTime );*/
+		ZED_FLOAT32 MaxTime = p_MaxTime;
 		// Use the current queue and empty ther next one
-		D_INT32 CurrentQueue = m_ActiveQueue;
+		ZED_SINT32 CurrentQueue = m_ActiveQueue;
 
 		m_ActiveQueue = ( m_ActiveQueue + 1 ) % m_QueueCount;
 
@@ -305,13 +306,13 @@ namespace Dawn
 				continue;
 			}
 
-			const D_UINT32 ID = ListenItr->first;
+			const ZED_UINT32 ID = ListenItr->first;
 			const EventListenerList &List = ListenItr->second;
 
 			for( EventListenerList::const_iterator Itr2 = List.begin( ),
 				ItrEnd2 = List.end( ); Itr2 != ItrEnd2; ++Itr2 )
 			{
-				if( ( *Itr2 )->HandleEvent( *pEvent ) == D_TRUE )
+				if( ( *Itr2 )->HandleEvent( *pEvent ) == ZED_TRUE )
 				{
 					break;
 				}
@@ -319,21 +320,21 @@ namespace Dawn
 
 			CurrentTime = Dawn::GetTimeMS( );
 
-			if( p_MaxTime != IEEE754_INFINITE32 )
+/*			if( p_MaxTime != IEEE754_INFINITE32 )
 			{
 				if( CurrentTime >= MaxTime )
 				{
 					// No time left!
 					break;
 				}
-			}
+			}*/
 		}
 
 		// If there are still events to process, they will have to wait until
 		// next time
-		D_BOOL Flushed = ( m_pQueue[ CurrentQueue ].size( ) == 0 );
+		ZED_BOOL Flushed = ( m_pQueue[ CurrentQueue ].size( ) == 0 );
 
-		if( Flushed == D_FALSE )
+		if( Flushed == ZED_FALSE )
 		{
 			while( m_pQueue[ CurrentQueue ].size( ) > 0 )
 			{
@@ -343,14 +344,14 @@ namespace Dawn
 			}
 		}
 
-		return D_OK;
+		return ZED_OK;
 	}
 
-	D_BOOL EventRouter::Verify( const EventType &p_Type ) const
+	ZED_BOOL EventRouter::Verify( const EventType &p_Type ) const
 	{
 		if( ( p_Type.ID( ) == 0 ) )
 		{
-			return D_FALSE;
+			return ZED_FALSE;
 		}
 
 		EventTypeSet::const_iterator Itr = m_Types.find( p_Type );
@@ -359,17 +360,17 @@ namespace Dawn
 		{
 			const EventType &Known = *Itr;
 
-			const D_UINT32 KnownID = Known.ID( );
-			const D_UINT32 NewID = p_Type.ID( );
+			const ZED_UINT32 KnownID = Known.ID( );
+			const ZED_UINT32 NewID = p_Type.ID( );
 
-			D_BOOL Match = ( KnownID == NewID );
+			ZED_BOOL Match = ( KnownID == NewID );
 
-			if( Match != D_TRUE )
+			if( Match != ZED_TRUE )
 			{
-				return D_FALSE;
+				return ZED_FALSE;
 			}
 		}
 
-		return D_TRUE;
+		return ZED_TRUE;
 	}
 }

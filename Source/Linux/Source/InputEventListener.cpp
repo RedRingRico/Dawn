@@ -2,9 +2,9 @@
 
 namespace Dawn
 {
-	D_BOOL InputEventListener::HandleEvent( const Event &p_Event )
+	ZED_BOOL InputEventListener::HandleEvent( const Event &p_Event )
 	{
-		return D_FALSE;
+		return ZED_FALSE;
 	}
 }
 

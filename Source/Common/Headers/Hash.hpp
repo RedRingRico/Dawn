@@ -8,7 +8,7 @@ namespace Dawn
 	extern const char * const kWildcardString;
 
 	// Algorithm from Mike McShaffry's Game Coding Complete, Second Edition
-	D_UINT32 Hash( const char *p_pString );
+	ZED_UINT32 Hash( const char *p_pString );
 }
 
 #endif

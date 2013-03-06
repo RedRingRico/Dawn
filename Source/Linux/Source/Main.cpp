@@ -5,13 +5,13 @@ int main( int p_Argc, char **p_ppArgv )
 {
 	Dawn::Game TheGame;
 
-	if( TheGame.Initialise( D_FALSE ) != D_OK )
+	if( TheGame.Initialise( ZED_FALSE ) != ZED_OK )
 	{
-		return D_ERROR;
+		return ZED_FAIL;
 	}
 
 	TheGame.Execute( );
 
-	return D_OK;
+	return ZED_OK;
 }
 

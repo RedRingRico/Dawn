@@ -3,33 +3,35 @@
 
 #include <DataTypes.hpp>
 #include <Renderer.hpp>
+#include <VertexCache.hpp>
+#include <CanvasDescription.hpp>
 #include <EventRouter.hpp>
 #include <WindowEventListener.hpp>
 #include <cstdio>
 #include <Shader.hpp>
 
-#if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
+#if ( ZED_PLATFORM_WINDOWS )
 static const wchar_t *g_pWindowTitle =
-#ifdef BUILD_DEBUG
+#ifdef ZED_BUILD_DEBUG
 	L"Dawn [DEBUG]";
-#elif BUILD_PROFILE
+#elif ZED_BUILD_PROFILE
 	L"Dawn [PROFILE]";
-#elif BUILD_RELEASE
+#elif ZED_BUILD_RELEASE
 	L"Dawn";
 #endif
-#elif ( PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 || PLATFORM_PANDORA )
+#elif ( ZED_PLATFORM_LINUX || ZED_PLATFORM_PANDORA )
 static const char *g_pWindowTitle =
-#ifdef BUILD_DEBUG
+#ifdef ZED_BUILD_DEBUG
 	"Dawn [DEBUG]";
-#elif BUILD_PROFILE
+#elif ZED_BUILD_PROFILE
 	"Dawn [PROFILE]";
-#elif BUILD_RELEASE
+#elif ZED_BUILD_RELEASE
 	"Dawn";
 #endif
 #endif
 
 
-#include <VertexCache.hpp>
+//#include <VertexCache.hpp>
 
 namespace Dawn
 {
@@ -39,25 +41,24 @@ namespace Dawn
 		Game( );
 		~Game( );
 
-		D_UINT32 Initialise( const D_BOOL p_FullScreen = D_FALSE );
-		void Update( const D_FLOAT64 p_ElapsedGameTime );
+		ZED_UINT32 Initialise( const ZED_BOOL p_FullScreen = ZED_FALSE );
+		void Update( const ZED_FLOAT64 p_ElapsedGameTime );
 		void Render( );
 
-		D_UINT32 Execute( );
+		ZED_UINT32 Execute( );
 
-		D_BOOL Running( ) const { return m_Running; }
+		ZED_INLINE ZED_BOOL Running( ) const { return m_Running; }
 
 	private:
-		Dawn::Renderer *m_pRenderer;
-#if ( PLATFORM_PANDORA || PLATFORM_LINUX_X86_32 || PLATFORM_LINUX_X86_64 )
+#if ( ZED_PLATFORM_PANDORA || ZED_PLATFORM_LINUX )
 		FILE	*m_pConfigFile;
 		Display	*m_pDisplay;
 		Window	m_Window;
 		char *m_pWindowTitle;
-#elif ( PLATFORM_XBOX || PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
+#elif ( ZED_PLATFORM_XBOX || ZED_PLATFORM_WINDOWS )
 		HANDLE m_ConfigFile;
 #endif
-#if ( PLATFORM_WINDOWS_X86_32 || PLATFORM_WINDOWS_X86_64 )
+#if ( ZED_PLATFORM_WINDOWS )
 		HWND m_Window;
 		HDC m_DeviceContext;
 		wchar_t *m_pWindowTitle;
@@ -65,18 +66,21 @@ namespace Dawn
 		static LRESULT CALLBACK WindowProc( HWND p_HWND, UINT p_Message,
 			WPARAM p_WParam, LPARAM p_LParam );
 
-		D_BOOL WindowProc( UINT p_Message, WPARAM p_WParam, LPARAM p_LParam );
+		ZED_BOOL WindowProc( UINT p_Message, WPARAM p_WParam, LPARAM p_LParam );
 #endif
-		D_BOOL m_FullScreen;
-		Dawn::CanvasDescription m_Canvas;
+		ZED_BOOL m_FullScreen;
+
 
 		EventRouter m_WindowEvents;
 		Dawn::WindowEventListener *m_pWindowEventListener;
 
-		D_BOOL m_Running;
+		ZED_BOOL m_Running;
 
-		Dawn::VertexCache *m_pCache;
-		Dawn::Shader *m_pShader;
+		ZED::Renderer::Renderer				*m_pRenderer;
+		ZED::Renderer::CanvasDescription	m_Canvas;
+		ZED::Renderer::VertexCache			*m_pCache;
+		ZED::Renderer::Shader				*m_pShader;
+		ZED::Renderer::Window				*m_pWindow;
 	};
 }
 
