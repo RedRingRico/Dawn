@@ -37,7 +37,7 @@ namespace Dawn
 		// TODO
 		// Attempt to create an OpenGL 3 renderer, then fall back to 2,
 		// finally try to get an OpenGL 1 renderer
-//		m_pRenderer = new ZED::Renderer::LinuxRendererOGL3( );
+		m_pRenderer = new ZED::Renderer::LinuxRendererOGL3( );
 		m_pWindow = new ZED::Renderer::LinuxWindow( );
 
 		m_pWindow->Create( 0, 0, 800, 600 );
@@ -45,8 +45,8 @@ namespace Dawn
 /*
 		XVisualInfo *pVI;
 		Colormap ColourMap;
-		XSetWindowAttributes WinAttrs;
-		ZED_UINT32 X = 0, Y = 0, Width = 0, Height = 0;
+		XSetWindowAttributes WinAttrs;*/
+		ZED_UINT32 X = 0, Y = 0, Width = 0, Height = 0;/*
 		Screen *pScreen = ZED_NULL;*/
 /*
 		m_pDisplay = XOpenDisplay( 0 );
@@ -55,13 +55,13 @@ namespace Dawn
 		// TODO
 		// Load the Width and Height from file, centring the window if it is
 		// to be windowed (as also defined in the configuraiton file)
-		
-		if( m_FullScreen == ZED_TRUE )
+		*/
+/*		if( m_FullScreen == ZED_TRUE )
 		{
 			Width = WidthOfScreen( pScreen );
 			Height = HeightOfScreen( pScreen );
 		}
-		else
+		else*/
 		{
 			Width = 800;
 			Height = 600;
@@ -76,6 +76,8 @@ namespace Dawn
 		m_Canvas.DepthStencilFormat( ZED_FORMAT_D24S8 );
 		m_Canvas.ColourFormat( ZED_FORMAT_ARGB8 );
 
+		m_pRenderer->Create( /*ZED_NULL,*/ m_Canvas, ( *m_pWindow ) );
+/*
 		m_pRenderer->GetXVisualInfo( m_Canvas, m_pDisplay, &pVI );
 
 		ColourMap = XCreateColormap( m_pDisplay, RootWindow( m_pDisplay,
@@ -102,11 +104,11 @@ namespace Dawn
 
 		m_pRenderer->SetWindow( m_Window );
 		m_pRenderer->Create( m_Canvas );
-
+*/
 		m_pRenderer->ClearColour( 0.15f, 0.0f, 0.15f );
 
 		Dawn::StartTime( );
-
+/*
 		m_pWindowEventListener = new Dawn::WindowEventListener( m_pRenderer,
 			m_pDisplay );
 
@@ -141,9 +143,9 @@ namespace Dawn
 					}
 					case ConfigureNotify:
 					{
-		/*				Dawn::EventWindowResize Resize(
+						Dawn::EventWindowResize Resize(
 							m_Events.xconfigure.width,
-							m_Events.xconfigure.height );
+							m_Events.xconfigure.height );/*
 						m_WindowEvents.Send( Resize );*/
 						break;
 					}
@@ -173,7 +175,7 @@ namespace Dawn
 			}
 
 			this->Update( 0.0f );
-//			this->Render( );
+			this->Render( );
 		}
 		return ZED_OK;
 	}
