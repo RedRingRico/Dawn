@@ -9,6 +9,7 @@
 #include <WindowEventListener.hpp>
 #include <cstdio>
 #include <Shader.hpp>
+#include <Triangle.hpp>
 
 #if ( ZED_PLATFORM_WINDOWS )
 static const wchar_t *g_pWindowTitle =
@@ -29,9 +30,6 @@ static const char *g_pWindowTitle =
 	"Dawn";
 #endif
 #endif
-
-
-//#include <VertexCache.hpp>
 
 namespace Dawn
 {
@@ -81,6 +79,7 @@ namespace Dawn
 		ZED::Renderer::VertexCache			*m_pCache;
 		ZED::Renderer::Shader				*m_pShader;
 		ZED::Renderer::Window				*m_pWindow;
+		Dawn::TriangleEntity				*m_pTriangle;
 	};
 }
 
