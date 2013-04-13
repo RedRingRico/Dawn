@@ -4,6 +4,7 @@
 #include <GameEntity.hpp>
 #include <Renderer.hpp>
 #include <Shader.hpp>
+#include <OGL/GLModel.hpp>
 
 namespace Dawn
 {
@@ -21,6 +22,7 @@ namespace Dawn
 		ZED::Renderer::Renderer *m_pRenderer;
 		ZED::Renderer::Shader *m_pShader;
 		ZED_FLOAT32 m_YRotation;
+		ZED::Renderer::GLModel	*m_pModel;
 	};
 }
 

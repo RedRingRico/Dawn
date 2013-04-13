@@ -151,7 +151,7 @@ $(TARGET): $(OBJS)
 	@printf "%s\n\n" "-------------------"
 	@printf "Creating: $(OUTFILE)... "
 	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) $(OBJS) $(SYSLPATH) $(LIBPATH) \
-	$(SYSLIBS) $(LIBS) 2> lmsgs;\
+	$(LIBS) $(SYSLIBS) 2> lmsgs;\
 	RETVAL=$$?;\
 	if [[ $$RETVAL == 0 ]]; then\
 		printf "[OK]\n";\

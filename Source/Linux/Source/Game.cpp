@@ -31,16 +31,13 @@ namespace Dawn
 			delete m_pWindow;
 			m_pWindow = ZED_NULL;
 		}
-/*
-		XDestroyWindow( m_pDisplay, m_Window );
-		XCloseDisplay( m_pDisplay );*/
 	}
 
 	ZED_UINT32 Game::Initialise( const ZED_BOOL p_FullScreen )
 	{
 		m_FullScreen = p_FullScreen;
 
-		ZED_UINT32 X = 0, Y = 0, Width = 800, Height = 600;
+		ZED_UINT32 X = 0, Y = 0, Width = 1280, Height = 800;
 		// TODO
 		// Attempt to create an OpenGL 3 renderer, then fall back to 2,
 		// finally try to get an OpenGL 1 renderer
