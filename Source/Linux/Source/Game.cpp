@@ -75,8 +75,8 @@ namespace Dawn
 		KeySym Key;
 		m_Running = ZED_TRUE;
 		ZED::Renderer::ZED_WINDOWDATA WinData = m_pWindow->WindowData( );
-		ZED_UINT64 t = 0ULL;
-		ZED_UINT64 dt = 16667ULL;
+		ZED_UINT64 ElapsedTime = 0ULL;
+		ZED_UINT64 TimeStep = 16667ULL;
 		ZED_UINT64 OldTime = GetTimeMiS( );
 
 		ZED_UINT64 Accumulator = 0ULL;
@@ -147,11 +147,11 @@ namespace Dawn
 				zedDebugBreak( );
 			}
 
-			while( Accumulator >= dt )
+			while( Accumulator >= TimeStep )
 			{
 				this->Update( 0.0f );
-				t += dt;
-				Accumulator -= dt;
+				ElapsedTime += TimeStep;
+				Accumulator -= TimeStep;
 			}
 
 			this->Render( );
