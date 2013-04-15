@@ -25,8 +25,6 @@ namespace Dawn
 	protected:
 		ZED_UINT32	m_ID;
 		ZED::Arithmetic::Vector3		m_Position;
-		ZED_FLOAT32	*m_pVertices;
-		ZED_UINT16	*m_pIndices;
 	};
 }
 

@@ -1,5 +1,4 @@
 #include <Game.hpp>
-//#include <LinuxRendererOGL1.hpp>
 #include <Events.hpp>
 #include <LinuxRendererOGL3.hpp>
 #include <LinuxWindow.hpp>
@@ -64,8 +63,11 @@ namespace Dawn
 		m_pTriangle = new Dawn::TriangleEntity( m_pRenderer );
 		m_pTriangle->Initialise( );
 
+		Dawn::StartTime( );
+
 		return ZED_OK;
 	}
+
 
 	ZED_UINT32 Game::Execute( )
 	{
@@ -73,6 +75,11 @@ namespace Dawn
 		KeySym Key;
 		m_Running = ZED_TRUE;
 		ZED::Renderer::ZED_WINDOWDATA WinData = m_pWindow->WindowData( );
+		ZED_UINT64 t = 0ULL;
+		ZED_UINT64 dt = 16667ULL;
+		ZED_UINT64 OldTime = GetTimeMiS( );
+
+		ZED_UINT64 Accumulator = 0ULL;
 		while( m_Running == ZED_TRUE )
 		{
 			while( XPending( WinData.pX11Display ) > 0 )
@@ -123,8 +130,30 @@ namespace Dawn
 					}
 				}
 			}
+			const ZED_UINT64 NewTime = GetTimeMiS( );
+			ZED_UINT64 DeltaTime = NewTime-OldTime;
 
-			this->Update( 0.0f );
+			if( DeltaTime > 250000ULL )
+			{
+				DeltaTime = 250000ULL;
+			}
+
+			OldTime = NewTime;
+
+			Accumulator += DeltaTime;
+
+			if( Accumulator < 0ULL )
+			{
+				zedDebugBreak( );
+			}
+
+			while( Accumulator >= dt )
+			{
+				this->Update( 0.0f );
+				t += dt;
+				Accumulator -= dt;
+			}
+
 			this->Render( );
 		}
 		return ZED_OK;

@@ -23,6 +23,7 @@ namespace Dawn
 		ZED::Renderer::Shader *m_pShader;
 		ZED_FLOAT32 m_YRotation;
 		ZED::Renderer::GLModel	*m_pModel;
+		ZED_FLOAT32 m_XTrans;
 	};
 }
 

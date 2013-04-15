@@ -7,13 +7,13 @@ namespace Dawn
 {
 	ZED_BOOL StartTime( );
 	// Seconds
-	ZED_FLOAT32 GetTimeS( );
+	ZED_UINT64 GetTimeS( );
 	// Milliseconds
-	ZED_FLOAT32 GetTimeMS( );
+	ZED_UINT64 GetTimeMS( );
 	// Microseconds
-	ZED_FLOAT32 GetTimeMiS( );
+	ZED_UINT64 GetTimeMiS( );
 	// Nanoseconds
-	ZED_FLOAT32 GetTimeNS( );
+	ZED_UINT64 GetTimeNS( );
 }
 
 #endif
