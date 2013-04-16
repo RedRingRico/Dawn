@@ -65,6 +65,11 @@ namespace Dawn
 
 		Dawn::StartTime( );
 
+		m_pRenderer->SetRenderState( ZED_RENDERSTATE_CULLMODE,
+			ZED_CULLMODE_CCW );
+		m_pRenderer->SetRenderState( ZED_RENDERSTATE_DEPTH, ZED_ENABLE );
+		m_pRenderer->SetClippingPlanes( 1.0f, 100000.0f );
+
 		return ZED_OK;
 	}
 
@@ -78,6 +83,8 @@ namespace Dawn
 		ZED_UINT64 ElapsedTime = 0ULL;
 		ZED_UINT64 TimeStep = 16667ULL;
 		ZED_UINT64 OldTime = GetTimeMiS( );
+		ZED_UINT64 FrameTime = GetTimeMiS( );
+		ZED_MEMSIZE FrameRate = 0;
 
 		ZED_UINT64 Accumulator = 0ULL;
 		while( m_Running == ZED_TRUE )
@@ -155,6 +162,14 @@ namespace Dawn
 			}
 
 			this->Render( );
+			++FrameRate;
+
+			if( ( NewTime - FrameTime ) >= 1000000ULL )
+			{
+				zedTrace( "FPS: %d\n", FrameRate );
+				FrameTime = GetTimeMiS( );
+				FrameRate = 0;
+			}
 		}
 		return ZED_OK;
 	}
