@@ -10,6 +10,8 @@
 #include <cstdio>
 #include <Shader.hpp>
 #include <Triangle.hpp>
+#include <InputManager.hpp>
+#include <Keyboard.hpp>
 
 #if ( ZED_PLATFORM_WINDOWS )
 static const wchar_t *g_pWindowTitle =
@@ -76,9 +78,9 @@ namespace Dawn
 
 		ZED::Renderer::Renderer				*m_pRenderer;
 		ZED::Renderer::CanvasDescription	m_Canvas;
-		ZED::Renderer::VertexCache			*m_pCache;
-		ZED::Renderer::Shader				*m_pShader;
 		ZED::Renderer::Window				*m_pWindow;
+		ZED::System::InputManager			*m_pInputManager;
+		ZED::System::Keyboard				m_Keyboard;
 		Dawn::TriangleEntity				*m_pTriangle;
 	};
 }

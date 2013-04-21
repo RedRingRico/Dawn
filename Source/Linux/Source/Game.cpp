@@ -1,6 +1,7 @@
 #include <Game.hpp>
 #include <Events.hpp>
 #include <LinuxRendererOGL3.hpp>
+#include <LinuxInputManager.hpp>
 #include <LinuxWindow.hpp>
 
 namespace Dawn
@@ -10,6 +11,9 @@ namespace Dawn
 		m_pRenderer = ZED_NULL;
 		m_pConfigFile = ZED_NULL;
 		m_FullScreen = ZED_FALSE;
+		m_pInputManager = ZED_NULL;
+		m_pWindow = ZED_NULL;
+		m_pTriangle = ZED_NULL;
 	}
 
 	Game::~Game( )
@@ -19,6 +23,13 @@ namespace Dawn
 			delete m_pTriangle;
 			m_pTriangle = ZED_NULL;
 		}
+
+		if( m_pInputManager )
+		{
+			delete m_pInputManager;
+			m_pInputManager = ZED_NULL;
+		}
+
 		if( m_pRenderer )
 		{
 			delete m_pRenderer;
@@ -70,6 +81,11 @@ namespace Dawn
 		m_pRenderer->SetRenderState( ZED_RENDERSTATE_DEPTH, ZED_ENABLE );
 		m_pRenderer->SetClippingPlanes( 1.0f, 100000.0f );
 
+		ZED::Renderer::ZED_WINDOWDATA WinData = m_pWindow->WindowData( );
+		m_pInputManager =
+			new ZED::System::LinuxInputManager( WinData.pX11Display );
+		m_pInputManager->AddDevice( &m_Keyboard );
+
 		return ZED_OK;
 	}
 
@@ -89,30 +105,26 @@ namespace Dawn
 		ZED_UINT64 Accumulator = 0ULL;
 		while( m_Running == ZED_TRUE )
 		{
+			m_pInputManager->Update( );
+
+			if( m_Keyboard.IsKeyDown( 'q' ) )
+			{
+				m_Running = ZED_FALSE;
+			}
 			while( XPending( WinData.pX11Display ) > 0 )
 			{
 				XNextEvent( WinData.pX11Display, &m_Events );
 				switch( m_Events.type )
 				{
-					case KeyPress:
-					{
-						// Need to create some kind of EventInputKeyDown
-						// and m_InputEvents.Send()
-						Key = XLookupKeysym( &m_Events.xkey, 0 );
-						if( Key == 'q' )
-						{
-							m_Running = ZED_FALSE;
-						}
-						break;
-					}
+				/*	
 					case ConfigureNotify:
 					{
 						Dawn::EventWindowResize Resize(
 							m_Events.xconfigure.width,
 							m_Events.xconfigure.height );/*
-						m_WindowEvents.Send( Resize );*/
+						m_WindowEvents.Send( Resize );*
 						break;
-					}
+					}*/
 					case EnterNotify:
 					{
 						XGrabKeyboard( WinData.pX11Display, WinData.X11Window,
@@ -121,7 +133,6 @@ namespace Dawn
 							True, EnterWindowMask | LeaveWindowMask |
 							PointerMotionMask, GrabModeAsync, GrabModeAsync,
 							None, None, CurrentTime );
-						
 						break;
 					}
 					case LeaveNotify:
@@ -148,11 +159,6 @@ namespace Dawn
 			OldTime = NewTime;
 
 			Accumulator += DeltaTime;
-
-			if( Accumulator < 0ULL )
-			{
-				zedDebugBreak( );
-			}
 
 			while( Accumulator >= TimeStep )
 			{
