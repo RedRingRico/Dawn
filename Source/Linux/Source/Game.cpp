@@ -48,13 +48,63 @@ namespace Dawn
 		m_FullScreen = p_FullScreen;
 
 		ZED_UINT32 X = 0, Y = 0, Width = 1280, Height = 800;
+		ZED::Renderer::ZED_SCREENSIZE NativeSize;
+		ZED::Renderer::ZED_SCREENSIZE *pScreenSizes = ZED_NULL;
+		ZED_MEMSIZE ScreenSizeCount = 0;
 		// TODO
 		// Attempt to create an OpenGL 3 renderer, then fall back to 2,
 		// finally try to get an OpenGL 1 renderer
 		m_pRenderer = new ZED::Renderer::LinuxRendererOGL3( );
 		m_pWindow = new ZED::Renderer::LinuxWindow( );
 
-		m_pWindow->Create( 0, 0, Width, Height );
+		ZED::Renderer::EnumerateScreenSizes( &pScreenSizes, &ScreenSizeCount,
+			ZED::Renderer::GetCurrentScreenNumber( ) );
+
+		if( ZED::Renderer::GetNativeScreenSize(
+			ZED::Renderer::GetCurrentScreenNumber( ), NativeSize ) != ZED_OK )
+		{
+			zedTrace( "[Dawn::Game::Initialise] <ERROR> "
+				"Could not get native screen size\n" );
+
+			return ZED_FAIL;
+		}
+
+		if( p_FullScreen )
+		{
+			X = 0;
+			Y = 0;
+			Width = NativeSize.Width;
+			Height = NativeSize.Height;
+		}
+		else
+		{
+			ZED_MEMSIZE ScreenNum;
+			ZED_UINT32 LowestWidth = pScreenSizes[ 0 ].Width;
+			for( ZED_MEMSIZE i = 1; i < ScreenSizeCount; ++i )
+			{
+				if( pScreenSizes[ i ].Width < LowestWidth )
+				{
+					ScreenNum = i;
+					LowestWidth = pScreenSizes[ i ].Width;
+				}
+			}
+
+			if( NativeSize.Width < NativeSize.Height )
+			{
+				Width = pScreenSizes[ ScreenNum ].Height;
+				Height = pScreenSizes[ ScreenNum ].Width;
+			}
+			else
+			{
+				Width = pScreenSizes[ ScreenNum ].Width;
+				Height = pScreenSizes[ ScreenNum ].Height;
+			}
+
+			X = ( NativeSize.Width / 2 ) - ( Width / 2 );
+			Y = ( NativeSize.Height / 2 ) - ( Height / 2 );
+		}
+
+		m_pWindow->Create( X, Y, Width, Height );
 
 		m_Canvas.Width( Width );
 		m_Canvas.Height( Height );
@@ -86,6 +136,12 @@ namespace Dawn
 			new ZED::System::LinuxInputManager( WinData.pX11Display );
 		m_pInputManager->AddDevice( &m_Keyboard );
 
+		if( pScreenSizes )
+		{
+			delete [ ] pScreenSizes;
+			pScreenSizes = ZED_NULL;
+		}
+
 		return ZED_OK;
 	}
 
@@ -107,7 +163,7 @@ namespace Dawn
 		{
 			m_pInputManager->Update( );
 
-			if( m_Keyboard.IsKeyDown( 'q' ) )
+			if( m_Keyboard.IsKeyDown( K_ESCAPE ) )
 			{
 				m_Running = ZED_FALSE;
 			}
@@ -133,12 +189,15 @@ namespace Dawn
 							True, EnterWindowMask | LeaveWindowMask |
 							PointerMotionMask, GrabModeAsync, GrabModeAsync,
 							None, None, CurrentTime );
+						m_pWindow->HideCursor( );
+
 						break;
 					}
 					case LeaveNotify:
 					{
 						XUngrabKeyboard( WinData.pX11Display, CurrentTime );
 						XUngrabPointer( WinData.pX11Display, CurrentTime );
+						m_pWindow->ShowCursor( );
 
 						break;
 					}
