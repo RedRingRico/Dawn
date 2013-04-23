@@ -130,6 +130,9 @@ namespace Dawn
 			ZED_CULLMODE_CCW );
 		m_pRenderer->SetRenderState( ZED_RENDERSTATE_DEPTH, ZED_ENABLE );
 		m_pRenderer->SetClippingPlanes( 1.0f, 100000.0f );
+		m_pRenderer->PerspectiveProjectionMatrix( 45.0f,
+			static_cast< ZED_FLOAT32 >( Width )/
+			static_cast< ZED_FLOAT32 >( Height ) );
 
 		ZED::Renderer::ZED_WINDOWDATA WinData = m_pWindow->WindowData( );
 		m_pInputManager =

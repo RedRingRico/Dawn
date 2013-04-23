@@ -153,8 +153,8 @@ namespace Dawn
 		ZED::Arithmetic::Vector3 Up( 0.0f, 1.0f, 0.0f );
 //		m_Position.X( m_XTrans );
 		m_pRenderer->SetViewLookAt( Position, Look, Up );
+		m_pRenderer->PerspectiveProjectionMatrix( &PerspProj );
 		m_pRenderer->GetWVP( &WorldMatrix );
-		m_pRenderer->CalcPerspProjMatrix( 45.0f, 1280.0f/800.0f, &PerspProj );
 		RotationMatrix.RotateY( m_YRotation );
 		m_YRotation += 0.01f;
 
