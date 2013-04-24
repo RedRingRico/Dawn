@@ -3,6 +3,7 @@
 
 #include <DataTypes.hpp>
 #include <Vector3.hpp>
+#include <Matrix4x4.hpp>
 
 namespace Dawn
 {
@@ -23,8 +24,9 @@ namespace Dawn
 		virtual void Render( ) = 0;
 
 	protected:
-		ZED_UINT32	m_ID;
-		ZED::Arithmetic::Vector3		m_Position;
+		ZED_UINT32							m_ID;
+		ZED::Arithmetic::Vector3			m_Position;
+		static ZED::Arithmetic::Matrix4x4	m_ViewProjection;
 	};
 }
 

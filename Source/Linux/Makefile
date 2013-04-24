@@ -9,11 +9,10 @@ endif
 ifndef TOPDIR
 export TOPDIR		:= $(shell cd ../../ && pwd)
 export TOPSRC		= $(TOPDIR)/Source
-export TARGETDIR	= $(TOPDIR)/Bin/$(PLATFORM)
-export OBJSDIR		= $(TOPDIR)/Obj/$(PLATFORM)/$(GCCVER)/$(BUILD)
+export TARGETDIR	= $(TOPDIR)/Bin/$(PLATFORM)/$(ARCH)/$(BITSIZE)
+export OBJSDIR		= $(TOPDIR)/Obj/$(PLATFORM)/$(ARCH)/$(BITSIZE)/GCC/$(GCCVER)/$(BUILD)
 endif
 SOURCEDIR	= Source ../Common/Source
-#../Common/Source/OGLES2
 
 TARGET := Dawn
 OUTFILE	=	$(TARGETDIR)/$(TARGET)_$(GCCVER)
@@ -36,29 +35,25 @@ UNAME			= $(shell uname)
 UNAME_MACHINE	= $(shell uname -m)
 
 ifeq ($(UNAME), Linux)
-	CPPFLAGS_EXT	= -ffriend-injection -std=gnu++0x
+	CPPFLAGS_EXT	= -ffriend-injection -std=c++0x
 	SYSIPATH	= -I/usr/include/xorg
 	SYSLIBS		= -lX11 -lGL -lrt
 	LINKFLAGS	=
 ##### Check for forced 32-bit or 64-bit builds ################################
 ifneq ($(64BIT), False)
-	CPPFLAGS_EXT	+=	-m64
 	ARCH		=	x86
 	BITSIZE		=	64
 else
 ifneq ($(32BIT), False)
-	CPPFLAGS_EXT	+=	-m32
 	ARCH		= x86
 	BITSIZE		= 32
 else
 ##### Nothing forced.  Use what the machine reports ###########################
 ifeq ($(UNAME_MACHINE), x86_64)
-	CPPFLAGS_EXT	+=	-m64
 	ARCH		=	x86
 	BITSIZE		=	64
 endif
 ifeq ($(UNAME_MACHINE), i686)
-	CPPFLAGS_EXT	+=	-m32
 	ARCH		= x86
 	BITSIZE		= 32
 endif
@@ -68,16 +63,15 @@ endif
 
 CPP = g++
 
-CPPFLAGS	=	-c -DZED_BUILD_$(BUILD_DEF) -DZED_PLATFORM_$(BUILD_PLATFORM) \
+CPPFLAGS	=	-c -m$(BITSIZE) -DZED_BUILD_$(BUILD_DEF) \
+				-DZED_PLATFORM_$(BUILD_PLATFORM) \
 				-DZED_PLATFORM_$(BUILD_PLATFORM)_$(BUILD_ARCH) \
 				-DZED_PLATFORM_$(BUILD_PLATFORM)_$(BUILD_ARCH)_$(BITSIZE) \
 				-DZED_BITSIZE_$(BITSIZE) -DZED_ARCH_$(BUILD_ARCH) \
 				-I$(TOPSRC)/Linux/Headers -I$(TOPSRC)/Common/Headers
-CPPFLAGS_EXT=	-ffriend-injection -std=c++0x
-SYSIPATH	=	-idirafter $(PNDSDK)/usr/include
+SYSIPATH	=
 INCPATH		=	-I$(ZEDSDK)/include/Linux
 SYSLPATH	=	
-#-L$(PNDSDK)/usr/lib
 LIBPATH		=	-L$(ZEDSDK)/lib/Linux/$(ARCH)/$(BITSIZE)
 SYSLIBS		=	-lX11 -lGL -lXrandr -lrt -pthread
 LINKFLAGS	=
@@ -152,8 +146,8 @@ $(TARGET): $(OBJS)
 	@printf "%s" "------------------------------------------------------------"
 	@printf "%s\n\n" "-------------------"
 	@printf "Creating: $(OUTFILE)... "
-	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) $(OBJS) $(SYSLPATH) $(LIBPATH) \
-	$(LIBS) $(SYSLIBS) 2> lmsgs;\
+	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) -m$(BITSIZE)  $(OBJS) $(SYSLPATH) \
+	$(LIBPATH) $(LIBS) $(SYSLIBS) 2> lmsgs;\
 	RETVAL=$$?;\
 	if [[ $$RETVAL == 0 ]]; then\
 		printf "[OK]\n";\
@@ -186,12 +180,20 @@ $(TARGET): $(OBJS)
 
 endif
 
-.PHONY: clean
+.PHONY: clean completeclean
 clean:
 	@printf "Removing files from: $(TARGETDIR)... "
-	@cd $(TARGETDIR) && rm -f ./*
+	@rm -f $(TARGETDIR)/*
 	@printf "[OK]\n"
 	@printf "Removing files from: $(OBJSDIR)... "
-	@cd $(OBJSDIR) && rm -rf ./*
+	@rm -rf $(OBJSDIR)/*
+	@printf "[OK]\n"
+
+completeclean:
+	@printf "Removing files from: $(TOPDIR)/Bin... "
+	@rm -rf $(TOPDIR)/Bin
+	@printf "[OK]\n"
+	@printf "Removing files from: $(TOPDIR)/Obj... "
+	@rm -rf $(TOPDIR)/Obj
 	@printf "[OK]\n"
 
