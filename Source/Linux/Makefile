@@ -75,6 +75,7 @@ SYSLPATH	=
 LIBPATH		=	-L$(ZEDSDK)/lib/Linux/$(ARCH)/$(BITSIZE)
 SYSLIBS		=	-lX11 -lGL -lXrandr -lrt -pthread
 LINKFLAGS	=
+LDFLAGS		=	-m$(BITSIZE)
 
 ##### Debug #######
 debug:		BUILD		= Debug
@@ -146,7 +147,7 @@ $(TARGET): $(OBJS)
 	@printf "%s" "------------------------------------------------------------"
 	@printf "%s\n\n" "-------------------"
 	@printf "Creating: $(OUTFILE)... "
-	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) -m$(BITSIZE)  $(OBJS) $(SYSLPATH) \
+	@$(CPP) -o $(OUTFILE) $(LINKFLAGS) -m$(BITSIZE) $(OBJS) $(SYSLPATH) \
 	$(LIBPATH) $(LIBS) $(SYSLIBS) 2> lmsgs;\
 	RETVAL=$$?;\
 	if [[ $$RETVAL == 0 ]]; then\
