@@ -3,6 +3,7 @@
 #include <LinuxRendererOGL3.hpp>
 #include <LinuxInputManager.hpp>
 #include <LinuxWindow.hpp>
+#include <System/File.hpp>
 
 namespace Dawn
 {
@@ -47,10 +48,11 @@ namespace Dawn
 	{
 		m_FullScreen = p_FullScreen;
 
-		ZED_UINT32 X = 0, Y = 0, Width = 1280, Height = 800;
+		ZED_UINT32 X = 0, Y = 0, Width = 0, Height = 0;
 		ZED::Renderer::ZED_SCREENSIZE NativeSize;
 		ZED::Renderer::ZED_SCREENSIZE *pScreenSizes = ZED_NULL;
 		ZED_MEMSIZE ScreenSizeCount = 0;
+
 		// TODO
 		// Attempt to create an OpenGL 3 renderer, then fall back to 2,
 		// finally try to get an OpenGL 1 renderer
@@ -119,12 +121,10 @@ namespace Dawn
 
 		m_pRenderer->ClearColour( 0.15f, 0.0f, 0.15f );
 
-		Dawn::StartTime( );
-
 		m_pTriangle = new Dawn::TriangleEntity( m_pRenderer );
 		m_pTriangle->Initialise( );
 
-		Dawn::StartTime( );
+		ZED::System::StartTime( );
 
 		m_pRenderer->SetRenderState( ZED_RENDERSTATE_CULLMODE,
 			ZED_CULLMODE_CCW );
@@ -157,11 +157,14 @@ namespace Dawn
 		ZED::Renderer::ZED_WINDOWDATA WinData = m_pWindow->WindowData( );
 		ZED_UINT64 ElapsedTime = 0ULL;
 		ZED_UINT64 TimeStep = 16667ULL;
-		ZED_UINT64 OldTime = GetTimeMiS( );
-		ZED_UINT64 FrameTime = GetTimeMiS( );
+		ZED_UINT64 OldTime = ZED::System::GetTimeMiS( );
+		ZED_UINT64 FrameTime = ZED::System::GetTimeMiS( );
 		ZED_MEMSIZE FrameRate = 0;
 
 		ZED_UINT64 Accumulator = 0ULL;
+
+		m_pRenderer->ForceClear( ZED_TRUE, ZED_TRUE, ZED_TRUE );
+
 		while( m_Running == ZED_TRUE )
 		{
 			m_pInputManager->Update( );
@@ -210,7 +213,7 @@ namespace Dawn
 					}
 				}
 			}
-			const ZED_UINT64 NewTime = GetTimeMiS( );
+			const ZED_UINT64 NewTime = ZED::System::GetTimeMiS( );
 			ZED_UINT64 DeltaTime = NewTime-OldTime;
 
 			if( DeltaTime > 250000ULL )
@@ -235,7 +238,7 @@ namespace Dawn
 			if( ( NewTime - FrameTime ) >= 1000000ULL )
 			{
 				zedTrace( "FPS: %d\n", FrameRate );
-				FrameTime = GetTimeMiS( );
+				FrameTime = ZED::System::GetTimeMiS( );
 				FrameRate = 0;
 			}
 		}

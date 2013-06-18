@@ -258,7 +258,7 @@ namespace Dawn
 
 	ZED_UINT32 EventRouter::Tick( const ZED_FLOAT32 p_MaxTime )
 	{
-		ZED_FLOAT32 CurrentTime = Dawn::GetTimeMS( );
+		ZED_FLOAT32 CurrentTime = ZED::System::GetTimeMS( );
 /*		ZED_FLOAT32 MaxTime = ( p_MaxTime == IEEE754_INFINITE32 ) ?
 			IEEE754_INFINITE32 : ( CurrentTime + p_MaxTime );*/
 		ZED_FLOAT32 MaxTime = p_MaxTime;
@@ -277,7 +277,8 @@ namespace Dawn
 			// As events are sorted by the timestamp + delay, any events after
 			// this one should also not occur until after this event has been
 			// fired
-			if( pEvent->Time( ) + pEvent->TimeDelay( ) > Dawn::GetTimeMS( ) )
+			if( pEvent->Time( ) + pEvent->TimeDelay( ) >
+				ZED::System::GetTimeMS( ) )
 			{
 				break;
 			}
@@ -318,7 +319,7 @@ namespace Dawn
 				}
 			}
 
-			CurrentTime = Dawn::GetTimeMS( );
+			CurrentTime = ZED::System::GetTimeMS( );
 
 /*			if( p_MaxTime != IEEE754_INFINITE32 )
 			{

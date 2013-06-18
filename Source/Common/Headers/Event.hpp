@@ -65,7 +65,7 @@ namespace Dawn
 	{
 	public:
 		ZED_EXPLICIT Event( const char * const p_pEventName,
-			ZED_FLOAT32 p_TimeStamp = Dawn::GetTimeMS( ),
+			ZED_FLOAT32 p_TimeStamp = ZED::System::GetTimeMS( ),
 			EventData *p_pData = ZED_NULL ) :
 			m_Type( p_pEventName ),
 			m_pData( p_pData ),

@@ -148,7 +148,7 @@ namespace Dawn
 		ZED::Arithmetic::Matrix4x4 WorldMatrix;
 		ZED::Arithmetic::Matrix4x4 PerspProj;
 		ZED::Arithmetic::Matrix4x4 WVP;
-		ZED::Arithmetic::Vector3 Position( 0.0f, 0.0f, 10.0f );
+		ZED::Arithmetic::Vector3 Position( 10.0f, 1000.0f, 10.0f );
 		ZED::Arithmetic::Vector3 Look( 0.0f, 0.0f, 0.0f );
 		ZED::Arithmetic::Vector3 Up( 0.0f, 1.0f, 0.0f );
 //		m_Position.X( m_XTrans );
