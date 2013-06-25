@@ -1,7 +1,8 @@
 #ifndef __DAWN_EVENTS_HPP__
 #define __DAWN_EVENTS_HPP__
 
-#include <Event.hpp>
+#include <System/Event.hpp>
+#include <System/Hash.hpp>
 #include <Input.hpp>
 
 namespace Dawn
@@ -14,19 +15,23 @@ namespace Dawn
 
 	// The hashes for the strings of the event types
 	// -- WINDOW SYSTEM --
-	static ZED_UINT32 g_EventWindowResizeID = Dawn::Hash( g_pEventWindowResize );
+	static ZED_UINT32 g_EventWindowResizeID =
+		ZED::System::EventType::HashName( g_pEventWindowResize );
 	// --INPUT --
-	static ZED_UINT32 g_EventInputKeyDownID = Dawn::Hash( g_pEventInputKeyDown );
+	static ZED_UINT32 g_EventInputKeyDownID =
+		ZED::System::EventType::HashName( g_pEventInputKeyDown );
 
 	// The event types
 	// -- WINDOW SYSTEM --
-	static EventType g_EventTypeWindowResize( g_pEventWindowResize );
+	static ZED::System::EventType
+		g_EventTypeWindowResize( g_pEventWindowResize );
 	// -- INPUT --
-	static EventType g_EventTypeInputKeyDown( g_pEventInputKeyDown );
+	static ZED::System::EventType
+		g_EventTypeInputKeyDown( g_pEventInputKeyDown );
 
 	// Event Data
 	// -- WINDOW SYSTEM --
-	class EventDataWindowResize : public EventData
+	class EventDataWindowResize : public ZED::System::EventData
 	{
 	public:
 		ZED_EXPLICIT EventDataWindowResize( const ZED_UINT32 p_Width,
@@ -46,7 +51,7 @@ namespace Dawn
 
 	// Events
 	// -- WINDOW SYSTEM --
-	class EventWindowResize : public Event
+	class EventWindowResize : public ZED::System::Event
 	{
 	public:
 		EventWindowResize( const ZED_UINT32 p_Width, const ZED_UINT32 p_Height ) :
@@ -56,7 +61,7 @@ namespace Dawn
 	};
 
 	// -- INPUT --
-	class EventInputKeyDown : public Event
+	class EventInputKeyDown : public ZED::System::Event
 	{
 	public:
 	};

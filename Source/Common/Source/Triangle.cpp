@@ -15,6 +15,8 @@
 
 #include <cstring>
 #include <Matrix4x4.hpp>
+#include <System/File.hpp>
+#include <Memory.hpp>
 
 namespace Dawn
 {
@@ -73,13 +75,26 @@ namespace Dawn
 			}
 		}
 
-		const ZED_CHAR8 *VShaderName =
-			"../../Data/Linux/Shaders/VertColour.vsh";
-		const ZED_CHAR8 *FShaderName =
-			"../../Data/Linux/Shaders/VertColour.fsh";
+		ZED_CHAR8 *pBinDir = new ZED_CHAR8[ 256 ];
+		ZED::System::GetExecutablePath( &pBinDir, 256 );
 
-		m_pShader->Compile( &VShaderName, ZED_VERTEX_SHADER, ZED_TRUE );
-		m_pShader->Compile( &FShaderName, ZED_FRAGMENT_SHADER, ZED_TRUE );
+		ZED_CHAR8 *pVShaderName = new ZED_CHAR8[ 256 ];
+		memset( pVShaderName, '\0', sizeof( ZED_CHAR8 )*256 );
+		strcat( pVShaderName, pBinDir );
+		strcat( pVShaderName, "../../Data/Linux/Shaders/VertColour.vsh" );
+
+		ZED_CHAR8 *pFShaderName = new ZED_CHAR8[ 256 ];
+		memset( pFShaderName, '\0', sizeof( ZED_CHAR8 )*256 );
+		strcat( pFShaderName, pBinDir );
+		strcat( pFShaderName, "../../Data/Linux/Shaders/VertColour.fsh" );
+
+		m_pShader->Compile( const_cast< const ZED_CHAR8 ** >( &pVShaderName ),
+			ZED_VERTEX_SHADER, ZED_TRUE );
+		m_pShader->Compile( const_cast< const ZED_CHAR8 ** >( &pFShaderName ),
+			ZED_FRAGMENT_SHADER, ZED_TRUE );
+
+		zedSafeDeleteArray( pVShaderName );
+		zedSafeDeleteArray( pFShaderName );
 
 		ZED_SHADER_VERTEXATTRIBUTE_GL pAttributes[ 2 ];
 
@@ -133,11 +148,20 @@ namespace Dawn
 
 		m_pShader->SetConstantTypes( Constant, 10 );
 
-		if( m_pModel->Load( "../../Data/Linux/Models/untitled.zed" ) !=
-			ZED_OK )
+		ZED_CHAR8 *pModelName = new ZED_CHAR8[ 256 ];
+		memset( pModelName, '\0', sizeof( ZED_CHAR8 )*256 );
+		strcat( pModelName, pBinDir );
+		strcat( pModelName, "../../Data/Linux/Models/untitled.zed" );
+
+		if( m_pModel->Load( pModelName ) != ZED_OK )
 		{
+			zedSafeDeleteArray( pBinDir );
+			zedSafeDeleteArray( pModelName );
+
 			return ZED_FAIL;
 		}
+		zedSafeDeleteArray( pModelName );
+		zedSafeDeleteArray( pBinDir );
 
 		return ZED_OK;
 	}

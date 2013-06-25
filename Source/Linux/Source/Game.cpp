@@ -1,5 +1,4 @@
 #include <Game.hpp>
-#include <Events.hpp>
 #include <LinuxRendererOGL3.hpp>
 #include <LinuxInputManager.hpp>
 #include <LinuxWindow.hpp>
@@ -15,6 +14,8 @@ namespace Dawn
 		m_pInputManager = ZED_NULL;
 		m_pWindow = ZED_NULL;
 		m_pTriangle = ZED_NULL;
+		m_pWindowEvents = new ZED::System::EventRouter( "Window Event Router",
+			ZED_FALSE, 2 );
 	}
 
 	Game::~Game( )
@@ -29,6 +30,12 @@ namespace Dawn
 		{
 			delete m_pInputManager;
 			m_pInputManager = ZED_NULL;
+		}
+
+		if( m_pWindowEvents )
+		{
+			delete m_pWindowEvents;
+			m_pWindowEvents = ZED_NULL;
 		}
 
 		if( m_pRenderer )
@@ -105,6 +112,13 @@ namespace Dawn
 			X = ( NativeSize.Width / 2 ) - ( Width / 2 );
 			Y = ( NativeSize.Height / 2 ) - ( Height / 2 );
 		}
+
+#ifdef ZED_BUILD_DEBUG
+		Width = 1280;
+		Height = 720;
+		X = ( NativeSize.Width / 2 ) - ( Width / 2 );
+		Y = ( NativeSize.Height / 2 ) - ( Height / 2 );
+#endif
 
 		m_pWindow->Create( X, Y, Width, Height );
 
@@ -247,7 +261,7 @@ namespace Dawn
 
 	void Game::Update( const ZED_FLOAT64 p_ElapsedGameTime )
 	{
-		this->m_WindowEvents.Tick( 16.6667f );
+		this->m_pWindowEvents->Process( 16667ULL );
 		m_pTriangle->Update( );
 	}
 

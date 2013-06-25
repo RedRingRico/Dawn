@@ -2,7 +2,8 @@
 
 namespace Dawn
 {
-	ZED_BOOL InputEventListener::HandleEvent( const Event &p_Event )
+	ZED_BOOL InputEventListener::HandleEvent(
+		const ZED::System::Event &p_Event )
 	{
 		return ZED_FALSE;
 	}

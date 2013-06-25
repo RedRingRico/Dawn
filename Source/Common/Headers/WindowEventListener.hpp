@@ -1,12 +1,13 @@
 #ifndef __DAWN_WINDOWEVENTLISTENER_HPP__
 #define __DAWN_WINDOWEVENTLISTENER_HPP__
 
-#include <EventListener.hpp>
+#include <System/Event.hpp>
+#include <System/EventRouter.hpp>
 #include <Renderer.hpp>
 
 namespace Dawn
 {
-	class WindowEventListener : public EventListener
+	class WindowEventListener : public ZED::System::EventListener
 	{
 	public:
 #if ( ZED_PLATFORM_WINDOWS )
@@ -25,7 +26,7 @@ namespace Dawn
 #if ( ZED_BUILD_DEBUG || ZED_BUILD_PROFILE )
 		virtual const char *GetName( ){ return "WindowEventListener"; }
 #endif
-		virtual ZED_BOOL HandleEvent( const Event &p_Event );
+		virtual ZED_BOOL HandleEvent( const ZED::System::Event &p_Event );
 
 	private:
 		ZED::Renderer::Renderer *m_pRenderer;

@@ -5,7 +5,7 @@
 #include <Renderer.hpp>
 #include <VertexCache.hpp>
 #include <CanvasDescription.hpp>
-#include <EventRouter.hpp>
+#include <System/EventRouter.hpp>
 #include <WindowEventListener.hpp>
 #include <cstdio>
 #include <Shader.hpp>
@@ -71,7 +71,7 @@ namespace Dawn
 		ZED_BOOL m_FullScreen;
 
 
-		EventRouter m_WindowEvents;
+		ZED::System::EventRouter *m_pWindowEvents;
 		Dawn::WindowEventListener *m_pWindowEventListener;
 
 		ZED_BOOL m_Running;
